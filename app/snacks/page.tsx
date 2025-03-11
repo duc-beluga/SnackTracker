@@ -27,6 +27,12 @@ interface SnackDisplay {
   primary_image_url: string;
 }
 
+interface SnackImage {
+  snack_id: number;
+  image_id: number;
+  image_url: string;
+}
+
 const SnackPage = async () => {
   const supabase = await createClient();
 
@@ -34,7 +40,30 @@ const SnackPage = async () => {
     .from("snacks")
     .select("snack_id, name, primary_image_url");
 
-  console.log(displaySnack);
+  const { data: snackImages }: { data: SnackImage[] | null } = await supabase
+    .from("snack_images")
+    .select();
+  type AccumulatorType = Record<number, string[]>;
+
+  const snackToImageMapping = snackImages?.reduce<AccumulatorType>(
+    (dict, item) => {
+      const key: number = item.snack_id;
+      const value: string = item.image_url;
+
+      if (dict[key]) {
+        if (Array.isArray(dict[key])) {
+          dict[key].push(value);
+        } else {
+          dict[key] = [dict[key], value];
+        }
+      } else {
+        dict[key] = [value];
+      }
+
+      return dict;
+    },
+    {} as AccumulatorType
+  );
 
   return (
     <div className="flex gap-2 flex-wrap">
@@ -78,17 +107,17 @@ const SnackPage = async () => {
             <div className="flex justify-center">
               <Carousel className="w-full max-w-xs">
                 <CarouselContent>
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <CarouselItem key={index}>
-                      <div className="p-1">
-                        <Card>
-                          <CardContent className="flex aspect-square items-center justify-center p-6">
-                            <span className="text-4xl font-semibold">
-                              {index + 1}
-                            </span>
-                          </CardContent>
-                        </Card>
-                      </div>
+                  {snackToImageMapping?.[snack.snack_id]?.map((snackUrl) => (
+                    <CarouselItem
+                      key={snackUrl}
+                      className="relative aspect-square w-full"
+                    >
+                      <Image
+                        src={snackUrl}
+                        alt="snackImage"
+                        fill
+                        style={{ objectFit: "cover" }}
+                      />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
