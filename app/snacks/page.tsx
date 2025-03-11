@@ -12,9 +12,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface SnackDisplay {
   snack_id: number;
@@ -67,14 +72,32 @@ const SnackPage = async () => {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
-              <DialogDescription>
-                Make changes to your profile here. Click save when you're done.
-              </DialogDescription>
+              <DialogTitle>Snack Photos</DialogTitle>
+              <DialogDescription>Location</DialogDescription>
             </DialogHeader>
-            {/* asd */}
+            <div className="flex justify-center">
+              <Carousel className="w-full max-w-xs">
+                <CarouselContent>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <CarouselItem key={index}>
+                      <div className="p-1">
+                        <Card>
+                          <CardContent className="flex aspect-square items-center justify-center p-6">
+                            <span className="text-4xl font-semibold">
+                              {index + 1}
+                            </span>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </div>
             <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <Button type="submit">Add new location!</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
