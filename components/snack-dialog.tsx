@@ -21,6 +21,7 @@ import { Button } from "./ui/button";
 
 import SnackCarousel from "./snack-carousel";
 import { Plus } from "lucide-react";
+import SnackDialogContent from "./snack-dialog-content";
 
 const SnackDialog = ({
   snack,
@@ -56,20 +57,7 @@ const SnackDialog = ({
               />
             )}
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>{snack.name}</DialogTitle>
-              <DialogDescription>Location</DialogDescription>
-            </DialogHeader>
-            <div className="flex justify-center">
-              <SnackCarousel snackImageUrls={snackImages} />
-            </div>
-            <DialogFooter>
-              <Button type="submit">
-                Add new location <Plus />
-              </Button>
-            </DialogFooter>
-          </DialogContent>
+          <SnackDialogContent snack={snack} snackImages={snackImages} />
         </Dialog>
       </CardContent>
       <CardFooter className="flex flex-wrap items-center justify-center pt-3">

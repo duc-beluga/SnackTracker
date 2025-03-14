@@ -10,7 +10,7 @@ import {
 } from "./ui/dialog";
 import SnackCarousel from "./snack-carousel";
 import { Button } from "./ui/button";
-import { Plus } from "lucide-react";
+import { MapPinCheck, Plus } from "lucide-react";
 import {
   SnackDisplay,
   SnackImageBasic,
@@ -38,17 +38,28 @@ const SnackDialogContent = ({
           <div className="flex justify-center">
             <SnackCarousel snackImageUrls={snackImages} />
           </div>
+          <DialogFooter>
+            <Button onClick={() => setIsButtonNewLocationClicked(true)}>
+              Add new location <Plus />
+            </Button>
+          </DialogFooter>
         </>
       ) : (
         <>
-          <Input />
+          <DialogHeader>
+            <DialogTitle>{snack.name}</DialogTitle>
+            <DialogDescription>Where did you find it?</DialogDescription>
+          </DialogHeader>
+          <div>
+            <Input type="search" />
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setIsButtonNewLocationClicked(true)}>
+              Put Me on the Map <MapPinCheck />
+            </Button>
+          </DialogFooter>
         </>
       )}
-      <DialogFooter>
-        <Button onClick={() => setIsButtonNewLocationClicked(true)}>
-          Add new location <Plus />
-        </Button>
-      </DialogFooter>
     </DialogContent>
   );
 };

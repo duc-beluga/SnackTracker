@@ -30,6 +30,8 @@ const SnackCarousel = ({
                 src={snackUrl.image_url}
                 alt="snackImage"
                 fill
+                // Need to adjust these values for image optimization
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                 style={{ objectFit: "cover" }}
               />
             </CarouselItem>
