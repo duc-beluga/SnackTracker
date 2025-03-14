@@ -6,21 +6,9 @@ import {
   SnackImageBasic,
 } from "@/app/interfaces/SnackInterfaces";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
+import { Dialog, DialogTrigger } from "./ui/dialog";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
-import { Button } from "./ui/button";
-
-import SnackCarousel from "./snack-carousel";
-import { Plus } from "lucide-react";
 import SnackDialogContent from "./snack-dialog-content";
 
 const SnackDialog = ({
