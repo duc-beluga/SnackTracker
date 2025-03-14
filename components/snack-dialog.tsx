@@ -30,17 +30,17 @@ const SnackDialog = ({
   snackImages: SnackImageBasic[];
 }) => {
   return (
-    <Dialog key={snack.snack_id}>
-      <Card key={snack.snack_id} className="w-44">
-        <DialogTrigger asChild>
-          <CardContent className="p-2 max-h-60 max-w-44">
+    <Card key={snack.snack_id} className="w-44">
+      <CardContent className="p-2 max-h-60 max-w-44">
+        <Dialog>
+          <DialogTrigger asChild>
             {snack.primary_image_url ? (
               <Image
                 src={snack.primary_image_url}
                 alt="snack_image"
                 width={180}
                 height={250}
-                className="w-full h-full rounded-md"
+                className="w-full h-full rounded-md cursor-pointer"
                 style={{
                   width: "160px",
                   height: "220px",
@@ -55,27 +55,27 @@ const SnackDialog = ({
                 }}
               />
             )}
-          </CardContent>
-        </DialogTrigger>
-        <CardFooter className="flex flex-wrap items-center justify-center pt-3">
-          {snack.name}
-        </CardFooter>
-      </Card>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{snack.name}</DialogTitle>
-          <DialogDescription>Location</DialogDescription>
-        </DialogHeader>
-        <div className="flex justify-center">
-          <SnackCarousel snackImageUrls={snackImages} />
-        </div>
-        <DialogFooter>
-          <Button type="submit">
-            Add new location <Plus />{" "}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>{snack.name}</DialogTitle>
+              <DialogDescription>Location</DialogDescription>
+            </DialogHeader>
+            <div className="flex justify-center">
+              <SnackCarousel snackImageUrls={snackImages} />
+            </div>
+            <DialogFooter>
+              <Button type="submit">
+                Add new location <Plus />
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </CardContent>
+      <CardFooter className="flex flex-wrap items-center justify-center pt-3">
+        {snack.name}
+      </CardFooter>
+    </Card>
   );
 };
 

@@ -20,7 +20,8 @@ const SnackPage = async () => {
 
   const { data: snackImages }: { data: SnackImage[] | null } = await supabase
     .from("snack_images")
-    .select();
+    .select("snack_id, image_id, image_url")
+    .order("upload_date", { ascending: true });
 
   type AccumulatorType = Record<number, SnackImageBasic[]>;
 

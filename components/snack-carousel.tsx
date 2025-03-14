@@ -36,7 +36,7 @@ const SnackCarousel = ({
           ))
         ) : (
           <CarouselItem>
-            <Skeleton className="aspect-square w-full"></Skeleton>
+            <Skeleton className="aspect-square w-full" />
           </CarouselItem>
         )}
       </CarouselContent>
