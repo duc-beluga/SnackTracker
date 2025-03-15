@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 
 import {
@@ -18,10 +20,22 @@ const SnackDialog = ({
   snack: SnackDisplay;
   snackImages: SnackImageBasic[];
 }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isButtonNewLocationClicked, setIsButtonNewLocationClicked] =
+    useState(false);
+
   return (
     <Card key={snack.snack_id} className="w-44">
       <CardContent className="p-2 max-h-60 max-w-44">
-        <Dialog>
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={(open) => {
+            setIsDialogOpen(open);
+            if (!open) {
+              setTimeout(() => setIsButtonNewLocationClicked(false), 200);
+            }
+          }}
+        >
           <DialogTrigger asChild>
             {snack.primary_image_url ? (
               <Image
@@ -45,7 +59,12 @@ const SnackDialog = ({
               />
             )}
           </DialogTrigger>
-          <SnackDialogContent snack={snack} snackImages={snackImages} />
+          <SnackDialogContent
+            snack={snack}
+            snackImages={snackImages}
+            isButtonNewLocationClicked={isButtonNewLocationClicked}
+            setIsButtonNewLocationClicked={setIsButtonNewLocationClicked}
+          />
         </Dialog>
       </CardContent>
       <CardFooter className="flex flex-wrap items-center justify-center pt-3">
