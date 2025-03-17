@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { SnackDisplay, SnackImageBasic } from "../interfaces/SnackInterfaces";
 
 import SnackDialog from "@/components/snack-dialog";
+import SnackCard from "@/components/snack-card";
 
 interface SnackImage {
   snack_id: number;
@@ -48,11 +49,12 @@ const SnackPage = async () => {
   return (
     <div className="flex gap-2 flex-wrap">
       {displaySnack?.map((snack) => (
-        <SnackDialog
-          snack={snack}
-          snackImages={snackToImageMapping?.[snack.snack_id] || []}
-          key={snack.snack_id}
-        />
+        <SnackCard snack={snack} key={snack.snack_id}>
+          <SnackDialog
+            snack={snack}
+            snackImages={snackToImageMapping?.[snack.snack_id] || []}
+          />
+        </SnackCard>
       ))}
     </div>
   );
