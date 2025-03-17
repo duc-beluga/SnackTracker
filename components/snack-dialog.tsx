@@ -41,8 +41,8 @@ const SnackDialog = ({
           <Image
             src={snack.primary_image_url}
             alt="snack_image"
-            width={180}
-            height={250}
+            width={700}
+            height={300}
             className="w-full h-full rounded-md cursor-pointer"
             style={{
               height: IMAGE_HEIGHT,

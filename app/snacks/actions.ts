@@ -42,9 +42,12 @@ export const uploadSnackImage = async (uploadImageFile: File): Promise<string> =
 export const onSnackLocationSubmit = async (
     values: z.infer<typeof SnackLocationSchemaType>
   ) => {
+    const snackImageUrl = await uploadSnackImage(values.snackImage);
+    
     const supabase = await createClient();
-    const { error: addNewLocationError } = await supabase.rpc(
-      "handle_add_new_location_for_snack",
+
+    const { error: addNewSnackLocationError } = await supabase.rpc(
+      "handle_add_new_image_location_for_snack",
       {
         snack_data: {
           snack_id: values.snackId,
@@ -53,29 +56,13 @@ export const onSnackLocationSubmit = async (
           google_place_id: values.snackLocation.place_id,
           address: values.snackLocation.address,
         },
-      }
-    );
-    if (addNewLocationError) {
-        console.error(addNewLocationError?.hint);
-      return;
-    }
-
-    const snackImageUrl = await uploadSnackImage(values.snackImage);
-
-    const { error: uploadNewSnackImageError } = await supabase.rpc(
-      "handle_add_new_image_url_for_snack",
-      {
-        snack_data: {
-          snack_id: values.snackId,
-        },
         image_data: {
           image_url: snackImageUrl,
         },
       }
     );
-
-    if (uploadNewSnackImageError) {
-      console.error(uploadNewSnackImageError.hint);
+    if (addNewSnackLocationError) {
+        console.error(addNewSnackLocationError?.hint);
       return;
     }
 
