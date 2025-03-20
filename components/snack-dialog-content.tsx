@@ -12,7 +12,7 @@ import { Button } from "./ui/button";
 import { MapPinCheck, Plus } from "lucide-react";
 import {
   SnackDisplay,
-  SnackImageBasic,
+  SnackImageLocationVal,
 } from "@/app/interfaces/SnackInterfaces";
 
 import { getSnackLocationForm } from "@/utils/zod/forms/SnackLocationForm";
@@ -26,7 +26,7 @@ const SnackDialogContent = ({
   setIsButtonNewLocationClicked,
 }: {
   snack: SnackDisplay;
-  snackImages: SnackImageBasic[];
+  snackImages: SnackImageLocationVal[];
   isButtonNewLocationClicked: boolean;
   setIsButtonNewLocationClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -38,7 +38,6 @@ const SnackDialogContent = ({
         <>
           <DialogHeader>
             <DialogTitle>{snack.name}</DialogTitle>
-            <DialogDescription>Location</DialogDescription>
           </DialogHeader>
           <div className="flex justify-center">
             <SnackCarousel snackImageUrls={snackImages} />

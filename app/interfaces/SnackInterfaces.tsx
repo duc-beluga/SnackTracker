@@ -10,7 +10,8 @@ export interface SnackImage {
   image_url: string;
 }
 
-export interface SnackImageBasic {
-  image_id: number;
+export interface SnackImageLocationVal {
+  image_location_id: number;
   image_url: string;
+  snack_address: string;
 }

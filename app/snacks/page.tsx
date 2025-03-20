@@ -1,15 +1,19 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 
-import { SnackDisplay, SnackImageBasic } from "../interfaces/SnackInterfaces";
+import {
+  SnackDisplay,
+  SnackImageLocationVal,
+} from "../interfaces/SnackInterfaces";
 
 import SnackDialog from "@/components/snack-dialog";
 import SnackCard from "@/components/snack-card";
 
-interface SnackImage {
+interface SnackImageLocation {
   snack_id: number;
-  image_id: number;
+  image_location_id: number;
   image_url: string;
+  snack_address: string;
 }
 
 const SnackPage = async () => {
@@ -19,32 +23,30 @@ const SnackPage = async () => {
     .from("snacks")
     .select("snack_id, name, primary_image_url");
 
-  const { data: snackImages }: { data: SnackImage[] | null } = await supabase
-    .from("snack_images")
-    .select("snack_id, image_id, image_url")
-    .order("upload_date", { ascending: true });
+  const { data: snackLocationImages }: { data: SnackImageLocation[] | null } =
+    await supabase.rpc("get_snack_images_with_locations");
 
-  type AccumulatorType = Record<number, SnackImageBasic[]>;
+  type AccumulatorType = Record<number, SnackImageLocationVal[]>;
 
-  const snackToImageMapping = snackImages?.reduce<AccumulatorType>(
-    (snackImagesById, item) => {
+  const snackToImageLocationMapping =
+    snackLocationImages?.reduce<AccumulatorType>((snackImagesById, item) => {
       const snackId: number = item.snack_id;
-      const snackImageId: number = item.image_id;
-      const snackImageUrl: string = item.image_url;
+      const imageLocationId: number = item.image_location_id;
+      const imageUrl: string = item.image_url;
+      const snackAddress: string = item.snack_address;
 
       if (!snackImagesById[snackId]) {
         snackImagesById[snackId] = [];
       }
 
       snackImagesById[snackId].push({
-        image_id: snackImageId,
-        image_url: snackImageUrl,
+        image_location_id: imageLocationId,
+        image_url: imageUrl,
+        snack_address: snackAddress,
       });
 
       return snackImagesById;
-    },
-    {} as AccumulatorType
-  );
+    }, {} as AccumulatorType);
 
   return (
     <div className="flex gap-2 flex-wrap">
@@ -52,7 +54,7 @@ const SnackPage = async () => {
         <SnackCard snack={snack} key={snack.snack_id}>
           <SnackDialog
             snack={snack}
-            snackImages={snackToImageMapping?.[snack.snack_id] || []}
+            snackImages={snackToImageLocationMapping?.[snack.snack_id] || []}
           />
         </SnackCard>
       ))}

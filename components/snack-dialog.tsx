@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import {
   SnackDisplay,
-  SnackImageBasic,
+  SnackImageLocationVal,
 } from "@/app/interfaces/SnackInterfaces";
 
 import { Dialog, DialogTrigger } from "./ui/dialog";
@@ -20,7 +20,7 @@ const SnackDialog = ({
   snackImages,
 }: {
   snack: SnackDisplay;
-  snackImages: SnackImageBasic[];
+  snackImages: SnackImageLocationVal[];
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isButtonNewLocationClicked, setIsButtonNewLocationClicked] =
