@@ -15,3 +15,10 @@ export interface SnackImageLocationVal {
   image_url: string;
   snack_address: string;
 }
+
+export interface SnackImageLocation {
+  snack_id: number;
+  image_location_id: number;
+  image_url: string;
+  snack_address: string;
+}

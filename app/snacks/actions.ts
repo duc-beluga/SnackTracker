@@ -4,8 +4,9 @@ import { createClient } from "@/utils/supabase/server";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
+import { SnackDisplay, SnackImageLocation, SnackImageLocationVal } from "../interfaces/SnackInterfaces";
 
-export const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
+const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
     const supabase = await createClient();
     const emptyString = "";
 
@@ -68,3 +69,44 @@ export const onSnackLocationSubmit = async (
 
     console.log("Cha ching!");
   };
+
+export const getSnackData = async () : Promise<SnackDisplay[] | null> => {
+  const supabase = await createClient();
+
+  const { data: displaySnack }: { data: SnackDisplay[] | null } = await supabase
+      .from("snacks")
+      .select("snack_id, name, primary_image_url");
+    
+  return displaySnack
+}
+
+export const getSnackLocationsAndImages = async (): Promise<Record<number, SnackImageLocationVal[]> | undefined> => {
+  const supabase = await createClient();
+  
+  const { data: snackLocationImages }: { data: SnackImageLocation[] | null } =
+    await supabase.rpc("get_snack_images_with_locations");
+
+  type AccumulatorType = Record<number, SnackImageLocationVal[]>;
+  
+  const snackToImageLocationMapping =
+    snackLocationImages?.reduce<AccumulatorType>((snackImagesById, item) => {
+      const snackId: number = item.snack_id;
+      const imageLocationId: number = item.image_location_id;
+      const imageUrl: string = item.image_url;
+      const snackAddress: string = item.snack_address;
+
+      if (!snackImagesById[snackId]) {
+        snackImagesById[snackId] = [];
+      }
+
+      snackImagesById[snackId].push({
+        image_location_id: imageLocationId,
+        image_url: imageUrl,
+        snack_address: snackAddress,
+      });
+
+      return snackImagesById;
+    }, {} as AccumulatorType);
+
+  return snackToImageLocationMapping;
+}

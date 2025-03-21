@@ -11,27 +11,29 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import { Skeleton } from "./ui/skeleton";
-import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
+import { Card, CardContent, CardDescription } from "./ui/card";
 
 interface CarouselProps {
-  snackImageUrls: SnackImageLocationVal[];
+  snackToImageLocationMap: SnackImageLocationVal[];
 }
 
-const SnackCarousel = ({ snackImageUrls }: CarouselProps) => {
+const SnackCarousel = ({ snackToImageLocationMap }: CarouselProps) => {
   return (
     <Carousel className="w-full max-w-xs">
       <CarouselContent>
-        {snackImageUrls.length > 0 ? (
-          snackImageUrls.map((snackUrl) => (
-            <CarouselItem key={snackUrl.image_location_id}>
+        {snackToImageLocationMap.length > 0 ? (
+          snackToImageLocationMap.map((imageLocations) => (
+            <CarouselItem key={imageLocations.image_location_id}>
               <Card className="w-full border-none">
                 <div className="h-14 p-2 overflow-y-auto">
-                  <CardDescription>{snackUrl.snack_address}</CardDescription>
+                  <CardDescription>
+                    {imageLocations.snack_address}
+                  </CardDescription>
                 </div>
                 <CardContent className="p-0 pt-2 relative aspect-square">
                   <div className="relative w-full h-full">
                     <Image
-                      src={snackUrl.image_url}
+                      src={imageLocations.image_url}
                       alt="snackImage"
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"

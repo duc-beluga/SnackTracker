@@ -17,10 +17,10 @@ const IMAGE_WIDTH = "160px";
 
 interface DialogProps {
   snack: SnackDisplay;
-  snackImages: SnackImageLocationVal[];
+  snackToImageLocationMap: SnackImageLocationVal[];
 }
 
-const SnackDialog = ({ snack, snackImages }: DialogProps) => {
+const SnackDialog = ({ snack, snackToImageLocationMap }: DialogProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isButtonNewLocationClicked, setIsButtonNewLocationClicked] =
     useState(false);
@@ -60,7 +60,7 @@ const SnackDialog = ({ snack, snackImages }: DialogProps) => {
       </DialogTrigger>
       <SnackDialogContent
         snack={snack}
-        snackImages={snackImages}
+        snackToImageLocationMap={snackToImageLocationMap}
         isButtonNewLocationClicked={isButtonNewLocationClicked}
         setIsButtonNewLocationClicked={setIsButtonNewLocationClicked}
       />

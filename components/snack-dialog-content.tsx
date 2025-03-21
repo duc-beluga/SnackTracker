@@ -21,14 +21,14 @@ import { onSnackLocationSubmit } from "@/app/snacks/actions";
 
 interface DialogContentProps {
   snack: SnackDisplay;
-  snackImages: SnackImageLocationVal[];
+  snackToImageLocationMap: SnackImageLocationVal[];
   isButtonNewLocationClicked: boolean;
   setIsButtonNewLocationClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SnackDialogContent = ({
   snack,
-  snackImages,
+  snackToImageLocationMap,
   isButtonNewLocationClicked,
   setIsButtonNewLocationClicked,
 }: DialogContentProps) => {
@@ -42,7 +42,7 @@ const SnackDialogContent = ({
             <DialogTitle>{snack.name}</DialogTitle>
           </DialogHeader>
           <div className="flex justify-center">
-            <SnackCarousel snackImageUrls={snackImages} />
+            <SnackCarousel snackToImageLocationMap={snackToImageLocationMap} />
           </div>
           <DialogFooter>
             <Button onClick={() => setIsButtonNewLocationClicked(true)}>
