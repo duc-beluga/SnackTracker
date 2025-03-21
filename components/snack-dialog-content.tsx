@@ -15,7 +15,7 @@ import {
   SnackImageLocationVal,
 } from "@/app/interfaces/SnackInterfaces";
 
-import { getSnackLocationForm } from "@/utils/zod/forms/SnackLocationForm";
+import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocationForm";
 import SnackLocationForm from "./snack-location-form";
 import { onSnackLocationSubmit } from "@/app/snacks/actions";
 
@@ -32,7 +32,9 @@ const SnackDialogContent = ({
   isButtonNewLocationClicked,
   setIsButtonNewLocationClicked,
 }: DialogContentProps) => {
-  const reactHookSnackLocationForm = getSnackLocationForm(snack.snack_id);
+  const reactHookSnackLocationForm = getSnackLocationFormWithDefaultId(
+    snack.snack_id
+  );
 
   return (
     <DialogContent className="sm:max-w-[425px]">

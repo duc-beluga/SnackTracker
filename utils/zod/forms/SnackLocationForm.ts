@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { SnackLocationSchemaType } from "../schemas/SnackLocationSchema";
 import { z } from "zod";
 
-export const getSnackLocationForm = (snackId: number) => useForm<z.infer<typeof SnackLocationSchemaType>>({
+export const getSnackLocationFormWithDefaultId = (snackId: number) => useForm<z.infer<typeof SnackLocationSchemaType>>({
     resolver: zodResolver(SnackLocationSchemaType),
     defaultValues: {
       snackId: snackId,

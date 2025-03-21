@@ -11,22 +11,21 @@ import { autocomplete } from "@/lib/google";
 import { PlaceAutocompleteResult } from "@googlemaps/google-maps-services-js";
 import { useEffect, useState } from "react";
 import { ControllerRenderProps } from "react-hook-form/dist/types/controller";
+import { FieldValues, Path } from "react-hook-form";
 
-const SnackLocationSearch = ({
+interface SnackLocationSearchProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends Path<TFieldValues> = Path<TFieldValues>,
+> {
+  field: ControllerRenderProps<TFieldValues, TName>;
+}
+
+const SnackLocationSearch = <
+  TFieldValue extends FieldValues,
+  TName extends Path<TFieldValue>,
+>({
   field,
-}: {
-  field: ControllerRenderProps<
-    {
-      snackId: number;
-      snackLocation: {
-        address: string;
-        place_id: string;
-      };
-      snackImage: File;
-    },
-    "snackLocation"
-  >;
-}) => {
+}: SnackLocationSearchProps<TFieldValue, TName>) => {
   const [predictions, setPredictions] = useState<PlaceAutocompleteResult[]>([]);
   const [selectedLocation, setSelectedLocation] = useState("");
 

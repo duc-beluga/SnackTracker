@@ -5,6 +5,7 @@ import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { SnackDisplay, SnackImageLocation, SnackImageLocationVal } from "../interfaces/SnackInterfaces";
+import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 
 const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
     const supabase = await createClient();
@@ -69,6 +70,13 @@ export const onSnackLocationSubmit = async (
 
     console.log("Cha ching!");
   };
+
+export const onSnackNameLocationSubmit = async (
+    values: z.infer<typeof SnackNameLocationSchemaType>
+  ) => {
+    console.log(values)
+
+  }
 
 export const getSnackData = async () : Promise<SnackDisplay[] | null> => {
   const supabase = await createClient();
