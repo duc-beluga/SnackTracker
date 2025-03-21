@@ -7,12 +7,7 @@ import SnackLocationSearch from "./snack-location-search";
 import { UseFormReturn } from "react-hook-form/dist/types/form";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 
-const SnackLocationForm = ({
-  footerSlot,
-  headerSlot,
-  reactHookSnackLocationForm,
-  onSnackLocationSubmit,
-}: {
+interface LocationImageFormProps {
   footerSlot: React.ReactNode;
   headerSlot: React.ReactNode;
   reactHookSnackLocationForm: UseFormReturn<
@@ -30,7 +25,14 @@ const SnackLocationForm = ({
   onSnackLocationSubmit: (
     values: z.infer<typeof SnackLocationSchemaType>
   ) => Promise<void>;
-}) => {
+}
+
+const SnackLocationForm = ({
+  footerSlot,
+  headerSlot,
+  reactHookSnackLocationForm,
+  onSnackLocationSubmit,
+}: LocationImageFormProps) => {
   return (
     <Form {...reactHookSnackLocationForm}>
       <form

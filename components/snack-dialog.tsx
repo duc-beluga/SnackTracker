@@ -15,13 +15,12 @@ import SnackDialogContent from "./snack-dialog-content";
 const IMAGE_HEIGHT = "220px";
 const IMAGE_WIDTH = "160px";
 
-const SnackDialog = ({
-  snack,
-  snackImages,
-}: {
+interface DialogProps {
   snack: SnackDisplay;
   snackImages: SnackImageLocationVal[];
-}) => {
+}
+
+const SnackDialog = ({ snack, snackImages }: DialogProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isButtonNewLocationClicked, setIsButtonNewLocationClicked] =
     useState(false);

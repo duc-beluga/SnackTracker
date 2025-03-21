@@ -2,13 +2,12 @@ import React from "react";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 
-const SnackCard = ({
-  snack,
-  children,
-}: {
+interface CardProps {
   snack: SnackDisplay;
   children: React.ReactNode;
-}) => {
+}
+
+const SnackCard = ({ snack, children }: CardProps) => {
   return (
     <Card key={snack.snack_id} className="w-44">
       <CardContent className="p-2 max-h-60 max-w-44">{children}</CardContent>

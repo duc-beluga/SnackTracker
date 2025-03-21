@@ -19,17 +19,19 @@ import { getSnackLocationForm } from "@/utils/zod/forms/SnackLocationForm";
 import SnackLocationForm from "./snack-location-form";
 import { onSnackLocationSubmit } from "@/app/snacks/actions";
 
+interface DialogContentProps {
+  snack: SnackDisplay;
+  snackImages: SnackImageLocationVal[];
+  isButtonNewLocationClicked: boolean;
+  setIsButtonNewLocationClicked: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const SnackDialogContent = ({
   snack,
   snackImages,
   isButtonNewLocationClicked,
   setIsButtonNewLocationClicked,
-}: {
-  snack: SnackDisplay;
-  snackImages: SnackImageLocationVal[];
-  isButtonNewLocationClicked: boolean;
-  setIsButtonNewLocationClicked: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+}: DialogContentProps) => {
   const reactHookSnackLocationForm = getSnackLocationForm(snack.snack_id);
 
   return (

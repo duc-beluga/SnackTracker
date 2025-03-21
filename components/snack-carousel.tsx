@@ -13,11 +13,11 @@ import {
 import { Skeleton } from "./ui/skeleton";
 import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
 
-const SnackCarousel = ({
-  snackImageUrls,
-}: {
+interface CarouselProps {
   snackImageUrls: SnackImageLocationVal[];
-}) => {
+}
+
+const SnackCarousel = ({ snackImageUrls }: CarouselProps) => {
   return (
     <Carousel className="w-full max-w-xs">
       <CarouselContent>
