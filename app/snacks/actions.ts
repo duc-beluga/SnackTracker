@@ -68,14 +68,36 @@ export const onSnackLocationSubmit = async (
       return;
     }
 
-    console.log("Cha ching!");
+    console.log("New snack location added!");
   };
 
 export const onSnackNameLocationSubmit = async (
     values: z.infer<typeof SnackNameLocationSchemaType>
   ) => {
-    console.log(values)
+    const snackImageUrl = await uploadSnackImage(values.snackImage);
+    
+    const supabase = await createClient();
 
+    const { error: addNewSnackError } = await supabase.rpc(
+      "add_new_snack", {
+        new_snack_data: {
+          name: values.snackName,
+        },
+        location_data: {
+          google_place_id: values.snackLocation.place_id,
+          address: values.snackLocation.address,
+        },
+        image_data: {
+          image_url: snackImageUrl,
+        },
+      })
+
+      if (addNewSnackError) {
+        console.error(addNewSnackError?.hint);
+      return;
+    }
+
+    console.log("New snack added!");
   }
 
 export const getSnackData = async () : Promise<SnackDisplay[] | null> => {
