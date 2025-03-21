@@ -27,12 +27,12 @@ const SnackLocationSearch = <
   field,
 }: SnackLocationSearchProps<TFieldValue, TName>) => {
   const [predictions, setPredictions] = useState<PlaceAutocompleteResult[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState("");
-
+  const [isTyping, setIsTyping] = useState(false);
   useEffect(() => {
     const fetchPredictions = async () => {
-      const predictions = await autocomplete(field.value.address);
-      setPredictions(predictions ?? []);
+      const googleMapspredictions = await autocomplete(field.value.address);
+      console.log(googleMapspredictions);
+      setPredictions(googleMapspredictions ?? []);
     };
     fetchPredictions();
     console.log(field.value.address);
@@ -44,7 +44,7 @@ const SnackLocationSearch = <
       place_id: prediction.place_id,
     });
     console.log(prediction);
-    setSelectedLocation(prediction.description);
+    setIsTyping(false);
   };
 
   return (
@@ -57,11 +57,12 @@ const SnackLocationSearch = <
             address: value,
             place_id: "",
           });
+          setIsTyping(true);
         }}
       />
       <CommandList>
         <CommandGroup>
-          {selectedLocation.length == 0 &&
+          {isTyping &&
             predictions.map((prediction) => (
               <CommandItem
                 key={prediction.place_id}
