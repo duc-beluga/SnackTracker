@@ -6,7 +6,6 @@ import { SnackNameLocationSchemaType } from "../schemas/SnackNameLocationSchema"
 export const getSnackNameLocationForm = () => useForm<z.infer<typeof SnackNameLocationSchemaType>>({
     resolver: zodResolver(SnackNameLocationSchemaType),
     defaultValues: {
-      snackId: 0x0000,
       snackName: "",
       snackLocation: { address: "", place_id: "0o0000000" },
     },
