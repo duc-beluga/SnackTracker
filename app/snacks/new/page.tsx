@@ -13,12 +13,16 @@ import { Input } from "@/components/ui/input";
 import { getSnackNameLocationForm } from "@/utils/zod/forms/SnackNameLocationForm";
 import React from "react";
 import { onSnackNameLocationSubmit } from "../actions";
+import { getSnackNames } from "./actions";
+import SnackSearchInput from "@/components/snack-search-input";
+import { createClient } from "@/utils/supabase/client";
 
 const NewSnack = () => {
   const reactHookSnackNameLocationForm = getSnackNameLocationForm();
 
   return (
     <div>
+      <SnackSearchInput />
       <Form {...reactHookSnackNameLocationForm}>
         <form
           onSubmit={reactHookSnackNameLocationForm.handleSubmit(

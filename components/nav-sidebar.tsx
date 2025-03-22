@@ -14,7 +14,7 @@ import {
 import React, { ReactNode } from "react";
 import Link from "next/link";
 
-import { Search, Settings, TrendingUp, UserRound } from "lucide-react";
+import { Plus, Search, Settings, TrendingUp, UserRound } from "lucide-react";
 
 interface NavbarGroupInterface {
   groupLabel: string;
@@ -26,16 +26,25 @@ const iconMap: Record<string, ReactNode> = {
   Search: <Search />,
   Profile: <UserRound />,
   Settings: <Settings />,
+  NewSnack: <Plus />,
 };
 
 const contentGroup: NavbarGroupInterface = {
   groupLabel: "Content",
-  groupItems: ["Trending", "Search"],
+  groupItems: ["Trending", "Search", "NewSnack"],
 };
 
 const settingGroup: NavbarGroupInterface = {
   groupLabel: "Settings",
   groupItems: ["Profile", "Settings"],
+};
+
+const linkMap: Record<string, string> = {
+  Trending: "#",
+  Search: "#",
+  Profile: "#",
+  Settings: "#",
+  NewSnack: "/snacks/new",
 };
 
 const navbarGroups: NavbarGroupInterface[] = [settingGroup, contentGroup];
@@ -44,7 +53,7 @@ const NavSideBar = () => {
   return (
     <Sidebar>
       <SidebarHeader className="flex-row justify-center p-3 font-bold text-xl">
-        SnackTrack
+        <Link href="/">SnackTrack</Link>
       </SidebarHeader>
       <SidebarContent>
         {navbarGroups.map((navbarGroup) => (
@@ -55,7 +64,7 @@ const NavSideBar = () => {
                 {navbarGroup.groupItems.map((item: string) => (
                   <SidebarMenuItem key={item}>
                     <SidebarMenuButton asChild>
-                      <Link href="#">
+                      <Link href={linkMap[item]}>
                         {iconMap[item]}
                         <span className="mx-4">{item}</span>
                       </Link>
