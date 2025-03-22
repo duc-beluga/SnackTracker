@@ -24,6 +24,7 @@ interface DialogContentProps {
   snackToImageLocationMap: SnackImageLocationVal[];
   isButtonNewLocationClicked: boolean;
   setIsButtonNewLocationClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SnackDialogContent = ({
@@ -31,6 +32,7 @@ const SnackDialogContent = ({
   snackToImageLocationMap,
   isButtonNewLocationClicked,
   setIsButtonNewLocationClicked,
+  setIsDialogOpen,
 }: DialogContentProps) => {
   const reactHookSnackLocationForm = getSnackLocationFormWithDefaultId(
     snack.snack_id
@@ -62,15 +64,19 @@ const SnackDialogContent = ({
           }
           footerSlot={
             <DialogFooter>
-              <DialogClose asChild>
-                <Button type="submit">
-                  Put me on the Map <MapPinCheck />
-                </Button>
-              </DialogClose>
+              {/* <DialogClose asChild> */}
+              <Button type="submit">
+                Put me on the Map <MapPinCheck />
+              </Button>
+              {/* </DialogClose> */}
             </DialogFooter>
           }
           reactHookSnackLocationForm={reactHookSnackLocationForm}
-          onSnackLocationSubmit={onSnackLocationSubmit}
+          onSnackLocationSubmit={async (values) => {
+            await onSnackLocationSubmit(values);
+            setIsButtonNewLocationClicked(false);
+            setIsDialogOpen(false);
+          }}
         />
       )}
     </DialogContent>

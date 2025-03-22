@@ -42,8 +42,7 @@ const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
   };
 
 export const onSnackLocationSubmit = async (
-    values: z.infer<typeof SnackLocationSchemaType>
-  ) => {
+    values: z.infer<typeof SnackLocationSchemaType>) => {
     const snackImageUrl = await uploadSnackImage(values.snackImage);
     
     const supabase = await createClient();
@@ -69,6 +68,7 @@ export const onSnackLocationSubmit = async (
     }
 
     console.log("New snack location added!");
+
   };
 
 export const onSnackNameLocationSubmit = async (

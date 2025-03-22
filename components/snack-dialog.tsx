@@ -63,6 +63,7 @@ const SnackDialog = ({ snack, snackToImageLocationMap }: DialogProps) => {
         snackToImageLocationMap={snackToImageLocationMap}
         isButtonNewLocationClicked={isButtonNewLocationClicked}
         setIsButtonNewLocationClicked={setIsButtonNewLocationClicked}
+        setIsDialogOpen={setIsDialogOpen}
       />
     </Dialog>
   );
