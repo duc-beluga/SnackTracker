@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { SnackDisplay, SnackImageLocation, SnackImageLocationVal } from "../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
+import { SnackNameSchemaType } from "@/utils/zod/schemas/SnackNameSchema";
 
 const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
     const supabase = await createClient();

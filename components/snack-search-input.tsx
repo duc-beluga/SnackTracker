@@ -14,36 +14,43 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { PackagePlus } from "lucide-react";
 
-interface SnackSearchInputProps {
-  snackNames: string[] | null;
+interface SnackType {
+  name: string;
+  snack_id: number;
 }
 
 const SnackSearchInput = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [snackSearchVal, setSnackSearchVal] = useState("");
-  const [predictions, setPredictions] = useState<string[]>([]);
+  const [predictions, setPredictions] = useState<SnackType[]>([]);
   const [snackSelected, setSnackSelected] = useState("");
-  const [snackNames, setSnackNames] = useState<string[] | null>([]);
+  const [snacks, setSnacks] = useState<SnackType[] | null>([]);
 
   useEffect(() => {
     async function fetchSnacks() {
       const supabase = createClient();
-      const { data } = await supabase.from("snacks").select("name");
+      const { data } = await supabase.from("snacks").select("name, snack_id");
 
       // Transform the data from [{name: "snack1"}, {name: "snack2"}] to ["snack1", "snack2"]
       if (data) {
-        const snackNamesList = data.map((item) => item.name);
-        setSnackNames(snackNamesList);
+        const snackNamesList = data.map((item) => ({
+          name: item.name,
+          snack_id: item.snack_id,
+        }));
+        setSnacks(snackNamesList);
       }
     }
     fetchSnacks();
   }, []);
 
   useEffect(() => {
+    if (snackSearchVal == "") {
+      setIsTyping(false);
+    }
     const snacksFound =
-      snackNames
-        ?.filter((snackName) =>
-          snackName
+      snacks
+        ?.filter((snack) =>
+          snack.name
             .toLowerCase()
             .includes(snackSearchVal.toLocaleLowerCase().trim())
         )
@@ -71,31 +78,34 @@ const SnackSearchInput = () => {
         onValueChange={handleInputChange}
       />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Existing snacks...">
           {isTyping &&
             predictions.length > 0 &&
             predictions.map((prediction) => (
               <CommandItem
-                key={prediction}
-                onSelect={() => handleSnackSelect(prediction)}
+                key={prediction.snack_id}
+                onSelect={() => handleSnackSelect(prediction.name)}
               >
-                {prediction}
+                {prediction.name}
               </CommandItem>
             ))}
         </CommandGroup>
 
         <CommandSeparator />
-        <CommandGroup heading="Not found?">
-          {/* Always show this option by setting value to snackSearchVal*/}
-          <CommandItem
-            value={snackSearchVal}
-            onSelect={() => console.log("adding new snacks")}
-          >
-            <PackagePlus className="mr-2 h-4 w-4" />
-            <span>Add New Snack</span>
-          </CommandItem>
-        </CommandGroup>
+        {/* Always show this option by setting value to snackSearchVal*/}
+        {isTyping && (
+          <CommandGroup heading="Not found?">
+            {predictions.length == 0 && (
+              <CommandItem
+                value={snackSearchVal}
+                onSelect={() => console.log("adding new snacks")}
+              >
+                <PackagePlus className="mr-2 h-4 w-4" />
+                <span>Add New Snack</span>
+              </CommandItem>
+            )}
+          </CommandGroup>
+        )}
       </CommandList>
     </Command>
   );
