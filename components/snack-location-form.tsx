@@ -27,15 +27,6 @@ interface LocationImageFormProps {
   ) => Promise<void>;
 }
 
-interface FormVal {
-  snackId: number;
-  snackLocation: {
-    address: string;
-    place_id: string;
-  };
-  snackImage: File;
-}
-
 const SnackLocationForm = ({
   footerSlot,
   headerSlot,
@@ -58,7 +49,12 @@ const SnackLocationForm = ({
             <FormItem>
               <FormLabel>Search location</FormLabel>
               <FormControl>
-                <SnackLocationSearch<FormVal, "snackLocation"> field={field} />
+                <SnackLocationSearch<
+                  z.infer<typeof SnackLocationSchemaType>,
+                  "snackLocation"
+                >
+                  field={field}
+                />
               </FormControl>
             </FormItem>
           )}
