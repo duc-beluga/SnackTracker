@@ -25,6 +25,7 @@ import { z } from "zod";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import SnackSearchInput from "./snack-search-input";
 import { PackagePlus } from "lucide-react";
+import { onSnackNameLocationSubmit } from "@/app/snacks/actions";
 
 export const NewSnackForm = () => {
   const [step, setStep] = useState<number>(0);
@@ -40,6 +41,7 @@ export const NewSnackForm = () => {
   const onSubmit = async (
     values: z.infer<typeof SnackNameLocationSchemaType>
   ) => {
+    onSnackNameLocationSubmit(values);
     setStep(0);
     reset();
 
