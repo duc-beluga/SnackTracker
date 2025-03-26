@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,10 +23,14 @@ import { getSnackNameLocationForm } from "@/utils/zod/forms/SnackNameLocationFor
 import SnackLocationSearch from "./snack-location-search";
 import { z } from "zod";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
-import { onSnackNameLocationSubmit } from "@/app/snacks/actions";
+import SnackSearchInput from "./snack-search-input";
+import { PackagePlus } from "lucide-react";
 
 export const NewSnackForm = () => {
   const [step, setStep] = useState<number>(0);
+  const [isNewSnack, setIsNewSnack] = useState<boolean>(false);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+
   const totalSteps = 2;
 
   const form = getSnackNameLocationForm();
@@ -38,8 +40,6 @@ export const NewSnackForm = () => {
   const onSubmit = async (
     values: z.infer<typeof SnackNameLocationSchemaType>
   ) => {
-    onSnackNameLocationSubmit(values);
-
     setStep(0);
     reset();
 
@@ -86,7 +86,11 @@ export const NewSnackForm = () => {
       </div>
       <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg">Adding new snack</CardTitle>
+          <CardTitle className="text-lg">
+            {!isNewSnack && step === 1
+              ? "Adding existing snack"
+              : "Adding new snack"}
+          </CardTitle>
           <CardDescription>Current step {step + 1}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -98,13 +102,24 @@ export const NewSnackForm = () => {
                   name="snackName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Snack name</FormLabel>
+                      <FormLabel>
+                        <div className="flex justify-between">
+                          <span>Snack name </span>
+                          {isNewSnack && (
+                            <PackagePlus
+                              className="mr-2 h-4 w-4 shrink-0 opacity-50"
+                              color="#28a745"
+                            />
+                          )}
+                        </div>
+                      </FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          value={field.value || ""}
-                          placeholder="Search a snack..."
-                          autoComplete="off"
+                        <SnackSearchInput
+                          field={field}
+                          setIsNewSnack={setIsNewSnack}
+                          setIsTyping={setIsTyping}
+                          isNewSnack={isNewSnack}
+                          isTyping={isTyping}
                         />
                       </FormControl>
                     </FormItem>

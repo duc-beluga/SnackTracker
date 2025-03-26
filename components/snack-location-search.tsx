@@ -31,11 +31,9 @@ const SnackLocationSearch = <
   useEffect(() => {
     const fetchPredictions = async () => {
       const googleMapspredictions = await autocomplete(field.value.address);
-      console.log(googleMapspredictions);
       setPredictions(googleMapspredictions ?? []);
     };
     fetchPredictions();
-    console.log(field.value.address);
   }, [field.value.address]);
 
   const handleLocationSelect = (prediction: PlaceAutocompleteResult) => {
