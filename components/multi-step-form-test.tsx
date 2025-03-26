@@ -118,7 +118,6 @@ export const NewSnackForm = () => {
                           field={field}
                           setIsNewSnack={setIsNewSnack}
                           setIsTyping={setIsTyping}
-                          isNewSnack={isNewSnack}
                           isTyping={isTyping}
                         />
                       </FormControl>
