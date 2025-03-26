@@ -24,7 +24,6 @@ interface SnackSearchInputProps<
   setIsNewSnack: Dispatch<SetStateAction<boolean>>;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
 
-  isNewSnack: boolean;
   isTyping: boolean;
 }
 
@@ -35,7 +34,6 @@ const SnackSearchInput = <
   field,
   setIsNewSnack,
   setIsTyping,
-  isNewSnack,
   isTyping,
 }: SnackSearchInputProps<TFieldValue, TName>) => {
   const [predictions, setPredictions] = useState<SnackType[]>([]);
@@ -46,7 +44,6 @@ const SnackSearchInput = <
       const supabase = createClient();
       const { data } = await supabase.from("snacks").select("name, snack_id");
 
-      // Transform the data from [{name: "snack1"}, {name: "snack2"}] to ["snack1", "snack2"]
       if (data) {
         const snackNamesList = data.map((item) => ({
           name: item.name,
