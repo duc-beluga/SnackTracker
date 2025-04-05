@@ -35,7 +35,7 @@ interface SnackSearchInputProps<
   field: ControllerRenderProps<TFieldValues, TName>;
   setIsNewSnack: Dispatch<SetStateAction<boolean>>;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
-
+  setSnackSelected: Dispatch<SetStateAction<number>>;
   isTyping: boolean;
 }
 
@@ -46,6 +46,7 @@ const SnackSearchInput = <
   field,
   setIsNewSnack,
   setIsTyping,
+  setSnackSelected,
   isTyping,
 }: SnackSearchInputProps<TFieldValue, TName>) => {
   const [predictions, setPredictions] = useState<SnackType[]>([]);
@@ -91,9 +92,10 @@ const SnackSearchInput = <
     }
   }, [predictions]);
 
-  const handleSnackSelect = (value: string) => {
+  const handleSnackSelect = (value: SnackType) => {
     console.log("all values", field.value);
-    field.onChange(value);
+    field.onChange(value.name);
+    setSnackSelected(value.snack_id);
     setIsNewSnack(false);
     setIsTyping(false);
   };
@@ -115,7 +117,7 @@ const SnackSearchInput = <
               predictions.map((prediction) => (
                 <CommandItem
                   key={prediction.snack_id}
-                  onSelect={() => handleSnackSelect(prediction.name)}
+                  onSelect={() => handleSnackSelect(prediction)}
                 >
                   {prediction.name}
                 </CommandItem>

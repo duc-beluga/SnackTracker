@@ -8,13 +8,16 @@ import { PackagePlus } from "lucide-react";
 
 // Type imports
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
+import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 
 // Utility functions
 import { getSnackNameLocationForm } from "@/utils/zod/forms/SnackNameLocationForm";
-import { onSnackNameLocationSubmit } from "@/app/snacks/actions";
+import {
+  onSnackLocationSubmit,
+  onSnackNameLocationSubmit,
+} from "@/app/server-actions/snacks/actions";
 
 // UI Components - shadcn
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Card,
@@ -36,65 +39,41 @@ import Stepper from "./ui/stepper";
 import SnackSearchInput from "./snack-search-input";
 import SnackLocationSearch from "./snack-location-search";
 import FormNavigation from "./form-navigation";
+import { useNewSnackForm } from "@/app/hooks/useMultistepSnackForm";
 
 const TOTAL_STEPS = 2;
 
 export const NewSnackForm = () => {
-  const [step, setStep] = useState<number>(0);
-  const [isNewSnack, setIsNewSnack] = useState<boolean>(false);
-  const [isTyping, setIsTyping] = useState<boolean>(false);
-
-  const nameLocationImageForm = getSnackNameLocationForm();
-
-  const { handleSubmit, control, reset } = nameLocationImageForm;
-
-  const onNameLocationImageSubmit = async (
-    values: z.infer<typeof SnackNameLocationSchemaType>
-  ) => {
-    onSnackNameLocationSubmit(values);
-
-    setStep(0);
-    reset();
-
-    toast.success("Form successfully submitted");
-  };
-
-  const handleBack = () => {
-    if (step > 0) {
-      setStep(step - 1);
-    }
-  };
-
-  const handleNext = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    setStep(step + 1);
-  };
-
-  const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
-    if (step !== TOTAL_STEPS - 1) {
-      handleNext(event);
-    } else {
-      handleSubmit(onNameLocationImageSubmit)(event);
-    }
-  };
+  const {
+    steps: { currentStep, setCurrentStep },
+    snack: { isNewSnack, setIsNewSnack, setSelectedSnackId },
+    typing: { isTyping, setIsTyping },
+    form: {
+      control,
+      nameLocationImageForm,
+      handleSnackNameLocationImageSubmit,
+    },
+  } = useNewSnackForm();
 
   return (
     <div className="space-y-4">
-      <Stepper totalSteps={TOTAL_STEPS} currentStep={step} />
+      <Stepper totalSteps={TOTAL_STEPS} currentStep={currentStep} />
       <Card className="shadow-sm">
         <CardHeader>
           <CardTitle className="text-lg">
-            {!isNewSnack && step === 1
+            {!isNewSnack && currentStep === 1
               ? "Adding existing snack"
               : "Adding new snack"}
           </CardTitle>
-          <CardDescription>Current step {step + 1}</CardDescription>
+          <CardDescription>Current step {currentStep + 1}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...nameLocationImageForm}>
-            <form onSubmit={handleFormSubmission} className="grid gap-y-4">
-              {step === 0 ? (
+            <form
+              onSubmit={handleSnackNameLocationImageSubmit}
+              className="grid gap-y-4"
+            >
+              {currentStep === 0 ? (
                 <FormField
                   control={control}
                   name="snackName"
@@ -119,6 +98,7 @@ export const NewSnackForm = () => {
                           field={field}
                           setIsNewSnack={setIsNewSnack}
                           setIsTyping={setIsTyping}
+                          setSnackSelected={setSelectedSnackId}
                           isTyping={isTyping}
                         />
                       </FormControl>
@@ -164,8 +144,8 @@ export const NewSnackForm = () => {
 
               <FormNavigation
                 totalSteps={TOTAL_STEPS}
-                step={step}
-                setStep={setStep}
+                step={currentStep}
+                setStep={setCurrentStep}
               />
             </form>
           </Form>

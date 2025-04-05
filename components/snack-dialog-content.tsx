@@ -17,7 +17,7 @@ import {
 
 import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocationForm";
 import SnackLocationForm from "./snack-location-form";
-import { onSnackLocationSubmit } from "@/app/snacks/actions";
+import { onSnackLocationSubmit } from "@/app/server-actions/snacks/actions";
 
 interface DialogContentProps {
   snack: SnackDisplay;

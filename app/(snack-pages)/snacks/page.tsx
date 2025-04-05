@@ -1,6 +1,9 @@
 import React from "react";
 
-import { getSnackData, getSnackLocationsAndImages } from "./actions";
+import {
+  getSnackData,
+  getSnackLocationsAndImages,
+} from "../../server-actions/snacks/actions";
 
 import SnackDialog from "@/components/snack-dialog";
 import SnackCard from "@/components/snack-card";

@@ -14,6 +14,13 @@ const FormNavigation = ({ totalSteps, step, setStep }: FormNavigationProps) => {
     }
   };
 
+  const handleNext = () => {
+    console.log("handleNext was clicked");
+    if (step < totalSteps - 1) {
+      setStep(step + 1);
+    }
+  };
+
   return (
     <div className="flex justify-between">
       <Button
@@ -22,12 +29,26 @@ const FormNavigation = ({ totalSteps, step, setStep }: FormNavigationProps) => {
         size="sm"
         onClick={handleBack}
         disabled={step === 0}
+        key="nextButton"
       >
         Back
       </Button>
-      <Button type="submit" size="sm" className="font-medium">
-        {step === totalSteps - 1 ? "Submit" : "Next"}
-      </Button>
+      {step !== totalSteps - 1 ? (
+        <Button
+          type="button"
+          className="font-medium"
+          size="sm"
+          onClick={handleNext}
+          disabled={step === totalSteps - 1}
+          key="submitButton"
+        >
+          Next
+        </Button>
+      ) : (
+        <Button type="submit" size="sm" className="font-medium">
+          Submit
+        </Button>
+      )}
     </div>
   );
 };
