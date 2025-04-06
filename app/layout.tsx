@@ -2,6 +2,7 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { StoreProvider } from "./store/StoreProvider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -24,15 +25,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={geistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
-          <div className="flex-1 w-full flex flex-col gap-20 items-center">
-            <div className="flex flex-col gap-20 p-5">{children}</div>
-          </div>
-          <Toaster />
-        </main>
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en" className={geistSans.className} suppressHydrationWarning>
+        <body className="bg-background text-foreground">
+          <main className="min-h-screen flex flex-col items-center">
+            <div className="flex-1 w-full flex flex-col gap-20 items-center">
+              <div className="flex flex-col gap-20 p-5">{children}</div>
+            </div>
+            <Toaster />
+          </main>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

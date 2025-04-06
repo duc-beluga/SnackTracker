@@ -22,7 +22,6 @@ import SnackCarousel from "./snack-carousel";
 // Icons
 import { MapPinCheck, Plus } from "lucide-react";
 
-import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocationForm";
 import { onSnackLocationSubmit } from "@/app/server-actions/snacks/actions";
 
 interface DialogContentProps {
@@ -66,16 +65,14 @@ const SnackDialogContent = ({
           }
           footerSlot={
             <DialogFooter>
-              {/* <DialogClose asChild> */}
               <Button type="submit">
                 Put me on the Map <MapPinCheck />
               </Button>
-              {/* </DialogClose> */}
             </DialogFooter>
           }
           onSnackLocationSubmit={async (values) => {
             await onSnackLocationSubmit(values);
-            setIsButtonNewLocationClicked(false);
+            setTimeout(() => setIsButtonNewLocationClicked(false), 200);
             setIsDialogOpen(false);
           }}
           snackId={snack.snack_id}
