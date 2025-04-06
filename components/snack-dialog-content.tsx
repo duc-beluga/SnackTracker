@@ -1,4 +1,12 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
+
+// Type imports
+import {
+  SnackDisplay,
+  SnackImageLocationVal,
+} from "@/app/interfaces/SnackInterfaces";
+
+// Custom components
 import {
   DialogClose,
   DialogContent,
@@ -7,24 +15,22 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import SnackCarousel from "./snack-carousel";
 import { Button } from "./ui/button";
+import SnackLocationForm from "./snack-location-form";
+import SnackCarousel from "./snack-carousel";
+
+// Icons
 import { MapPinCheck, Plus } from "lucide-react";
-import {
-  SnackDisplay,
-  SnackImageLocationVal,
-} from "@/app/interfaces/SnackInterfaces";
 
 import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocationForm";
-import SnackLocationForm from "./snack-location-form";
 import { onSnackLocationSubmit } from "@/app/server-actions/snacks/actions";
 
 interface DialogContentProps {
   snack: SnackDisplay;
   snackToImageLocationMap: SnackImageLocationVal[];
   isButtonNewLocationClicked: boolean;
-  setIsButtonNewLocationClicked: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsButtonNewLocationClicked: Dispatch<SetStateAction<boolean>>;
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const SnackDialogContent = ({
@@ -34,10 +40,6 @@ const SnackDialogContent = ({
   setIsButtonNewLocationClicked,
   setIsDialogOpen,
 }: DialogContentProps) => {
-  const reactHookSnackLocationForm = getSnackLocationFormWithDefaultId(
-    snack.snack_id
-  );
-
   return (
     <DialogContent className="sm:max-w-[425px]">
       {!isButtonNewLocationClicked ? (
@@ -71,12 +73,12 @@ const SnackDialogContent = ({
               {/* </DialogClose> */}
             </DialogFooter>
           }
-          reactHookSnackLocationForm={reactHookSnackLocationForm}
           onSnackLocationSubmit={async (values) => {
             await onSnackLocationSubmit(values);
             setIsButtonNewLocationClicked(false);
             setIsDialogOpen(false);
           }}
+          snackId={snack.snack_id}
         />
       )}
     </DialogContent>

@@ -11,7 +11,7 @@ import SnackCard from "@/components/snack-card";
 const SnackPage = async () => {
   const displaySnack = await getSnackData();
 
-  const snackToImageLocationMap = await getSnackLocationsAndImages();
+  const snackIdToImageLocationMap = await getSnackLocationsAndImages();
 
   return (
     <div className="flex gap-2 flex-wrap">
@@ -20,7 +20,7 @@ const SnackPage = async () => {
           <SnackDialog
             snack={snack}
             snackToImageLocationMap={
-              snackToImageLocationMap?.[snack.snack_id] || []
+              snackIdToImageLocationMap?.[snack.snack_id] || []
             }
           />
         </SnackCard>

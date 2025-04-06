@@ -93,7 +93,6 @@ const SnackSearchInput = <
   }, [predictions]);
 
   const handleSnackSelect = (value: SnackType) => {
-    console.log("all values", field.value);
     field.onChange(value.name);
     setSnackSelected(value.snack_id);
     setIsNewSnack(false);

@@ -6,22 +6,12 @@ import { Input } from "./ui/input";
 import SnackLocationSearch from "./snack-location-search";
 import { UseFormReturn } from "react-hook-form/dist/types/form";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
+import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocationForm";
 
 interface LocationImageFormProps {
   footerSlot: React.ReactNode;
   headerSlot: React.ReactNode;
-  reactHookSnackLocationForm: UseFormReturn<
-    {
-      snackLocation: {
-        address: string;
-        place_id: string;
-      };
-      snackImage: File;
-      snackId: number;
-    },
-    unknown,
-    undefined
-  >;
+  snackId: number;
   onSnackLocationSubmit: (
     values: z.infer<typeof SnackLocationSchemaType>
   ) => Promise<void>;
@@ -30,20 +20,21 @@ interface LocationImageFormProps {
 const SnackLocationForm = ({
   footerSlot,
   headerSlot,
-  reactHookSnackLocationForm,
   onSnackLocationSubmit,
+  snackId,
 }: LocationImageFormProps) => {
+  const reactHookSnackLocationForm = getSnackLocationFormWithDefaultId(snackId);
+  const { handleSubmit, control, reset } = reactHookSnackLocationForm;
+
   return (
     <Form {...reactHookSnackLocationForm}>
       <form
-        onSubmit={reactHookSnackLocationForm.handleSubmit(
-          onSnackLocationSubmit
-        )}
+        onSubmit={handleSubmit(onSnackLocationSubmit)}
         className="space-y-6"
       >
         {headerSlot}
         <FormField
-          control={reactHookSnackLocationForm.control}
+          control={control}
           name="snackLocation"
           render={({ field }) => (
             <FormItem>
@@ -60,7 +51,7 @@ const SnackLocationForm = ({
           )}
         />
         <FormField
-          control={reactHookSnackLocationForm.control}
+          control={control}
           name="snackImage"
           render={({ field: { onChange, value, ...fieldProps } }) => (
             <FormItem>
