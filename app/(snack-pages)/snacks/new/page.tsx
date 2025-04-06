@@ -1,8 +1,8 @@
-import { NewSnackForm } from "@/components/multi-step-form-test";
+import { NewSnackForm } from "@/components/multi-step-form";
 import React from "react";
 
-const TestPage = () => {
+const NewSnackPage = () => {
   return <NewSnackForm />;
 };
 
-export default TestPage;
+export default NewSnackPage;

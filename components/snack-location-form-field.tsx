@@ -1,0 +1,29 @@
+import React from "react";
+import { FormControl, FormField, FormItem, FormLabel } from "./ui/form";
+import SnackLocationSearch from "./snack-location-search";
+import { Control } from "react-hook-form";
+import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
+import { z } from "zod";
+
+interface SnackLocationFormFieldProps {
+  control: Control<z.infer<typeof SnackNameLocationSchemaType>>;
+}
+
+const SnackLocationFormField = ({ control }: SnackLocationFormFieldProps) => {
+  return (
+    <FormField
+      control={control}
+      name="snackLocation"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Address</FormLabel>
+          <FormControl>
+            <SnackLocationSearch field={field} />
+          </FormControl>
+        </FormItem>
+      )}
+    />
+  );
+};
+
+export default SnackLocationFormField;
