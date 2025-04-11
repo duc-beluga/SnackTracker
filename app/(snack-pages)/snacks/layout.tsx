@@ -10,7 +10,7 @@ export const SnackLayout = ({
   return (
     <SidebarProvider>
       <div>
-        <SidebarTrigger />
+        {/* <SidebarTrigger /> */}
         <NavSideBar />
         <div className="ml-56">{children}</div>
       </div>

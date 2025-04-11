@@ -9,12 +9,25 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@/components/ui/sidebar";
 
 import React, { ReactNode } from "react";
 import Link from "next/link";
 
-import { Plus, Search, Settings, TrendingUp, UserRound } from "lucide-react";
+import {
+  PackagePlus,
+  ScanSearch,
+  Settings,
+  Flame,
+  UserRound,
+  LogOut,
+  Home,
+  MapPinPlusInside,
+  Drumstick,
+  Telescope,
+  Tags,
+} from "lucide-react";
 import { signOutAction } from "@/app/server-actions/auth/actions";
 
 interface NavbarGroupInterface {
@@ -23,16 +36,20 @@ interface NavbarGroupInterface {
 }
 
 const iconMap: Record<string, ReactNode> = {
-  Trending: <TrendingUp />,
-  Search: <Search />,
+  Trending: <Flame />,
+  Search: <ScanSearch />,
   Profile: <UserRound />,
   Settings: <Settings />,
-  NewSnack: <Plus />,
+  New: <PackagePlus />,
+  Location: <MapPinPlusInside />,
+  Leaderboard: <Drumstick />,
+  Discover: <Telescope />,
+  "Popular Tags": <Tags />,
 };
 
 const contentGroup: NavbarGroupInterface = {
   groupLabel: "Content",
-  groupItems: ["Trending", "Search", "NewSnack"],
+  groupItems: ["Trending", "Search", "New", "Location", "Discover"],
 };
 
 const settingGroup: NavbarGroupInterface = {
@@ -40,21 +57,39 @@ const settingGroup: NavbarGroupInterface = {
   groupItems: ["Profile", "Settings"],
 };
 
+const communityGroup: NavbarGroupInterface = {
+  groupLabel: "Community",
+  groupItems: ["Leaderboard", "Popular Tags"],
+};
+
 const linkMap: Record<string, string> = {
   Trending: "#",
   Search: "#",
   Profile: "#",
   Settings: "#",
-  NewSnack: "/snacks/new",
+  New: "/snacks/new",
+  Location: "#",
+  Leaderboard: "#",
+  Discover: "#",
+  "Popular Tags": "#",
 };
 
-const navbarGroups: NavbarGroupInterface[] = [settingGroup, contentGroup];
+const navbarGroups: NavbarGroupInterface[] = [
+  settingGroup,
+  contentGroup,
+  communityGroup,
+];
 
 const NavSideBar = () => {
   return (
-    <Sidebar>
-      <SidebarHeader className="flex-row justify-center p-3 font-bold text-xl">
-        <Link href="/">SnackTrack</Link>
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <SidebarMenuButton asChild>
+          <Link href="/">
+            <Home />
+            <span className="font-bold text-base">SnackTrack</span>
+          </Link>
+        </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>
         {navbarGroups.map((navbarGroup) => (
@@ -67,7 +102,7 @@ const NavSideBar = () => {
                     <SidebarMenuButton asChild>
                       <Link href={linkMap[item]}>
                         {iconMap[item]}
-                        <span className="mx-4">{item}</span>
+                        <span>{item}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -80,12 +115,16 @@ const NavSideBar = () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={signOutAction}>
-              Sign Out
+            <SidebarMenuButton
+              className="bg-red-400 text-white"
+              onClick={signOutAction}
+            >
+              <LogOut /> <span>Sign Out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 };
