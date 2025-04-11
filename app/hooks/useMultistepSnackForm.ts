@@ -66,3 +66,5 @@ export function useNewSnackForm() {
     },
   };
 }
+
+export type MultipleStepSnackFormState = ReturnType<typeof useNewSnackForm>;

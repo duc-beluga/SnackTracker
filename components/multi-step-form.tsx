@@ -1,12 +1,5 @@
 "use client";
 
-// React and external libraries
-
-// Type imports
-
-// Utility functions
-
-// UI Components - shadcn
 import {
   Card,
   CardContent,
@@ -29,16 +22,16 @@ import SnackImageFormField from "./snack-image-form-field";
 const TOTAL_STEPS = 2;
 
 export const NewSnackForm = () => {
+  const multipleStepSnackFormState = useNewSnackForm();
   const {
     steps: { currentStep, setCurrentStep },
-    snack: { isNewSnack, setIsNewSnack, setSelectedSnackId },
-    typing: { isTyping, setIsTyping },
+    snack: { isNewSnack },
     form: {
       control,
       nameLocationImageForm,
       handleSnackNameLocationImageSubmit,
     },
-  } = useNewSnackForm();
+  } = multipleStepSnackFormState;
 
   return (
     <div className="space-y-4">
@@ -60,12 +53,7 @@ export const NewSnackForm = () => {
             >
               {currentStep === 0 ? (
                 <SnackNameFormField
-                  isNewSnack={isNewSnack}
-                  setIsNewSnack={setIsNewSnack}
-                  isTyping={isTyping}
-                  setIsTyping={setIsTyping}
-                  setSelectedSnackId={setSelectedSnackId}
-                  control={control}
+                  multipleStepSnackFormState={multipleStepSnackFormState}
                 />
               ) : (
                 <>

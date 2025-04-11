@@ -1,28 +1,24 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import { FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { PackagePlus } from "lucide-react";
 import SnackSearchInput from "./snack-search-input";
 import { z } from "zod";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
-import { Control } from "react-hook-form";
+import { useNewSnackForm } from "@/app/hooks/useMultistepSnackForm";
 
 interface SnackNameFormFieldProps {
-  isNewSnack: boolean;
-  setIsNewSnack: Dispatch<SetStateAction<boolean>>;
-  isTyping: boolean;
-  setIsTyping: Dispatch<SetStateAction<boolean>>;
-  setSelectedSnackId: Dispatch<SetStateAction<number>>;
-  control: Control<z.infer<typeof SnackNameLocationSchemaType>>;
+  multipleStepSnackFormState: ReturnType<typeof useNewSnackForm>;
 }
 
 const SnackNameFormField = ({
-  isNewSnack,
-  setIsNewSnack,
-  isTyping,
-  setIsTyping,
-  setSelectedSnackId,
-  control,
+  multipleStepSnackFormState,
 }: SnackNameFormFieldProps) => {
+  const {
+    snack: { isNewSnack, setIsNewSnack, setSelectedSnackId },
+    typing: { isTyping, setIsTyping },
+    form: { control },
+  } = multipleStepSnackFormState;
+
   return (
     <FormField
       control={control}
