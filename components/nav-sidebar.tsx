@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Sidebar,
   SidebarContent,
@@ -29,6 +31,7 @@ import {
   Tags,
 } from "lucide-react";
 import { signOutAction } from "@/app/server-actions/auth/actions";
+import { usePathname } from "next/navigation";
 
 interface NavbarGroupInterface {
   groupLabel: string;
@@ -81,6 +84,12 @@ const navbarGroups: NavbarGroupInterface[] = [
 ];
 
 const NavSideBar = () => {
+  const pathName = usePathname();
+
+  const isLinkActive = (path: string) => {
+    return pathName === path || pathName.startsWith(path + "/");
+  };
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -99,7 +108,10 @@ const NavSideBar = () => {
               <SidebarMenu>
                 {navbarGroup.groupItems.map((item: string) => (
                   <SidebarMenuItem key={item}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isLinkActive(linkMap[item])}
+                    >
                       <Link href={linkMap[item]}>
                         {iconMap[item]}
                         <span>{item}</span>
@@ -116,7 +128,7 @@ const NavSideBar = () => {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              className="bg-red-400 text-white"
+              className="bg-red-400 hover:bg-red-500 hover:text-white text-white flex-row justify-center"
               onClick={signOutAction}
             >
               <LogOut /> <span>Sign Out</span>
