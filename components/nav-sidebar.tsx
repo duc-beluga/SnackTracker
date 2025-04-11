@@ -15,6 +15,7 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 
 import { Plus, Search, Settings, TrendingUp, UserRound } from "lucide-react";
+import { signOutAction } from "@/app/server-actions/auth/actions";
 
 interface NavbarGroupInterface {
   groupLabel: string;
@@ -79,7 +80,9 @@ const NavSideBar = () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>Sign Out</SidebarMenuButton>
+            <SidebarMenuButton onClick={signOutAction}>
+              Sign Out
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

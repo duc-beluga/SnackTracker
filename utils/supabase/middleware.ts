@@ -22,30 +22,45 @@ export const updateSession = async (request: NextRequest) => {
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value),
+              request.cookies.set(name, value)
             );
             response = NextResponse.next({
               request,
             });
             cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options),
+              response.cookies.set(name, value, options)
             );
           },
         },
-      },
+      }
     );
 
     // This will refresh session if expired - required for Server Components
-    // https://supabase.com/docs/guides/auth/server-side/nextjs
-    const user = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
 
-    // protected routes
-    if (request.nextUrl.pathname.startsWith("/protected") && user.error) {
+    // Define public routes that don't require authentication
+    const publicRoutes = ["/sign-in", "/sign-up", "/forgot-password", "/api"];
+
+    // Check if the current path is a public route
+    const isPublicRoute = publicRoutes.some((route) =>
+      request.nextUrl.pathname.startsWith(route)
+    );
+
+    // If user is not authenticated and trying to access a non-public route, redirect to sign-in
+    if (error && !isPublicRoute) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
-    if (request.nextUrl.pathname === "/" && !user.error) {
-      return NextResponse.redirect(new URL("/snacks", request.url));
+    // Special case for root path
+    if (request.nextUrl.pathname === "/") {
+      if (user) {
+        return NextResponse.redirect(new URL("/snacks", request.url));
+      } else {
+        return NextResponse.redirect(new URL("/sign-in", request.url));
+      }
     }
 
     return response;
@@ -54,8 +69,8 @@ export const updateSession = async (request: NextRequest) => {
     // This is likely because you have not set up environment variables.
     // Check out http://localhost:3000 for Next Steps.
 
-    console.error(e)
-    
+    console.error(e);
+
     return NextResponse.next({
       request: {
         headers: request.headers,
