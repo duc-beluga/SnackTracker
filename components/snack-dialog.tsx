@@ -11,6 +11,7 @@ import {
 import { Dialog, DialogTrigger } from "./ui/dialog";
 import { Skeleton } from "./ui/skeleton";
 import SnackDialogContent from "./snack-dialog-content";
+import { useSnackDialog } from "@/app/hooks/useSnackDialog";
 
 const IMAGE_HEIGHT = "220px";
 const IMAGE_WIDTH = "160px";
@@ -21,9 +22,8 @@ interface DialogProps {
 }
 
 const SnackDialog = ({ snack, snackToImageLocationMap }: DialogProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isButtonNewLocationClicked, setIsButtonNewLocationClicked] =
-    useState(false);
+  const dialogState = useSnackDialog();
+  const { isDialogOpen, setIsDialogOpen, hideNewLocationForm } = dialogState;
 
   return (
     <Dialog
@@ -31,7 +31,7 @@ const SnackDialog = ({ snack, snackToImageLocationMap }: DialogProps) => {
       onOpenChange={(open) => {
         setIsDialogOpen(open);
         if (!open) {
-          setTimeout(() => setIsButtonNewLocationClicked(false), 200);
+          hideNewLocationForm();
         }
       }}
     >
@@ -61,9 +61,7 @@ const SnackDialog = ({ snack, snackToImageLocationMap }: DialogProps) => {
       <SnackDialogContent
         snack={snack}
         snackToImageLocationMap={snackToImageLocationMap}
-        isButtonNewLocationClicked={isButtonNewLocationClicked}
-        setIsButtonNewLocationClicked={setIsButtonNewLocationClicked}
-        setIsDialogOpen={setIsDialogOpen}
+        dialogState={dialogState}
       />
     </Dialog>
   );

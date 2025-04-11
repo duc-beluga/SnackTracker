@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 
 // Type imports
 import {
@@ -8,7 +8,6 @@ import {
 
 // Custom components
 import {
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -17,44 +16,39 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import SnackLocationForm from "./snack-location-form";
-import SnackCarousel from "./snack-carousel";
 
 // Icons
-import { MapPinCheck, Plus } from "lucide-react";
+import { MapPinCheck } from "lucide-react";
 
 import { onSnackLocationSubmit } from "@/app/server-actions/snacks/actions";
+import { useSnackDialog } from "@/app/hooks/useSnackDialog";
+import SnackDialogContentDisplay from "./snack-dialog-content-display";
 
 interface DialogContentProps {
   snack: SnackDisplay;
   snackToImageLocationMap: SnackImageLocationVal[];
-  isButtonNewLocationClicked: boolean;
-  setIsButtonNewLocationClicked: Dispatch<SetStateAction<boolean>>;
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+  dialogState: ReturnType<typeof useSnackDialog>;
 }
 
 const SnackDialogContent = ({
   snack,
   snackToImageLocationMap,
-  isButtonNewLocationClicked,
-  setIsButtonNewLocationClicked,
-  setIsDialogOpen,
+  dialogState,
 }: DialogContentProps) => {
+  const {
+    showNewLocationForm,
+    hideNewLocationForm,
+    isNewLocationSelected,
+    setIsDialogOpen,
+  } = dialogState;
   return (
     <DialogContent className="sm:max-w-[425px]">
-      {!isButtonNewLocationClicked ? (
-        <>
-          <DialogHeader>
-            <DialogTitle>{snack.name}</DialogTitle>
-          </DialogHeader>
-          <div className="flex justify-center">
-            <SnackCarousel snackToImageLocationMap={snackToImageLocationMap} />
-          </div>
-          <DialogFooter>
-            <Button onClick={() => setIsButtonNewLocationClicked(true)}>
-              Add new location <Plus />
-            </Button>
-          </DialogFooter>
-        </>
+      {!isNewLocationSelected ? (
+        <SnackDialogContentDisplay
+          snackName={snack.name}
+          snackToImageLocationMap={snackToImageLocationMap}
+          showNewLocationForm={showNewLocationForm}
+        />
       ) : (
         <SnackLocationForm
           headerSlot={
@@ -72,7 +66,7 @@ const SnackDialogContent = ({
           }
           onSnackLocationSubmit={async (values) => {
             await onSnackLocationSubmit(values);
-            setTimeout(() => setIsButtonNewLocationClicked(false), 200);
+            hideNewLocationForm();
             setIsDialogOpen(false);
           }}
           snackId={snack.snack_id}
