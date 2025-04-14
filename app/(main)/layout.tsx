@@ -9,10 +9,8 @@ export const MainLayout = ({
 }>) => {
   return (
     <SidebarProvider>
-      <div>
-        <NavSideBar />
-        <div className="ml-56">{children}</div>
-      </div>
+      <NavSideBar />
+      <div className="w-full">{children}</div>
     </SidebarProvider>
   );
 };

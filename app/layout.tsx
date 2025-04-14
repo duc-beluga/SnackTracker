@@ -30,7 +30,7 @@ export default function RootLayout({
         <body className="bg-background text-foreground">
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col gap-20 items-center">
-              <div className="flex flex-col gap-20 p-5">{children}</div>
+              {children}
             </div>
             <Toaster />
           </main>

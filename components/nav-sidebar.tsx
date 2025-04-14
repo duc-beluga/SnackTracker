@@ -73,7 +73,7 @@ const linkMap: Record<string, string> = {
   New: "/snacks/new",
   Location: "#",
   Leaderboard: "#",
-  Discover: "#",
+  Discover: "/",
   "Popular Tags": "#",
 };
 
