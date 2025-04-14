@@ -3,7 +3,7 @@ import React from "react";
 import {
   getSnackData,
   getSnackLocationsAndImages,
-} from "../../server-actions/snacks/actions";
+} from "@/app/server-actions/snacks/actions";
 
 import SnackDialog from "@/components/snack-dialog";
 import SnackCard from "@/components/snack-card";

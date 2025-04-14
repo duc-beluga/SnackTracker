@@ -2,7 +2,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import React from "react";
 import NavSideBar from "@/components/nav-sidebar";
 
-export const SnackLayout = ({
+export const MainLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -17,4 +17,4 @@ export const SnackLayout = ({
   );
 };
 
-export default SnackLayout;
+export default MainLayout;
