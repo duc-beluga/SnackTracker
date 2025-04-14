@@ -68,7 +68,7 @@ const communityGroup: NavbarGroupInterface = {
 const linkMap: Record<string, string> = {
   Trending: "#",
   Search: "#",
-  Profile: "#",
+  Profile: "/profile",
   Settings: "#",
   New: "/snacks/new",
   Location: "#",
