@@ -4,6 +4,12 @@ export interface SnackDisplay {
   primary_image_url: string;
 }
 
+export interface SnackLike {
+  like_id: number;
+  user_id: number;
+  snack_id: number;
+}
+
 export interface SnackImage {
   snack_id: number;
   image_id: number;

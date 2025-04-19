@@ -48,6 +48,7 @@ const SnackDialogContent = ({
           snackName={snack.name}
           snackToImageLocationMap={snackToImageLocationMap}
           showNewLocationForm={showNewLocationForm}
+          snack_id={snack.snack_id}
         />
       ) : (
         <SnackLocationForm
