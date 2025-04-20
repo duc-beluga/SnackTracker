@@ -147,7 +147,7 @@ export const getSnackLocationsAndImages = async (): Promise<
   return snackToImageLocationMapping;
 };
 
-export const handleLikeSnackPost = async (snack_id: number) => {
+export async function addingLike(snack_id: number) {
   const supabase = await createClient();
 
   const {
@@ -158,17 +158,33 @@ export const handleLikeSnackPost = async (snack_id: number) => {
     throw new Error("User not authenticated");
   }
 
-  const { data, error } = await supabase
+  const { data: newLike, error } = await supabase
     .from("likes")
-    .insert({ user_id: currentUser.id, snack_id: snack_id });
+    .insert({ user_id: currentUser.id, snack_id: snack_id })
+    .select("like_id, user_id, snack_id")
+    .single();
 
   if (error) {
     console.error("Error adding like:", error);
     throw error;
   }
 
-  console.log(data);
-};
+  return newLike as SnackLike | null;
+}
+
+export async function removingLike(userLike: SnackLike | null) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("likes")
+    .delete()
+    .eq("like_id", userLike?.like_id);
+
+  if (error) {
+    console.error("Error adding like:", error);
+    throw error;
+  }
+}
 
 export const getSnacksLike = async (snack_id: number) => {
   const supabase = await createClient();
@@ -181,7 +197,7 @@ export const getSnacksLike = async (snack_id: number) => {
     throw new Error("User not authenticated");
   }
 
-  const { data: userSnackLike }: { data: SnackLike[] | null } = await supabase
+  const { data: userSnackLike }: { data: SnackLike | null } = await supabase
     .from("likes")
     .select("like_id, user_id, snack_id")
     .eq("user_id", currentUser.id || "")
@@ -194,17 +210,7 @@ export const getSnacksLike = async (snack_id: number) => {
     .eq("snack_id", snack_id);
 
   return {
-    isLiked: !!userSnackLike,
+    userSnackLike,
     likeCount: count || 0,
   };
-};
-
-export const getSnacksLikes = async () => {
-  const supabase = await createClient();
-
-  const { data: snacksLikes }: { data: SnackLike[] | null } = await supabase
-    .from("likes")
-    .select("like_id, user_id, snack_id");
-
-  console.log(snacksLikes);
 };

@@ -41,7 +41,6 @@ export const updateSession = async (request: NextRequest) => {
       error,
     } = await supabase.auth.getUser();
 
-    console.log("Middleware auth check:", !!user, error?.message); // Add this for debugging
     // Define public routes that don't require authentication
     const publicRoutes = [
       "/sign-in",
