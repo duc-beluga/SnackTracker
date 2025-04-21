@@ -5,6 +5,7 @@ import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import {
+  SnackDetails,
   SnackDisplay,
   SnackImageLocation,
   SnackImageLocationVal,
@@ -214,3 +215,27 @@ export const getSnacksLike = async (snack_id: number) => {
     likeCount: count || 0,
   };
 };
+
+export async function getImagesAndLocationsBySnackId(snackId: number) {
+  const supabase = await createClient();
+
+  const { data: snackLocationsImages, error } = await supabase.rpc(
+    "get_images_and_locations_by_snackid",
+    {
+      p_snack_id: snackId,
+    }
+  );
+  if (error) {
+    console.log(error);
+  }
+
+  const snackLikeData = await getSnacksLike(snackId);
+
+  const snackDetails: SnackDetails = {
+    images_locations: snackLocationsImages,
+    like_data: snackLikeData.userSnackLike,
+    like_count: snackLikeData.likeCount,
+  };
+
+  return snackDetails;
+}

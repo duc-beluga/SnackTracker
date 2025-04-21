@@ -1,36 +1,23 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { CookingPot } from "lucide-react";
-import {
-  addingLike,
-  getSnacksLike,
-  removingLike,
-} from "@/app/server-actions/snacks/actions";
+import { addingLike, removingLike } from "@/app/server-actions/snacks/actions";
 import { SnackLike } from "@/app/interfaces/SnackInterfaces";
 
 interface LikeButtonProps {
   snack_id: number;
+  like_data: SnackLike | null;
+  like_count: number;
 }
 
-const LikeButton = ({ snack_id }: LikeButtonProps) => {
-  const [isSnackLiked, setIsSnackLiked] = useState<boolean>(false);
-  const [snackLikeCount, setSnackLikeCount] = useState<number>(0);
+const LikeButton = ({ snack_id, like_data, like_count }: LikeButtonProps) => {
+  const [isSnackLiked, setIsSnackLiked] = useState<boolean>(like_data !== null);
+  const [snackLikeCount, setSnackLikeCount] = useState<number>(like_count);
   const [userSnackLikeData, setUserSnackLikeData] = useState<SnackLike | null>(
-    null
+    like_data
   );
-
-  useEffect(() => {
-    async function fetchLikeDate() {
-      const likeData = await getSnacksLike(snack_id);
-      const { userSnackLike, likeCount } = likeData;
-      setUserSnackLikeData(userSnackLike);
-      setIsSnackLiked(!(userSnackLike === null));
-      setSnackLikeCount(likeCount);
-    }
-    fetchLikeDate();
-  }, []);
 
   const handleOnClick = async () => {
     setIsSnackLiked(!isSnackLiked);

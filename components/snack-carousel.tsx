@@ -38,6 +38,7 @@ const SnackCarousel = ({ snackToImageLocationMap }: CarouselProps) => {
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                       style={{ objectFit: "cover" }}
+                      loading="lazy"
                     />
                   </div>
                 </CardContent>

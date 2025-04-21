@@ -2,6 +2,7 @@ import React from "react";
 
 // Type imports
 import {
+  SnackDetails,
   SnackDisplay,
   SnackImageLocationVal,
 } from "@/app/interfaces/SnackInterfaces";
@@ -26,13 +27,13 @@ import SnackDialogContentDisplay from "./snack-dialog-content-display";
 
 interface DialogContentProps {
   snack: SnackDisplay;
-  snackToImageLocationMap: SnackImageLocationVal[];
+  snackDetails: SnackDetails;
   dialogState: ReturnType<typeof useSnackDialog>;
 }
 
 const SnackDialogContent = ({
   snack,
-  snackToImageLocationMap,
+  snackDetails,
   dialogState,
 }: DialogContentProps) => {
   const {
@@ -43,12 +44,16 @@ const SnackDialogContent = ({
   } = dialogState;
   return (
     <DialogContent className="sm:max-w-[425px]">
+      {/* Used to fix warning with missing description foor DialogContent */}
+      <DialogDescription className="hidden"></DialogDescription>
       {!isNewLocationSelected ? (
         <SnackDialogContentDisplay
           snackName={snack.name}
-          snackToImageLocationMap={snackToImageLocationMap}
+          snackToImageLocationMap={snackDetails.images_locations}
           showNewLocationForm={showNewLocationForm}
           snack_id={snack.snack_id}
+          like_count={snackDetails.like_count}
+          like_data={snackDetails.like_data}
         />
       ) : (
         <SnackLocationForm

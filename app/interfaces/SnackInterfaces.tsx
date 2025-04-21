@@ -22,6 +22,12 @@ export interface SnackImageLocationVal {
   snack_address: string;
 }
 
+export interface SnackDetails {
+  images_locations: SnackImageLocationVal[];
+  like_data: SnackLike | null;
+  like_count: number;
+}
+
 export interface SnackImageLocation {
   snack_id: number;
   image_location_id: number;
