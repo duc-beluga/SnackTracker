@@ -2,29 +2,22 @@ import React from "react";
 import { DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import SnackCarousel from "./snack-carousel";
 import { Button } from "./ui/button";
-import {
-  SnackImageLocationVal,
-  SnackLike,
-} from "@/app/interfaces/SnackInterfaces";
+import { SnackDetails } from "@/app/interfaces/SnackInterfaces";
 import { Plus } from "lucide-react";
 import LikeButton from "./like-button";
 
 interface SnackDialogContentDisplayProps {
   snackName: string;
-  snack_id: number;
-  snackToImageLocationMap: SnackImageLocationVal[];
+  snackId: number;
   showNewLocationForm: () => void;
-  like_data: SnackLike | null;
-  like_count: number;
+  snackDetails: SnackDetails;
 }
 
 const SnackDialogContentDisplay = ({
   snackName,
-  snack_id,
-  snackToImageLocationMap,
+  snackId,
   showNewLocationForm,
-  like_data,
-  like_count,
+  snackDetails,
 }: SnackDialogContentDisplayProps) => {
   return (
     <>
@@ -32,14 +25,16 @@ const SnackDialogContentDisplay = ({
         <DialogTitle>{snackName}</DialogTitle>
       </DialogHeader>
       <div className="flex justify-center">
-        <SnackCarousel snackToImageLocationMap={snackToImageLocationMap} />
+        <SnackCarousel
+          snackToImageLocationMap={snackDetails.images_locations}
+        />
       </div>
       <DialogFooter>
         <div className="flex flex-row justify-between w-full pl-3 pr-3">
           <LikeButton
-            like_count={like_count}
-            like_data={like_data}
-            snack_id={snack_id}
+            initialLikeCount={snackDetails.like_count}
+            userLikeData={snackDetails.like_data}
+            snackId={snackId}
           />
           <div>
             <Button onClick={showNewLocationForm}>

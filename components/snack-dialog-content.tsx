@@ -1,11 +1,7 @@
 import React from "react";
 
 // Type imports
-import {
-  SnackDetails,
-  SnackDisplay,
-  SnackImageLocationVal,
-} from "@/app/interfaces/SnackInterfaces";
+import { SnackDetails, SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 
 // Custom components
 import {
@@ -49,11 +45,9 @@ const SnackDialogContent = ({
       {!isNewLocationSelected ? (
         <SnackDialogContentDisplay
           snackName={snack.name}
-          snackToImageLocationMap={snackDetails.images_locations}
+          snackId={snack.snack_id}
           showNewLocationForm={showNewLocationForm}
-          snack_id={snack.snack_id}
-          like_count={snackDetails.like_count}
-          like_data={snackDetails.like_data}
+          snackDetails={snackDetails}
         />
       ) : (
         <SnackLocationForm
