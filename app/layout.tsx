@@ -1,5 +1,4 @@
 import { Geist } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { StoreProvider } from "./store/StoreProvider";
@@ -10,7 +9,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "SnackTrack",
+  title: "Duckee",
   description: "The fastest way to find your snacks",
 };
 

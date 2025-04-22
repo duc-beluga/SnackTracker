@@ -24,11 +24,11 @@ import {
   Flame,
   UserRound,
   LogOut,
-  Home,
   MapPinPlusInside,
   Drumstick,
   Telescope,
   Tags,
+  Bird,
 } from "lucide-react";
 import { signOutAction } from "@/app/server-actions/auth/actions";
 import { usePathname } from "next/navigation";
@@ -95,8 +95,8 @@ const NavSideBar = () => {
       <SidebarHeader>
         <SidebarMenuButton asChild>
           <Link href="/">
-            <Home />
-            <span className="font-bold text-base">SnackTrack</span>
+            <Bird />
+            <span className="font-bold text-base">Duckee</span>
           </Link>
         </SidebarMenuButton>
       </SidebarHeader>
