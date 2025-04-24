@@ -73,8 +73,6 @@ export const onSnackLocationSubmit = async (
     console.error(addNewSnackLocationError?.hint);
     return;
   }
-
-  console.log("New snack location added!");
 };
 
 export const onSnackNameLocationSubmit = async (
@@ -101,8 +99,6 @@ export const onSnackNameLocationSubmit = async (
     console.error(addNewSnackError?.hint);
     return;
   }
-
-  console.log("New snack added!");
 };
 
 export const getSnackData = async (): Promise<SnackDisplay[] | null> => {
@@ -113,39 +109,6 @@ export const getSnackData = async (): Promise<SnackDisplay[] | null> => {
     .select("snack_id, name, primary_image_url");
 
   return displaySnack;
-};
-
-export const getSnackLocationsAndImages = async (): Promise<
-  Record<number, SnackImageLocationVal[]> | undefined
-> => {
-  const supabase = await createClient();
-
-  const { data: snackLocationImages }: { data: SnackImageLocation[] | null } =
-    await supabase.rpc("get_snack_images_with_locations");
-
-  type AccumulatorType = Record<number, SnackImageLocationVal[]>;
-
-  const snackToImageLocationMapping =
-    snackLocationImages?.reduce<AccumulatorType>((snackImagesById, item) => {
-      const snackId: number = item.snack_id;
-      const imageLocationId: number = item.image_location_id;
-      const imageUrl: string = item.image_url;
-      const snackAddress: string = item.snack_address;
-
-      if (!snackImagesById[snackId]) {
-        snackImagesById[snackId] = [];
-      }
-
-      snackImagesById[snackId].push({
-        image_location_id: imageLocationId,
-        image_url: imageUrl,
-        snack_address: snackAddress,
-      });
-
-      return snackImagesById;
-    }, {} as AccumulatorType);
-
-  return snackToImageLocationMapping;
 };
 
 export async function addingLike(snack_id: number) {
@@ -238,4 +201,26 @@ export async function getImagesAndLocationsBySnackId(snackId: number) {
   };
 
   return snackDetails;
+}
+
+export async function getLikedSnacksData(): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+
+  const {
+    data: { user: currentUser },
+  } = await supabase.auth.getUser();
+
+  const { data: displaySnack }: { data: SnackDisplay[] | null } =
+    await supabase.rpc("get_user_liked_snacks", { p_user_id: currentUser?.id });
+
+  return displaySnack;
+}
+
+export async function getUploadedSnacksData(): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+
+  const { data: displaySnack }: { data: SnackDisplay[] | null } =
+    await supabase.rpc("get_user_uploaded_snacks");
+
+  return displaySnack;
 }

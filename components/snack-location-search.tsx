@@ -41,7 +41,6 @@ const SnackLocationSearch = <
       address: prediction.description,
       place_id: prediction.place_id,
     });
-    console.log(prediction);
     setIsTyping(false);
   };
 

@@ -15,7 +15,6 @@ const FormNavigation = ({ totalSteps, step, setStep }: FormNavigationProps) => {
   };
 
   const handleNext = () => {
-    console.log("handleNext was clicked");
     if (step < totalSteps - 1) {
       setStep(step + 1);
     }

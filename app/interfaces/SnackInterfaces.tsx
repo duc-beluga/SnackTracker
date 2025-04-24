@@ -34,3 +34,9 @@ export interface SnackImageLocation {
   image_url: string;
   snack_address: string;
 }
+
+export enum Location {
+  Home = "Home",
+  Liked = "Liked",
+  Uploaded = "Uploaded",
+}

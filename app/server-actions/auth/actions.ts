@@ -4,6 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { User } from "@supabase/supabase-js";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -149,4 +150,14 @@ export const googleSignUp = async () => {
   }
 
   return encodedRedirect("error", "/sign-in", "Failed to start authentication");
+};
+
+export const getCurrentUser = async (): Promise<User | null> => {
+  const supabase = await createClient();
+
+  const {
+    data: { user: currentUser },
+  } = await supabase.auth.getUser();
+
+  return currentUser;
 };

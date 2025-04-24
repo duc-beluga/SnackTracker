@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import { SnackDetails, SnackDisplay } from "../interfaces/SnackInterfaces";
+import {
+  Location,
+  SnackDetails,
+  SnackDisplay,
+} from "../interfaces/SnackInterfaces";
 import {
   getImagesAndLocationsBySnackId,
+  getLikedSnacksData,
   getSnackData,
+  getUploadedSnacksData,
 } from "../server-actions/snacks/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackDialog } from "./useSnackDialog";
 
-export function useSnackReels() {
+export function useSnackReels(location: Location) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -19,7 +25,15 @@ export function useSnackReels() {
 
   useEffect(() => {
     async function fetchInitialSnacks() {
-      const snacksData = await getSnackData();
+      let snacksData;
+
+      if (location === Location.Home) {
+        snacksData = await getSnackData();
+      } else if (location === Location.Liked) {
+        snacksData = await getLikedSnacksData();
+      } else if (location === Location.Uploaded) {
+        snacksData = await getUploadedSnacksData();
+      }
 
       setSnacks(snacksData);
     }
@@ -28,7 +42,6 @@ export function useSnackReels() {
 
   useEffect(() => {
     async function fetchSnackDetails() {
-      console.log("Getting the snack details");
       const snackIdParam = searchParams.get("snackId");
       const snackId = snackIdParam ? parseInt(snackIdParam, 10) : null;
 
@@ -37,8 +50,6 @@ export function useSnackReels() {
       }
 
       const snackDetailsData = await getImagesAndLocationsBySnackId(snackId);
-
-      console.log("snackDetailsData", snackDetailsData);
 
       if (snackDetailsData === null) {
         return;

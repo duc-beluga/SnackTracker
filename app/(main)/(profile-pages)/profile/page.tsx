@@ -1,24 +1,34 @@
+"use client";
+
 import { createClient } from "@/utils/supabase/server";
-import { Calendar, Edit, Settings, Star } from "lucide-react";
+import { Edit, Loader, Settings } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { redirect } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Location } from "@/app/interfaces/SnackInterfaces";
+import SnackReels from "@/components/snack-reels";
+import { getCurrentUser } from "@/app/server-actions/auth/actions";
+import { User } from "@supabase/supabase-js";
 
-const ProfilePage = async () => {
-  const supabase = await createClient();
-  const userBio =
-    "Snack enthusiast. Always on the hunt for the perfect sweet and salty combo!";
-  const userSince = "March 2023";
-  const userLocation = "Chicago, IL";
-  const favoriteSnacks = [
-    "Salt & Vinegar Chips",
-    "Dark Chocolate Almonds",
-    "Cheese Crackers",
-    "Cookies & Cream Ice Cream",
-  ];
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+const ProfilePage = () => {
+  const [user, setUser] = useState<User | null>();
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    async function fetchCurrentUser() {
+      try {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchCurrentUser();
+  }, []);
+
+  if (isLoading) {
+    return <Loader />; // or some loading state
+  }
   if (!user) {
     return redirect("/sign-in");
   }
@@ -49,31 +59,19 @@ const ProfilePage = async () => {
             </button>
           </div>
         </div>
-        <div className="mt-4 bg-white rounded-lg shadow p-6">
-          <p className="text-gray-800">{userBio}</p>
-          <div className="mt-4 flex items-center text-gray-600 text-sm">
-            <Calendar size={16} className="mr-1" />
-            <span>Member since {userSince}</span>
-            <span className="mx-4">•</span>
-            <span>{userLocation}</span>
-          </div>
-        </div>
-        <div className="mt-6 bg-white rounded-lg shadow p-6">
-          <div className="flex items-center mb-4">
-            <Star size={20} className="text-yellow-500 mr-2" />
-            <h2 className="text-xl font-semibold">Favorite Snacks</h2>
-          </div>
-          <div className="space-y-3">
-            {favoriteSnacks.map((snack, index) => (
-              <div
-                key={index}
-                className="flex items-center py-2 border-b border-gray-100 last:border-0"
-              >
-                <div className="w-2 h-2 rounded-full bg-purple-500 mr-3"></div>
-                <span>{snack}</span>
-              </div>
-            ))}
-          </div>
+        <div className="flex justify-center mt-10">
+          <Tabs defaultValue="uploaded" className="w-full">
+            <TabsList className="grid w-[400px] grid-cols-2">
+              <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
+              <TabsTrigger value="liked">Liked</TabsTrigger>
+            </TabsList>
+            <TabsContent value="uploaded">
+              <SnackReels location={Location.Uploaded} />
+            </TabsContent>
+            <TabsContent value="liked">
+              <SnackReels location={Location.Liked} />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
