@@ -5,13 +5,16 @@ import {
   SnackDisplay,
 } from "../interfaces/SnackInterfaces";
 import {
+  fetchSnacks,
   getImagesAndLocationsBySnackId,
   getLikedSnacksData,
-  getSnackData,
   getUploadedSnacksData,
 } from "../server-actions/snacks/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackDialog } from "./useSnackDialog";
+
+const INITIAL_START_RANGE = 0;
+const INITIAL_END_RANGE = 11;
 
 export function useSnackReels(location: Location) {
   const router = useRouter();
@@ -28,11 +31,17 @@ export function useSnackReels(location: Location) {
       let snacksData;
 
       if (location === Location.Home) {
-        snacksData = await getSnackData();
+        snacksData = await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE);
       } else if (location === Location.Liked) {
-        snacksData = await getLikedSnacksData();
+        snacksData = await getLikedSnacksData(
+          INITIAL_START_RANGE,
+          INITIAL_END_RANGE
+        );
       } else if (location === Location.Uploaded) {
-        snacksData = await getUploadedSnacksData();
+        snacksData = await getUploadedSnacksData(
+          INITIAL_START_RANGE,
+          INITIAL_END_RANGE
+        );
       }
 
       setSnacks(snacksData);

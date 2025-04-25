@@ -7,8 +7,6 @@ import { z } from "zod";
 import {
   SnackDetails,
   SnackDisplay,
-  SnackImageLocation,
-  SnackImageLocationVal,
   SnackLike,
 } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
@@ -99,16 +97,6 @@ export const onSnackNameLocationSubmit = async (
     console.error(addNewSnackError?.hint);
     return;
   }
-};
-
-export const getSnackData = async (): Promise<SnackDisplay[] | null> => {
-  const supabase = await createClient();
-
-  const { data: displaySnack }: { data: SnackDisplay[] | null } = await supabase
-    .from("snacks")
-    .select("snack_id, name, primary_image_url");
-
-  return displaySnack;
 };
 
 export async function addingLike(snack_id: number) {
@@ -203,24 +191,64 @@ export async function getImagesAndLocationsBySnackId(snackId: number) {
   return snackDetails;
 }
 
-export async function getLikedSnacksData(): Promise<SnackDisplay[] | null> {
+export async function getLikedSnacksData(
+  startRange: number,
+  endRange: number
+): Promise<SnackDisplay[] | null> {
   const supabase = await createClient();
-
+  console.log("Fetching liked snacks from range: ", startRange, endRange);
   const {
     data: { user: currentUser },
   } = await supabase.auth.getUser();
 
-  const { data: displaySnack }: { data: SnackDisplay[] | null } =
-    await supabase.rpc("get_user_liked_snacks", { p_user_id: currentUser?.id });
+  const { data: displaySnack, error } = await supabase.rpc(
+    "get_user_liked_snacks_with_range",
+    {
+      p_user_id: currentUser?.id,
+      start_range: startRange,
+      end_range: endRange,
+    }
+  );
 
-  return displaySnack;
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  console.log("Liked snacks length: ", displaySnack?.length);
+  return displaySnack as SnackDisplay[] | null;
 }
 
-export async function getUploadedSnacksData(): Promise<SnackDisplay[] | null> {
+export async function getUploadedSnacksData(
+  startRange: number,
+  endRange: number
+): Promise<SnackDisplay[] | null> {
   const supabase = await createClient();
 
-  const { data: displaySnack }: { data: SnackDisplay[] | null } =
-    await supabase.rpc("get_user_uploaded_snacks");
+  console.log("Fetching uploaded snacks from range: ", startRange, endRange);
+  const { data: displaySnack, error } = await supabase.rpc(
+    "get_user_uploaded_snacks_with_range",
+    { start_range: startRange, end_range: endRange }
+  );
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  console.log("Uploaded snacks length: ", displaySnack?.length);
+  return displaySnack as SnackDisplay[] | null;
+}
 
-  return displaySnack;
+export async function fetchSnacks(startRange: number, endRange: number) {
+  const supabase = await createClient();
+  console.log("Fetching data from range: ", startRange, endRange);
+  try {
+    const { data: displaySnack }: { data: SnackDisplay[] | null } =
+      await supabase
+        .from("snacks")
+        .select("snack_id, name, primary_image_url")
+        .range(startRange, endRange);
+    return displaySnack;
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+    return null;
+  }
 }
