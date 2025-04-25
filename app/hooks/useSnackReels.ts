@@ -6,9 +6,9 @@ import {
 } from "../interfaces/SnackInterfaces";
 import {
   fetchSnacks,
-  getImagesAndLocationsBySnackId,
-  getLikedSnacksData,
-  getUploadedSnacksData,
+  fetchSnackImagesAndLocations,
+  fetchLikedSnacks,
+  fetchUploadedSnacks,
 } from "../server-actions/snacks/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackDialog } from "./useSnackDialog";
@@ -29,16 +29,16 @@ export function useSnackReels(location: Location) {
   useEffect(() => {
     async function fetchInitialSnacks() {
       let snacksData;
-
+      let fetchError;
       if (location === Location.Home) {
         snacksData = await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE);
       } else if (location === Location.Liked) {
-        snacksData = await getLikedSnacksData(
+        snacksData = await fetchLikedSnacks(
           INITIAL_START_RANGE,
           INITIAL_END_RANGE
         );
       } else if (location === Location.Uploaded) {
-        snacksData = await getUploadedSnacksData(
+        snacksData = await fetchUploadedSnacks(
           INITIAL_START_RANGE,
           INITIAL_END_RANGE
         );
@@ -58,7 +58,7 @@ export function useSnackReels(location: Location) {
         return;
       }
 
-      const snackDetailsData = await getImagesAndLocationsBySnackId(snackId);
+      const snackDetailsData = await fetchSnackImagesAndLocations(snackId);
 
       if (snackDetailsData === null) {
         return;

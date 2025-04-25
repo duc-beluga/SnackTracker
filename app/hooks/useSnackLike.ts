@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { SnackLike } from "../interfaces/SnackInterfaces";
-import { addingLike, removingLike } from "../server-actions/snacks/actions";
+import {
+  addSnackLike,
+  removeSnackLike,
+} from "../server-actions/snacks/actions";
 
 export function useSnackLike(
   snackId: number,
@@ -20,10 +23,10 @@ export function useSnackLike(
     setIsSnackLiked(!isSnackLiked);
     if (isSnackLiked) {
       setSnackLikeCount(snackLikeCount - 1);
-      await removingLike(userSnackLikeData);
+      await removeSnackLike(userSnackLikeData);
     } else {
       setSnackLikeCount(snackLikeCount + 1);
-      const newLike = await addingLike(snackId);
+      const newLike = await addSnackLike(snackId);
       setUserSnackLikeData(newLike);
     }
   };

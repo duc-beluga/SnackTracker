@@ -17,7 +17,7 @@ import SnackLocationForm from "./snack-location-form";
 // Icons
 import { MapPinCheck } from "lucide-react";
 
-import { onSnackLocationSubmit } from "@/app/server-actions/snacks/actions";
+import { addSnackLocation } from "@/app/server-actions/snacks/actions";
 import { useSnackDialog } from "@/app/hooks/useSnackDialog";
 import SnackDialogContentDisplay from "./snack-dialog-content-display";
 
@@ -64,8 +64,8 @@ const SnackDialogContent = ({
               </Button>
             </DialogFooter>
           }
-          onSnackLocationSubmit={async (values) => {
-            await onSnackLocationSubmit(values);
+          addSnackLocation={async (values) => {
+            await addSnackLocation(values);
             hideNewLocationForm();
             setIsDialogOpen(false);
           }}

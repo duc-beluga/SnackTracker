@@ -5,8 +5,8 @@ import { getSnackNameLocationForm } from "@/utils/zod/forms/SnackNameLocationFor
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 import {
-  onSnackLocationSubmit,
-  onSnackNameLocationSubmit,
+  addSnackLocation,
+  createSnack,
 } from "@/app/server-actions/snacks/actions";
 
 export function useNewSnackForm() {
@@ -22,14 +22,14 @@ export function useNewSnackForm() {
     values: z.infer<typeof SnackNameLocationSchemaType>
   ) => {
     if (isNewSnack) {
-      await onSnackNameLocationSubmit(values);
+      await createSnack(values);
     } else {
       const snackLocationImage: z.infer<typeof SnackLocationSchemaType> = {
         snackId: selectedSnackId,
         snackLocation: values.snackLocation,
         snackImage: values.snackImage,
       };
-      await onSnackLocationSubmit(snackLocationImage);
+      await addSnackLocation(snackLocationImage);
     }
 
     // Reset the form and step count after successful submission

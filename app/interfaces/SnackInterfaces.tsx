@@ -40,3 +40,8 @@ export enum Location {
   Liked = "Liked",
   Uploaded = "Uploaded",
 }
+
+export interface SnackFetchResult {
+  data: SnackDisplay[] | null;
+  error: Error | null;
+}

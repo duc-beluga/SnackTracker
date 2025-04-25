@@ -1,11 +1,8 @@
 import { useSnackReels } from "@/app/hooks/useSnackReels";
 import { Location } from "@/app/interfaces/SnackInterfaces";
 import React from "react";
-import SnackCard from "./snack-card";
 import { Dialog } from "./ui/dialog";
 import SnackDialogContent from "./snack-dialog-content";
-import Spinner from "./ui/spinner";
-import SnackCardContainer from "./snack-card-container";
 import Snacks from "./snacks";
 import MoreSnack from "./more-snack";
 

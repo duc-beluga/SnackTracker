@@ -5,8 +5,8 @@ import { useInView } from "react-intersection-observer";
 import React, { useEffect, useState } from "react";
 import {
   fetchSnacks,
-  getLikedSnacksData,
-  getUploadedSnacksData,
+  fetchLikedSnacks,
+  fetchUploadedSnacks,
 } from "@/app/server-actions/snacks/actions";
 import Snacks from "./snacks";
 import Spinner from "./ui/spinner";
@@ -44,11 +44,13 @@ const MoreSnack = ({ onSnackClick, location }: MoreSnackProps) => {
     if (location === Location.Home) {
       newSnacks = (await fetchSnacks(nextStartRange, nextEndRange)) ?? [];
     } else if (location === Location.Liked) {
-      newSnacks =
-        (await getLikedSnacksData(nextStartRange, nextEndRange)) ?? [];
+      const { data } =
+        (await fetchLikedSnacks(nextStartRange, nextEndRange)) ?? [];
+
+      newSnacks = data ?? [];
     } else {
       newSnacks =
-        (await getUploadedSnacksData(nextStartRange, nextEndRange)) ?? [];
+        (await fetchUploadedSnacks(nextStartRange, nextEndRange)) ?? [];
     }
     if (newSnacks.length === 0) {
       setHasMore(false);
