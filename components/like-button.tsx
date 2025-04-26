@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "./ui/button";
-import { CookingPot } from "lucide-react";
+import { ChevronUp } from "lucide-react";
 import { SnackLike } from "@/app/interfaces/SnackInterfaces";
 import { useSnackLike } from "@/app/hooks/useSnackLike";
 
@@ -28,7 +28,7 @@ const LikeButton = ({
         onClick={onSnackLike}
         variant={isSnackLiked ? "default" : "outline"}
       >
-        <CookingPot />
+        <ChevronUp />
       </Button>
       <div className="flex flex-col h-full pt-1 font-bold">
         {snackLikeCount}
