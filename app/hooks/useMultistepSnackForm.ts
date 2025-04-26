@@ -10,13 +10,23 @@ import {
 } from "@/app/server-actions/snacks/actions";
 
 export function useNewSnackForm() {
+  //#region { State }
+
   const [step, setStep] = useState<number>(0);
   const [isNewSnack, setIsNewSnack] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [selectedSnackId, setSelectedSnackId] = useState<number>(0);
 
+  //#endregion
+
+  //#region { Dependencies }
+
   const nameLocationImageForm = getSnackNameLocationForm();
   const { handleSubmit, control, reset } = nameLocationImageForm;
+
+  //#endregion
+
+  //#region { Event handler }
 
   const onNameLocationImageSubmit = async (
     values: z.infer<typeof SnackNameLocationSchemaType>
@@ -43,6 +53,8 @@ export function useNewSnackForm() {
   ) {
     handleSubmit(onNameLocationImageSubmit)(event);
   }
+
+  //#endregion
 
   return {
     steps: {
