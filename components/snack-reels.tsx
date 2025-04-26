@@ -17,7 +17,7 @@ const SnackReels = ({ location }: SnackReelsProps) => {
     selectedSnack,
     snackDetails,
     dialogState,
-    handleDialogChange,
+    onDialogVisibilityChange,
     ref,
     hasMore,
   } = useSnackReels(location);
@@ -38,12 +38,16 @@ const SnackReels = ({ location }: SnackReelsProps) => {
           snacks={snacks?.slice(12)}
         />
       </div>
-      <Dialog open={dialogState.isDialogOpen} onOpenChange={handleDialogChange}>
+      <Dialog
+        open={dialogState.isDialogOpen}
+        onOpenChange={onDialogVisibilityChange}
+      >
         {selectedSnack && snackDetails?.images_locations && (
           <SnackDialogContent
             snack={selectedSnack}
             snackDetails={snackDetails}
             dialogState={dialogState}
+            handleCloseDialog={() => onDialogVisibilityChange(false)}
           />
         )}
       </Dialog>

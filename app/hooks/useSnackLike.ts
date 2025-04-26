@@ -10,6 +10,8 @@ export function useSnackLike(
   userLikeData: SnackLike | null,
   initialLikeCount: number
 ) {
+  //#region { State }
+
   const [isSnackLiked, setIsSnackLiked] = useState<boolean>(
     userLikeData !== null
   );
@@ -18,6 +20,10 @@ export function useSnackLike(
   const [userSnackLikeData, setUserSnackLikeData] = useState<SnackLike | null>(
     userLikeData
   );
+
+  //#endregion
+
+  //#region { Event handler }
 
   const onSnackLike = async () => {
     setIsSnackLiked(!isSnackLiked);
@@ -30,6 +36,8 @@ export function useSnackLike(
       setUserSnackLikeData(newLike);
     }
   };
+
+  //#endregion
 
   return {
     onSnackLike,

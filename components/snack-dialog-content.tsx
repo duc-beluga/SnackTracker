@@ -25,19 +25,16 @@ interface DialogContentProps {
   snack: SnackDisplay;
   snackDetails: SnackDetails;
   dialogState: ReturnType<typeof useSnackDialog>;
+  handleCloseDialog: () => void;
 }
 
 const SnackDialogContent = ({
   snack,
   snackDetails,
   dialogState,
+  handleCloseDialog,
 }: DialogContentProps) => {
-  const {
-    showNewLocationForm,
-    hideNewLocationForm,
-    isNewLocationSelected,
-    setIsDialogOpen,
-  } = dialogState;
+  const { showNewLocationForm, isNewLocationSelected } = dialogState;
   return (
     <DialogContent className="sm:max-w-[425px]">
       {/* Used to fix warning with missing description foor DialogContent */}
@@ -66,8 +63,7 @@ const SnackDialogContent = ({
           }
           addSnackLocation={async (values) => {
             await addSnackLocation(values);
-            hideNewLocationForm();
-            setIsDialogOpen(false);
+            handleCloseDialog();
           }}
           snackId={snack.snack_id}
         />

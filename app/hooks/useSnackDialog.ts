@@ -2,8 +2,12 @@
 import { useState } from "react";
 
 export const useSnackDialog = () => {
+  //#region { State }
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isNewLocationSelected, setIsNewLocationSelected] = useState(false);
+
+  //#endregion
 
   const showNewLocationForm = () => setIsNewLocationSelected(true);
   const hideNewLocationForm = () =>
@@ -11,8 +15,8 @@ export const useSnackDialog = () => {
 
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => {
-    setIsDialogOpen(false);
     hideNewLocationForm();
+    setIsDialogOpen(false);
   };
 
   return {

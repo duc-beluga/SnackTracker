@@ -14,14 +14,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackDialog } from "./useSnackDialog";
 
 import { useInView } from "react-intersection-observer";
+import { delay } from "@/utils/utils";
+
+//#region { Constants }
 
 const SNACK_PER_LOAD = 12;
 const INITIAL_START_RANGE = 0;
 const INITIAL_END_RANGE = SNACK_PER_LOAD - 1;
 
+//#endregion
+
 export function useSnackReels(location: Location) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  //#region { State }
 
   const [snacks, setSnacks] = useState<SnackDisplay[] | null>();
   const [selectedSnack, setSelectedSnack] = useState<SnackDisplay | null>(null);
@@ -32,92 +36,78 @@ export function useSnackReels(location: Location) {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { ref, inView } = useInView();
+  //#endregion
 
+  //#region { Dependencies }
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { ref, inView } = useInView();
   const dialogState = useSnackDialog();
 
+  //#endregion
+
+  //#region { Effect }
   useEffect(() => {
-    async function fetchInitialSnacks() {
-      let snacksData;
-
-      if (location === Location.Home) {
-        snacksData = await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE);
-      } else if (location === Location.Liked) {
-        snacksData = await fetchLikedSnacks(
-          INITIAL_START_RANGE,
-          INITIAL_END_RANGE
-        );
-      } else if (location === Location.Uploaded) {
-        snacksData = await fetchUploadedSnacks(
-          INITIAL_START_RANGE,
-          INITIAL_END_RANGE
-        );
-      }
-
-      setSnacks(snacksData);
-    }
     fetchInitialSnacks();
   }, []);
 
   useEffect(() => {
-    async function fetchSnackDetails() {
-      const snackIdParam = searchParams.get("snackId");
-      const snackId = snackIdParam ? parseInt(snackIdParam, 10) : null;
-
-      if (snackId === null) {
-        return;
-      }
-
-      const snackDetailsData = await fetchSnackImagesAndLocations(snackId);
-
-      if (snackDetailsData === null) {
-        return;
-      }
-
-      if (selectedSnack) {
-        dialogState.setIsDialogOpen(true);
-      }
-
-      setSnackDetails(snackDetailsData);
-    }
     fetchSnackDetails();
   }, [searchParams]);
 
   useEffect(() => {
     if (inView) {
-      loadMoreSnacks();
+      fetchMoreSnacks();
     }
   }, [inView]);
 
-  function onSnackClick(snackId: number) {
-    router.push(`?snackId=${snackId}`, { scroll: false });
-    if (snackId && snacks) {
-      const foundSnack = snacks.find((snack) => snack.snack_id === snackId);
-      if (foundSnack) {
-        setSelectedSnack(foundSnack);
-      }
+  // #endregion
+
+  //#region { Effect Callbacks }
+
+  async function fetchInitialSnacks() {
+    let snacksData;
+
+    if (location === Location.Home) {
+      snacksData = await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE);
+    } else if (location === Location.Liked) {
+      snacksData = await fetchLikedSnacks(
+        INITIAL_START_RANGE,
+        INITIAL_END_RANGE
+      );
+    } else if (location === Location.Uploaded) {
+      snacksData = await fetchUploadedSnacks(
+        INITIAL_START_RANGE,
+        INITIAL_END_RANGE
+      );
     }
+
+    setSnacks(snacksData);
   }
 
-  function handleModalClose() {
-    dialogState.setIsDialogOpen(false);
-    router.push(window.location.pathname, { scroll: false });
-    setSelectedSnack(null);
-    dialogState.hideNewLocationForm();
-  }
+  async function fetchSnackDetails() {
+    const snackIdParam = searchParams.get("snackId");
+    const snackId = snackIdParam ? parseInt(snackIdParam, 10) : null;
 
-  function handleDialogChange(isOpen: boolean) {
-    if (!isOpen) {
-      handleModalClose();
-    } else {
+    if (snackId === null) {
+      return;
+    }
+
+    const snackDetailsData = await fetchSnackImagesAndLocations(snackId);
+
+    if (snackDetailsData === null) {
+      return;
+    }
+
+    if (selectedSnack) {
       dialogState.setIsDialogOpen(true);
     }
+
+    setSnackDetails(snackDetailsData);
   }
 
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
-  const loadMoreSnacks = async () => {
+  async function fetchMoreSnacks() {
     if (loading || !hasMore) {
       return;
     }
@@ -144,7 +134,43 @@ export function useSnackReels(location: Location) {
     setStartRange(nextStartRange);
     setEndRange(nextEndRange);
     setLoading(false);
-  };
+  }
+
+  //#endregion
+
+  //#region { Event handler }
+
+  function onSnackClick(snackId: number) {
+    router.push(`?snackId=${snackId}`, { scroll: false });
+    if (snackId && snacks) {
+      const foundSnack = snacks.find((snack) => snack.snack_id === snackId);
+      if (foundSnack) {
+        setSelectedSnack(foundSnack);
+      }
+    }
+  }
+
+  function onDialogVisibilityChange(isOpen: boolean) {
+    if (!isOpen) {
+      handleModalClose();
+    } else {
+      dialogState.setIsDialogOpen(true);
+    }
+  }
+
+  //#endregion
+
+  //#region { Helper functions }
+
+  function handleModalClose() {
+    console.log("Modal closing...");
+    router.push(window.location.pathname, { scroll: false });
+    dialogState.setIsDialogOpen(false);
+    setSelectedSnack(null);
+    dialogState.hideNewLocationForm();
+  }
+
+  //#endregion
 
   return {
     snacks,
@@ -152,7 +178,7 @@ export function useSnackReels(location: Location) {
     selectedSnack,
     snackDetails,
     dialogState,
-    handleDialogChange,
+    onDialogVisibilityChange,
     ref,
     hasMore,
   };
