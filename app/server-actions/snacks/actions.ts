@@ -119,7 +119,7 @@ export async function fetchSnackImagesAndLocations(snackId: number) {
     }
   );
   if (error) {
-    console.log(error);
+    console.error(error);
   }
 
   const snackLikeData = await fetchSnackLikeInfo(snackId);
@@ -159,11 +159,8 @@ export const createSnack = async (
 
   if (snackAddError) {
     console.error(snackAddError);
-
-    return { error: snackAddError };
+    return;
   }
-
-  return { error: null };
 };
 
 export async function fetchLikedSnacks(
@@ -216,8 +213,9 @@ export async function fetchSnacks(startRange: number, endRange: number) {
   const { data: snacks, error: fetchSnacksError } = await supabase
     .from("snacks")
     .select("snack_id, name, primary_image_url")
-    .range(startRange, endRange)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .order("snack_id", { ascending: true })
+    .range(startRange, endRange);
 
   if (fetchSnacksError) {
     console.error(fetchSnacksError);

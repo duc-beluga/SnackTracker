@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import dialogReducer from "./dialogSlice";
+import snackReducer from "./snackSlice";
 
 export const store = configureStore({
   reducer: {
     dialog: dialogReducer,
+    snack: snackReducer,
   },
 });
 

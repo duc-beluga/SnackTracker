@@ -13,8 +13,11 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackDialog } from "./useSnackDialog";
 
+import { useInView } from "react-intersection-observer";
+
+const SNACK_PER_LOAD = 12;
 const INITIAL_START_RANGE = 0;
-const INITIAL_END_RANGE = 11;
+const INITIAL_END_RANGE = SNACK_PER_LOAD - 1;
 
 export function useSnackReels(location: Location) {
   const router = useRouter();
@@ -24,12 +27,19 @@ export function useSnackReels(location: Location) {
   const [selectedSnack, setSelectedSnack] = useState<SnackDisplay | null>(null);
   const [snackDetails, setSnackDetails] = useState<SnackDetails | null>();
 
+  const [startRange, setStartRange] = useState<number>(0);
+  const [endRange, setEndRange] = useState<number>(11);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const { ref, inView } = useInView();
+
   const dialogState = useSnackDialog();
 
   useEffect(() => {
     async function fetchInitialSnacks() {
       let snacksData;
-      let fetchError;
+
       if (location === Location.Home) {
         snacksData = await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE);
       } else if (location === Location.Liked) {
@@ -73,6 +83,12 @@ export function useSnackReels(location: Location) {
     fetchSnackDetails();
   }, [searchParams]);
 
+  useEffect(() => {
+    if (inView) {
+      loadMoreSnacks();
+    }
+  }, [inView]);
+
   function onSnackClick(snackId: number) {
     router.push(`?snackId=${snackId}`, { scroll: false });
     if (snackId && snacks) {
@@ -98,6 +114,38 @@ export function useSnackReels(location: Location) {
     }
   }
 
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+  const loadMoreSnacks = async () => {
+    if (loading || !hasMore) {
+      return;
+    }
+    setLoading(true);
+    await delay(2000);
+    const nextStartRange = startRange + SNACK_PER_LOAD;
+    const nextEndRange = endRange + SNACK_PER_LOAD;
+
+    let newSnacks: SnackDisplay[];
+    if (location === Location.Home) {
+      newSnacks = (await fetchSnacks(nextStartRange, nextEndRange)) ?? [];
+    } else if (location === Location.Liked) {
+      newSnacks = (await fetchLikedSnacks(nextStartRange, nextEndRange)) ?? [];
+    } else {
+      newSnacks =
+        (await fetchUploadedSnacks(nextStartRange, nextEndRange)) ?? [];
+    }
+    if (newSnacks.length === 0) {
+      setHasMore(false);
+    }
+    setSnacks((prevSnacks: SnackDisplay[] | null | undefined) =>
+      prevSnacks ? [...prevSnacks, ...newSnacks] : [...newSnacks]
+    );
+    setStartRange(nextStartRange);
+    setEndRange(nextEndRange);
+    setLoading(false);
+  };
+
   return {
     snacks,
     onSnackClick,
@@ -105,5 +153,7 @@ export function useSnackReels(location: Location) {
     snackDetails,
     dialogState,
     handleDialogChange,
+    ref,
+    hasMore,
   };
 }

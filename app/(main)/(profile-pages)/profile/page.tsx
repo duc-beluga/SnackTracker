@@ -1,6 +1,5 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/server";
 import { Edit, Loader, Settings } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { redirect } from "next/navigation";
@@ -59,20 +58,22 @@ const ProfilePage = () => {
             </button>
           </div>
         </div>
-        <div className="flex justify-center mt-10">
-          <Tabs defaultValue="uploaded" className="w-full">
+      </div>
+      <div className="flex justify-center mt-10">
+        <Tabs defaultValue="uploaded" className="w-full">
+          <div className="flex w-full justify-center">
             <TabsList className="grid w-[400px] grid-cols-2">
               <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
               <TabsTrigger value="liked">Liked</TabsTrigger>
             </TabsList>
-            <TabsContent value="uploaded">
-              <SnackReels location={Location.Uploaded} />
-            </TabsContent>
-            <TabsContent value="liked">
-              <SnackReels location={Location.Liked} />
-            </TabsContent>
-          </Tabs>
-        </div>
+          </div>
+          <TabsContent value="uploaded">
+            <SnackReels location={Location.Uploaded} />
+          </TabsContent>
+          <TabsContent value="liked">
+            <SnackReels location={Location.Liked} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
