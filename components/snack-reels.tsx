@@ -24,11 +24,11 @@ const SnackReels = ({ location }: SnackReelsProps) => {
 
   return (
     // TODO: Find a way to center this wrap flex
-    <div className="flex flex-col gap-3">
-      <div className="flex justify-center md:justify-start md:pl-8 pt-4">
+    <div className="flex flex-col gap-3 my-2">
+      <div className="flex justify-center md:justify-start md:pl-4 pt-4">
         <h1 className="text-3xl font-bold">{location.toString()}</h1>
       </div>
-      <div className="grid grid-cols-1 place-items-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 ml-6 mr-6">
+      <div className="grid grid-cols-1 place-items-center sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mx-4">
         <Snacks snacks={snacks?.slice(0, 12)} onSnackClick={onSnackClick} />
         <MoreSnack
           ref={ref}
