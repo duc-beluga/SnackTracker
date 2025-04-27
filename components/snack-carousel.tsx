@@ -19,13 +19,13 @@ interface CarouselProps {
 
 const SnackCarousel = ({ snackToImageLocationMap }: CarouselProps) => {
   return (
-    <Carousel className="w-full max-w-xs">
+    <Carousel className="w-[calc(100%-52px)] sm:w-full max-w-xs">
       <CarouselContent>
         {snackToImageLocationMap.length > 0 ? (
           snackToImageLocationMap.map((imageLocations) => (
             <CarouselItem key={imageLocations.image_location_id}>
               <Card className="w-full border-none">
-                <div className="h-14 p-2 overflow-y-auto">
+                <div className="h-20 sm:h-14 p-2 overflow-y-auto">
                   <CardDescription>
                     {imageLocations.snack_address}
                   </CardDescription>

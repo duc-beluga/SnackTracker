@@ -37,7 +37,7 @@ const SnackDialogContent = ({
 }: DialogContentProps) => {
   const { showNewLocationForm, isNewLocationSelected } = dialogState;
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <DialogContent className="max-w-[350px] sm:max-w-[425px] rounded-md">
       {/* Used to fix warning with missing description foor DialogContent */}
       <DialogDescription className="hidden"></DialogDescription>
       {!isNewLocationSelected ? (
