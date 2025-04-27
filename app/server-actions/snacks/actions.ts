@@ -225,6 +225,25 @@ export async function fetchSnacks(startRange: number, endRange: number) {
   return snacks as SnackDisplay[] | null;
 }
 
+export async function fetchTrendingSnacks(
+  startRange: number,
+  endRange: number
+): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+
+  const { data: uploadedSnacks, error: fetchTrendingSnacksError } =
+    await supabase.rpc("get_trending_snacks_with_range", {
+      start_range: startRange,
+      end_range: endRange,
+    });
+  if (fetchTrendingSnacksError) {
+    console.error(fetchTrendingSnacksError);
+    return null;
+  }
+
+  return uploadedSnacks as SnackDisplay[] | null;
+}
+
 //#endregion
 
 //#region { Helper functions }

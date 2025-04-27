@@ -18,8 +18,6 @@ const ProfilePage = () => {
     async function fetchCurrentUser() {
       try {
         const currentUser = await getCurrentUser();
-        // console.log(JSON.stringify(currentUser, null, 2));
-        console.log(JSON.stringify(currentUser?.user_metadata, null, 2));
 
         setUser(currentUser);
       } finally {

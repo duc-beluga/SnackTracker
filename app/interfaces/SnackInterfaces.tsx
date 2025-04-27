@@ -39,6 +39,7 @@ export enum Location {
   Home = "Home",
   Liked = "Liked",
   Uploaded = "Uploaded",
+  Trending = "Trending",
 }
 
 export interface SnackFetchResult {

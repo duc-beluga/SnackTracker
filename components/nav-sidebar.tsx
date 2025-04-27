@@ -66,7 +66,7 @@ const communityGroup: NavbarGroupInterface = {
 };
 
 const linkMap: Record<string, string> = {
-  Trending: "#",
+  Trending: "/trending",
   Search: "#",
   Profile: "/profile",
   Settings: "#",

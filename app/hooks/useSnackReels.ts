@@ -9,6 +9,7 @@ import {
   fetchSnackImagesAndLocations,
   fetchLikedSnacks,
   fetchUploadedSnacks,
+  fetchTrendingSnacks,
 } from "../server-actions/snacks/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackDialog } from "./useSnackDialog";
@@ -81,6 +82,11 @@ export function useSnackReels(location: Location) {
         INITIAL_START_RANGE,
         INITIAL_END_RANGE
       );
+    } else if (location === Location.Trending) {
+      snacksData = await fetchTrendingSnacks(
+        INITIAL_START_RANGE,
+        INITIAL_END_RANGE
+      );
     }
 
     setSnacks(snacksData);
@@ -121,10 +127,14 @@ export function useSnackReels(location: Location) {
       newSnacks = (await fetchSnacks(nextStartRange, nextEndRange)) ?? [];
     } else if (location === Location.Liked) {
       newSnacks = (await fetchLikedSnacks(nextStartRange, nextEndRange)) ?? [];
-    } else {
+    } else if (location === Location.Uploaded) {
       newSnacks =
         (await fetchUploadedSnacks(nextStartRange, nextEndRange)) ?? [];
+    } else {
+      newSnacks =
+        (await fetchTrendingSnacks(nextStartRange, nextEndRange)) ?? [];
     }
+    // newSnack can be null here
     if (newSnacks.length === 0) {
       setHasMore(false);
     }
