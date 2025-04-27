@@ -46,3 +46,9 @@ export interface SnackFetchResult {
   data: SnackDisplay[] | null;
   error: Error | null;
 }
+
+export interface SnackCityAndState {
+  city: string;
+  state: string;
+  location_count: number;
+}

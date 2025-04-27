@@ -44,7 +44,7 @@ const iconMap: Record<string, ReactNode> = {
   Profile: <UserRound />,
   Settings: <Settings />,
   New: <PackagePlus />,
-  Location: <MapPinPlusInside />,
+  Locations: <MapPinPlusInside />,
   Leaderboard: <Drumstick />,
   Discover: <Telescope />,
   "Popular Tags": <Tags />,
@@ -52,7 +52,7 @@ const iconMap: Record<string, ReactNode> = {
 
 const contentGroup: NavbarGroupInterface = {
   groupLabel: "Content",
-  groupItems: ["Trending", "Search", "New", "Location", "Discover"],
+  groupItems: ["Trending", "Search", "New", "Locations", "Discover"],
 };
 
 const settingGroup: NavbarGroupInterface = {
@@ -71,7 +71,7 @@ const linkMap: Record<string, string> = {
   Profile: "/profile",
   Settings: "#",
   New: "/snacks/new",
-  Location: "#",
+  Locations: "/locations",
   Leaderboard: "#",
   Discover: "/",
   "Popular Tags": "#",
