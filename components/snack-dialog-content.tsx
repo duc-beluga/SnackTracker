@@ -20,6 +20,7 @@ import { MapPinCheck } from "lucide-react";
 import { addSnackLocation } from "@/app/server-actions/snacks/actions";
 import { useSnackDialog } from "@/app/hooks/useSnackDialog";
 import SnackDialogContentDisplay from "./snack-dialog-content-display";
+import { toast } from "sonner";
 
 interface DialogContentProps {
   snack: SnackDisplay;
@@ -64,6 +65,7 @@ const SnackDialogContent = ({
           addSnackLocation={async (values) => {
             await addSnackLocation(values);
             handleCloseDialog();
+            toast.success("New location successfully added");
           }}
           snackId={snack.snack_id}
         />
