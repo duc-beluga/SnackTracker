@@ -35,9 +35,9 @@ const SnackCarousel = ({ snackToImageLocationMap }: CarouselProps) => {
                     <Image
                       src={imageLocations.image_url}
                       alt="snackImage"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                      style={{ objectFit: "cover" }}
+                      width={160}
+                      height={220}
+                      className="object-cover w-full h-full"
                       loading="lazy"
                     />
                   </div>

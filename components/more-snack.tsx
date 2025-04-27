@@ -21,13 +21,13 @@ const MoreSnack = ({ onSnackClick, snacks, hasMore, ref }: MoreSnackProps) => {
       <Snacks snacks={snacks} onSnackClick={onSnackClick} />
       {hasMore ? (
         <div
-          className="p-4 col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 xl:col-span-6"
+          className="p-4 col-span-1 sm:col-span-3 md:col-span-3 lg:col-span-4 xl:col-span-6"
           ref={ref}
         >
           <Spinner />
         </div>
       ) : (
-        <div className="p-4 col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 xl:col-span-6">
+        <div className="p-4 col-span-1 sm:col-span-3 md:col-span-3 lg:col-span-4 xl:col-span-6">
           <Alert>
             <Frown className="h-4 w-4" />
             <AlertTitle>Uh oh!</AlertTitle>
