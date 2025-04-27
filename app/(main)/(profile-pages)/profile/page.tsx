@@ -8,6 +8,7 @@ import { Location } from "@/app/interfaces/SnackInterfaces";
 import SnackReels from "@/components/snack-reels";
 import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import { User } from "@supabase/supabase-js";
+import Image from "next/image";
 
 const ProfilePage = () => {
   const [user, setUser] = useState<User | null>();
@@ -17,6 +18,9 @@ const ProfilePage = () => {
     async function fetchCurrentUser() {
       try {
         const currentUser = await getCurrentUser();
+        // console.log(JSON.stringify(currentUser, null, 2));
+        console.log(JSON.stringify(currentUser?.user_metadata, null, 2));
+
         setUser(currentUser);
       } finally {
         setIsLoading(false);
@@ -31,14 +35,27 @@ const ProfilePage = () => {
   if (!user) {
     return redirect("/sign-in");
   }
+  console.log(user?.user_metadata?.avatar_url);
   return (
     <div className="min-h-screen">
-      {/* {JSON.stringify(user, null, 2)} */}
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-28 relative">
         <div className="absolute -bottom-16 left-8">
-          <div className="bg-blue-500 h-32 w-32 rounded-full border-4 border-white flex items-center justify-center text-white text-4xl font-bold shadow-lg">
-            {user.email?.charAt(0)}
-          </div>
+          {user?.user_metadata?.avatar_url ? (
+            <Image
+              priority
+              width={128}
+              height={128}
+              className="rounded-full border-4 border-white shadow-lg"
+              src={user?.user_metadata?.avatar_url}
+              alt={"Profile"}
+            />
+          ) : (
+            <div className="bg-blue-500 h-32 w-32 rounded-full border-4 border-white flex items-center justify-center text-white text-4xl font-bold shadow-lg">
+              <span className="text-4xl font-bold">
+                {user.email?.charAt(0)}
+              </span>
+            </div>
+          )}
         </div>
       </div>
       <div className="pt-20 px-8 pb-8">
