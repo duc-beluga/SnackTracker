@@ -28,7 +28,7 @@ export default function RootLayout({
       <html lang="en" className={geistSans.className} suppressHydrationWarning>
         <body className="bg-background text-foreground">
           <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col gap-20 items-center mt-28">
+            <div className="flex-1 w-full flex flex-col gap-20 items-center">
               {children}
             </div>
             <Toaster />
