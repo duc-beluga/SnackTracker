@@ -14,7 +14,7 @@ const IMAGE_WIDTH = "160px";
 
 const SnackCard = ({ snack, onSnackImageClicked }: CardProps) => {
   return (
-    <Card key={snack.snack_id} className="w-[360px] sm:w-52 md:w-44 lg:w-44">
+    <Card key={snack.snack_id} className="w-80 sm:w-52 md:w-44 lg:w-44">
       <CardContent className="p-2 h-96 md:h-64 lg:h-60">
         {snack.primary_image_url ? (
           <Image

@@ -25,7 +25,7 @@ const SnackCarousel = ({ images_locations }: SnackCarouselProps) => {
           images_locations.map((image_location) => (
             <CarouselItem key={image_location.image_location_id}>
               <Card className="w-full border-none">
-                <div className="h-20 sm:h-14 p-2 overflow-y-auto">
+                <div className="h-14 sm:h-14 p-2 overflow-y-auto">
                   <CardDescription>
                     {image_location.snack_address}
                   </CardDescription>
