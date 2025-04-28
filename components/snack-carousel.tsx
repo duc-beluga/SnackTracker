@@ -10,30 +10,30 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import { Skeleton } from "./ui/skeleton";
 import { Card, CardContent, CardDescription } from "./ui/card";
+import SnackCarouselItemSkeleton from "./skeletons/snack-carousel-item-skeleton";
 
-interface CarouselProps {
-  snackToImageLocationMap: SnackImageLocationVal[];
+interface SnackCarouselProps {
+  images_locations: SnackImageLocationVal[] | undefined;
 }
 
-const SnackCarousel = ({ snackToImageLocationMap }: CarouselProps) => {
+const SnackCarousel = ({ images_locations }: SnackCarouselProps) => {
   return (
     <Carousel className="w-[calc(100%-52px)] sm:w-full max-w-xs">
       <CarouselContent>
-        {snackToImageLocationMap.length > 0 ? (
-          snackToImageLocationMap.map((imageLocations) => (
-            <CarouselItem key={imageLocations.image_location_id}>
+        {images_locations !== undefined && images_locations.length > 0 ? (
+          images_locations.map((image_location) => (
+            <CarouselItem key={image_location.image_location_id}>
               <Card className="w-full border-none">
                 <div className="h-20 sm:h-14 p-2 overflow-y-auto">
                   <CardDescription>
-                    {imageLocations.snack_address}
+                    {image_location.snack_address}
                   </CardDescription>
                 </div>
                 <CardContent className="p-0 pt-2 relative aspect-square">
                   <div className="relative w-full h-full">
                     <Image
-                      src={imageLocations.image_url}
+                      src={image_location.image_url}
                       alt="snackImage"
                       width={160}
                       height={220}
@@ -46,9 +46,7 @@ const SnackCarousel = ({ snackToImageLocationMap }: CarouselProps) => {
             </CarouselItem>
           ))
         ) : (
-          <CarouselItem>
-            <Skeleton className="aspect-square w-full" />
-          </CarouselItem>
+          <SnackCarouselItemSkeleton />
         )}
       </CarouselContent>
       <CarouselPrevious />

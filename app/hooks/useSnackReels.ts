@@ -30,7 +30,7 @@ export function useSnackReels(location: Location) {
 
   const [snacks, setSnacks] = useState<SnackDisplay[] | null>();
   const [selectedSnack, setSelectedSnack] = useState<SnackDisplay | null>(null);
-  const [snackDetails, setSnackDetails] = useState<SnackDetails | null>();
+  const [snackDetails, setSnackDetails] = useState<SnackDetails | null>(null);
 
   const [startRange, setStartRange] = useState<number>(0);
   const [endRange, setEndRange] = useState<number>(11);
@@ -100,14 +100,14 @@ export function useSnackReels(location: Location) {
       return;
     }
 
+    if (selectedSnack) {
+      dialogState.setIsDialogOpen(true);
+    }
+
     const snackDetailsData = await fetchSnackImagesAndLocations(snackId);
 
     if (snackDetailsData === null) {
       return;
-    }
-
-    if (selectedSnack) {
-      dialogState.setIsDialogOpen(true);
     }
 
     setSnackDetails(snackDetailsData);
@@ -135,7 +135,7 @@ export function useSnackReels(location: Location) {
         (await fetchTrendingSnacks(nextStartRange, nextEndRange)) ?? [];
     }
     // newSnack can be null here
-    if (newSnacks.length === 0) {
+    if (newSnacks.length === 0 || newSnacks.length < SNACK_PER_LOAD) {
       setHasMore(false);
     }
     setSnacks((prevSnacks: SnackDisplay[] | null | undefined) =>
@@ -177,6 +177,7 @@ export function useSnackReels(location: Location) {
     router.push(window.location.pathname, { scroll: false });
     dialogState.setIsDialogOpen(false);
     setSelectedSnack(null);
+    setSnackDetails(null);
     dialogState.hideNewLocationForm();
   }
 

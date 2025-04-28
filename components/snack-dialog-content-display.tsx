@@ -5,12 +5,13 @@ import { Button } from "./ui/button";
 import { SnackDetails } from "@/app/interfaces/SnackInterfaces";
 import { Plus } from "lucide-react";
 import LikeButton from "./like-button";
+import { Skeleton } from "./ui/skeleton";
 
 interface SnackDialogContentDisplayProps {
   snackName: string;
   snackId: number;
   showNewLocationForm: () => void;
-  snackDetails: SnackDetails;
+  snackDetails: SnackDetails | null;
 }
 
 const SnackDialogContentDisplay = ({
@@ -25,21 +26,23 @@ const SnackDialogContentDisplay = ({
         <DialogTitle>{snackName}</DialogTitle>
       </DialogHeader>
       <div className="flex justify-center">
-        <SnackCarousel
-          snackToImageLocationMap={snackDetails.images_locations}
-        />
+        <SnackCarousel images_locations={snackDetails?.images_locations} />
       </div>
       <DialogFooter>
         <div className="flex flex-row justify-between w-full pl-3 pr-3">
           <LikeButton
-            initialLikeCount={snackDetails.like_count}
-            userLikeData={snackDetails.like_data}
+            initialLikeCount={snackDetails?.like_count}
+            userLikeData={snackDetails?.like_data}
             snackId={snackId}
           />
           <div>
-            <Button onClick={showNewLocationForm}>
-              Add new location <Plus />
-            </Button>
+            {snackDetails ? (
+              <Button onClick={showNewLocationForm}>
+                Add new location <Plus />
+              </Button>
+            ) : (
+              <Skeleton className="w-44 h-9" />
+            )}
           </div>
         </div>
       </DialogFooter>

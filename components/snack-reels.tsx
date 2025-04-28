@@ -42,7 +42,7 @@ const SnackReels = ({ location }: SnackReelsProps) => {
         open={dialogState.isDialogOpen}
         onOpenChange={onDialogVisibilityChange}
       >
-        {selectedSnack && snackDetails?.images_locations && (
+        {selectedSnack && (
           <SnackDialogContent
             snack={selectedSnack}
             snackDetails={snackDetails}

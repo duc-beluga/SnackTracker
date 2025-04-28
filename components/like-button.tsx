@@ -4,11 +4,13 @@ import { Button } from "./ui/button";
 import { ChevronUp } from "lucide-react";
 import { SnackLike } from "@/app/interfaces/SnackInterfaces";
 import { useSnackLike } from "@/app/hooks/useSnackLike";
+import { Skeleton } from "./ui/skeleton";
+import LikeButtonSkeleton from "./skeletons/like-button-skeleton";
 
 interface LikeButtonProps {
   snackId: number;
-  userLikeData: SnackLike | null;
-  initialLikeCount: number;
+  userLikeData: SnackLike | null | undefined;
+  initialLikeCount: number | undefined;
 }
 
 const LikeButton = ({
@@ -16,6 +18,10 @@ const LikeButton = ({
   userLikeData,
   initialLikeCount,
 }: LikeButtonProps) => {
+  if (userLikeData === undefined || initialLikeCount === undefined) {
+    return <LikeButtonSkeleton />;
+  }
+
   const { onSnackLike, isSnackLiked, snackLikeCount } = useSnackLike(
     snackId,
     userLikeData,

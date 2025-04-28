@@ -24,7 +24,7 @@ import { toast } from "sonner";
 
 interface DialogContentProps {
   snack: SnackDisplay;
-  snackDetails: SnackDetails;
+  snackDetails: SnackDetails | null;
   dialogState: ReturnType<typeof useSnackDialog>;
   handleCloseDialog: () => void;
 }
