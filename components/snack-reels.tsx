@@ -28,7 +28,7 @@ const SnackReels = ({ location }: SnackReelsProps) => {
       <div className="flex justify-center md:justify-start md:pl-4 pt-4">
         <h1 className="text-3xl font-bold">{location.toString()}</h1>
       </div>
-      <div className="grid place-items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mx-4">
+      <div className="grid place-items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4 mx-4">
         <Snacks snacks={snacks?.slice(0, 12)} onSnackClick={onSnackClick} />
         <MoreSnack
           ref={ref}
