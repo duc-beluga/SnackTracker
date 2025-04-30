@@ -43,11 +43,15 @@ export const updateSession = async (request: NextRequest) => {
 
     // Define public routes that don't require authentication
     const publicRoutes = [
+      "/",
       "/sign-in",
       "/sign-up",
       "/forgot-password",
       "/api",
       "/auth/callback",
+      "/trending",
+      "/locations",
+      "/discover",
     ];
 
     // Check if the current path is a public route
@@ -62,11 +66,7 @@ export const updateSession = async (request: NextRequest) => {
 
     // Special case for root path
     if (request.nextUrl.pathname === "/") {
-      if (user) {
-        return NextResponse.redirect(new URL("/snacks", request.url));
-      } else {
-        return NextResponse.redirect(new URL("/sign-in", request.url));
-      }
+      return NextResponse.rewrite(new URL("/snacks", request.url));
     }
 
     return response;

@@ -6,6 +6,8 @@ import { SnackDetails } from "@/app/interfaces/SnackInterfaces";
 import { Plus } from "lucide-react";
 import LikeButton from "./like-button";
 import { Skeleton } from "./ui/skeleton";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
 
 interface SnackDialogContentDisplayProps {
   snackName: string;
@@ -20,6 +22,7 @@ const SnackDialogContentDisplay = ({
   showNewLocationForm,
   snackDetails,
 }: SnackDialogContentDisplayProps) => {
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
   return (
     <>
       <DialogHeader>
@@ -28,6 +31,7 @@ const SnackDialogContentDisplay = ({
       <div className="flex justify-center">
         <SnackCarousel images_locations={snackDetails?.images_locations} />
       </div>
+
       <DialogFooter>
         <div className="flex flex-row justify-between w-full pl-3 pr-3">
           <LikeButton
@@ -36,12 +40,12 @@ const SnackDialogContentDisplay = ({
             snackId={snackId}
           />
           <div>
-            {snackDetails ? (
+            {snackDetails && currentUser ? (
               <Button onClick={showNewLocationForm}>
                 Add new location <Plus />
               </Button>
             ) : (
-              <Skeleton className="w-44 h-9" />
+              currentUser && <Skeleton className="w-44 h-9" />
             )}
           </div>
         </div>

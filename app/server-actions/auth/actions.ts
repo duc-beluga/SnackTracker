@@ -152,6 +152,10 @@ export const googleSignUp = async () => {
   return encodedRedirect("error", "/sign-in", "Failed to start authentication");
 };
 
+export async function redirectToSignIn() {
+  redirect("/sign-in");
+}
+
 export const getCurrentUser = async (): Promise<User | null> => {
   const supabase = await createClient();
 

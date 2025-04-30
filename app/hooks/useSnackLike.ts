@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SnackLike } from "../interfaces/SnackInterfaces";
 import {
   addSnackLike,
   removeSnackLike,
 } from "../server-actions/snacks/actions";
+import { User } from "@supabase/supabase-js";
 
 export function useSnackLike(
   snackId: number,
   userLikeData: SnackLike | null,
-  initialLikeCount: number
+  initialLikeCount: number,
+  currentUser: User | null
 ) {
   //#region { State }
 
@@ -23,9 +25,23 @@ export function useSnackLike(
 
   //#endregion
 
+  // Update state when props change
+  useEffect(() => {
+    setIsSnackLiked(userLikeData !== null);
+    setUserSnackLikeData(userLikeData);
+  }, [userLikeData]);
+
+  // Update like count when initialLikeCount changes
+  useEffect(() => {
+    setSnackLikeCount(initialLikeCount);
+  }, [initialLikeCount]);
+
   //#region { Event handler }
 
   const onSnackLike = async () => {
+    if (!currentUser) {
+      return;
+    }
     setIsSnackLiked(!isSnackLiked);
     if (isSnackLiked) {
       setSnackLikeCount(snackLikeCount - 1);

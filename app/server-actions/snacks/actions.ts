@@ -83,26 +83,26 @@ export async function removeSnackLike(userLike: SnackLike | null) {
 export const fetchSnackLikeInfo = async (snack_id: number) => {
   const supabase = await createClient();
 
-  const {
-    data: { user: currentUser },
-  } = await supabase.auth.getUser();
-
-  if (!currentUser) {
-    throw new Error("User not authenticated");
-  }
-
-  const { data: userSnackLike }: { data: SnackLike | null } = await supabase
-    .from("likes")
-    .select("like_id, user_id, snack_id")
-    .eq("user_id", currentUser.id || "")
-    .eq("snack_id", snack_id)
-    .maybeSingle();
-
   const { count } = await supabase
     .from("likes")
     .select("*", { count: "exact", head: true })
     .eq("snack_id", snack_id);
 
+  const {
+    data: { user: currentUser },
+  } = await supabase.auth.getUser();
+
+  let userSnackLike = null;
+  if (currentUser) {
+    const { data }: { data: SnackLike | null } = await supabase
+      .from("likes")
+      .select("like_id, user_id, snack_id")
+      .eq("user_id", currentUser.id || "")
+      .eq("snack_id", snack_id)
+      .maybeSingle();
+
+    userSnackLike = data;
+  }
   return {
     userSnackLike,
     likeCount: count || 0,
