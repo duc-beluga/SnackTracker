@@ -11,6 +11,9 @@ export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Duckee",
   description: "The fastest way to find your snacks",
+  icons: {
+    icon: "/icon.ico",
+  },
 };
 
 const geistSans = Geist({
