@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import SnackCarousel from "./snack-carousel";
 import { Button } from "./ui/button";
@@ -6,8 +6,8 @@ import { SnackDetails } from "@/app/interfaces/SnackInterfaces";
 import { Plus } from "lucide-react";
 import LikeButton from "./like-button";
 import { Skeleton } from "./ui/skeleton";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
+import { User } from "@supabase/supabase-js";
+import { getCurrentUser } from "@/app/server-actions/auth/actions";
 
 interface SnackDialogContentDisplayProps {
   snackName: string;
@@ -22,7 +22,17 @@ const SnackDialogContentDisplay = ({
   showNewLocationForm,
   snackDetails,
 }: SnackDialogContentDisplayProps) => {
-  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <>
       <DialogHeader>
@@ -40,12 +50,12 @@ const SnackDialogContentDisplay = ({
             snackId={snackId}
           />
           <div>
-            {snackDetails && currentUser ? (
+            {snackDetails && user ? (
               <Button onClick={showNewLocationForm}>
                 Add new location <Plus />
               </Button>
             ) : (
-              currentUser && <Skeleton className="w-44 h-9" />
+              user && <Skeleton className="w-44 h-9" />
             )}
           </div>
         </div>
