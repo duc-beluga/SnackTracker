@@ -14,8 +14,9 @@ export const MainLayout = ({
     <SidebarProvider>
       <NavSideBar />
       <div className="w-full">
-        <div className="md:hidden flex justify-between fixed z-50 w-full p-2">
+        <div className="md:hidden flex justify-between fixed z-50 w-full p-2 bg-white">
           <SidebarTrigger className="ml-3" />
+          <div className="flex items-center pl-12 font-bold">WutsDis</div>
           <Button variant="outline" asChild>
             <Link href="snacks/new">
               Upload <Upload />
