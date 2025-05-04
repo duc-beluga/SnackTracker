@@ -30,11 +30,13 @@ const SnackReels = ({ location }: SnackReelsProps) => {
     <div className="flex flex-col gap-3 my-2">
       <div className="flex justify-center md:justify-between pt-4 md:px-4">
         <h1 className="text-3xl font-bold">{location.toString()}</h1>
-        <Button variant="outline" className="hidden md:inline-flex" asChild>
-          <Link href="snacks/new">
-            Upload <Upload />
-          </Link>
-        </Button>
+        {location === Location.Home && (
+          <Button variant="outline" className="hidden md:inline-flex" asChild>
+            <Link href="snacks/new">
+              Upload <Upload />
+            </Link>
+          </Button>
+        )}
       </div>
       <div className="grid place-items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4 mx-4">
         <Snacks snacks={snacks?.slice(0, 12)} onSnackClick={onSnackClick} />

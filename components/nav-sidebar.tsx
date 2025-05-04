@@ -18,18 +18,16 @@ import React, { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 
 import {
-  PackagePlus,
-  ScanSearch,
   Settings,
   Flame,
   UserRound,
   LogOut,
   MapPinPlusInside,
   Drumstick,
-  Telescope,
   Tags,
-  Bird,
   LogIn,
+  Dessert,
+  Aperture,
 } from "lucide-react";
 import {
   redirectToSignIn,
@@ -47,18 +45,17 @@ interface NavbarGroupInterface {
 
 const iconMap: Record<string, ReactNode> = {
   Trending: <Flame />,
-  Search: <ScanSearch />,
   Profile: <UserRound />,
   Settings: <Settings />,
   Locations: <MapPinPlusInside />,
   Leaderboard: <Drumstick />,
-  Discover: <Telescope />,
+  Snack: <Dessert />,
   "Popular Tags": <Tags />,
 };
 
 const contentGroup: NavbarGroupInterface = {
   groupLabel: "Content",
-  groupItems: ["Trending", "Search", "Locations", "Discover"],
+  groupItems: ["Snack", "Trending", "Locations"],
 };
 
 const settingGroup: NavbarGroupInterface = {
@@ -72,21 +69,20 @@ const communityGroup: NavbarGroupInterface = {
 };
 
 const linkMap: Record<string, string> = {
+  Snack: "/",
   Trending: "/trending",
-  Search: "#",
   Profile: "/profile",
   Settings: "#",
   Locations: "/locations",
   Leaderboard: "#",
-  Discover: "/",
   "Popular Tags": "#",
 };
 
 const authenticatedLinks = ["Profile"];
 
 const navbarGroups: NavbarGroupInterface[] = [
-  settingGroup,
   contentGroup,
+  settingGroup,
   communityGroup,
 ];
 
@@ -130,8 +126,8 @@ const NavSideBar = () => {
       <SidebarHeader>
         <SidebarMenuButton asChild>
           <Link href="/">
-            <Bird />
-            <span className="font-bold text-base">Duckee</span>
+            <Aperture />
+            <span className="font-bold text-base">WutsDis</span>
           </Link>
         </SidebarMenuButton>
       </SidebarHeader>
