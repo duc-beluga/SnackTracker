@@ -33,7 +33,6 @@ const ProfilePage = () => {
   if (!user) {
     return redirect("/sign-in");
   }
-  console.log(user?.user_metadata?.avatar_url);
   return (
     <div className="min-h-screen">
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-28 relative">

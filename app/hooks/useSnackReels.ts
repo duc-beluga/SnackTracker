@@ -173,7 +173,6 @@ export function useSnackReels(location: Location) {
   //#region { Helper functions }
 
   function handleModalClose() {
-    console.log("Modal closing...");
     router.push(window.location.pathname, { scroll: false });
     dialogState.setIsDialogOpen(false);
     setSelectedSnack(null);

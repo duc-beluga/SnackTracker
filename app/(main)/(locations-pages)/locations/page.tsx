@@ -12,7 +12,6 @@ import React from "react";
 
 const LocationsPage = async () => {
   const cityAndStateFrequency = await fetchCityAndStateFrequencies();
-  console.log(cityAndStateFrequency);
 
   function groupByStates(snackCitiesAndStates: SnackCityAndState[] | null) {
     const stateMapLocationAndCount: Record<string, [string, number][]> = {};
