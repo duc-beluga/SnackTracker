@@ -72,7 +72,7 @@ const linkMap: Record<string, string> = {
   Snack: "/",
   Trending: "/trending",
   Profile: "/profile",
-  Settings: "#",
+  Settings: "/settings",
   Locations: "/locations",
   Leaderboard: "#",
   "Popular Tags": "#",

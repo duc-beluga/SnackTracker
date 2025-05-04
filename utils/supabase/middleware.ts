@@ -52,6 +52,7 @@ export const updateSession = async (request: NextRequest) => {
       "/trending",
       "/locations",
       "/discover",
+      "/settings",
       "/sitemap.xml",
     ];
 
