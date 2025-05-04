@@ -23,7 +23,8 @@ export const MainLayout = ({
             </Link>
           </Button>
         </div>
-        {children}
+        {/* 52 is header scroll height */}
+        <div className="mt-[52px] md:mt-0">{children}</div>
       </div>
     </SidebarProvider>
   );
