@@ -1,6 +1,7 @@
 import { googleSignUp, signInAction } from "@/app/server-actions/auth/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import GoogleIcon from "@/components/google-icon";
+import { SubmitButton } from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,7 +40,9 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
             placeholder="Your password"
             required
           />
-          <Button formAction={signInAction}>Sign in</Button>
+          <SubmitButton formAction={signInAction} pendingText="Signing in...">
+            Sign in
+          </SubmitButton>
 
           <FormMessage message={searchParams} />
         </div>

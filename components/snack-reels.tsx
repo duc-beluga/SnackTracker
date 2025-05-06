@@ -28,8 +28,7 @@ const SnackReels = ({ location }: SnackReelsProps) => {
   return (
     // TODO: Find a way to center this wrap flex
     <div className="flex flex-col gap-3 my-2">
-      <div className="flex justify-center md:justify-between pt-4 md:px-4">
-        <h1 className="text-3xl font-bold">{location.toString()}</h1>
+      <div className="flex justify-start pt-4 md:px-4">
         {location === Location.Home && (
           <Button variant="outline" className="hidden md:inline-flex" asChild>
             <Link href="snacks/new">
