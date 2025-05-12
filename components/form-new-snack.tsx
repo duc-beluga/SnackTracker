@@ -21,7 +21,7 @@ import SnackImageFormField from "./snack-image-form-field";
 
 const TOTAL_STEPS = 2;
 
-export const NewSnackForm = () => {
+export const FormNewSnack = () => {
   const multipleStepSnackFormState = useNewSnackForm();
   const {
     steps: { currentStep, setCurrentStep },
