@@ -9,16 +9,15 @@ import { Frown } from "lucide-react";
 
 interface MoreSnackProps {
   location: Location;
-  onSnackClick: (snackId: number) => void;
   snacks: SnackDisplay[] | null | undefined;
   hasMore: boolean;
   ref: (node?: Element | null) => void;
 }
 
-const MoreSnack = ({ onSnackClick, snacks, hasMore, ref }: MoreSnackProps) => {
+const MoreSnack = ({ snacks, hasMore, ref }: MoreSnackProps) => {
   return (
     <>
-      <Snacks snacks={snacks} onSnackClick={onSnackClick} />
+      <Snacks snacks={snacks} />
       {hasMore ? (
         <div
           className="p-4 col-span-1 sm:col-span-3 md:col-span-3 lg:col-span-4 xl:col-span-6 2xl:col-span-7"

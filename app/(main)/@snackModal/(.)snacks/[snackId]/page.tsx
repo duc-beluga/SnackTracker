@@ -55,10 +55,16 @@ const Modal = ({ params }: { params: Promise<{ snackId: string }> }) => {
         setIsUploadSnack(true);
         return;
       }
-      const snackDetails = await fetchSnackImagesAndLocationsTest(snackId);
-      setCurrentSnack(snackDetails);
-      const tempUser = await getCurrentUser();
-      setUser(tempUser);
+      const snackDetailsTask = fetchSnackImagesAndLocationsTest(snackId);
+      const userDataTask = getCurrentUser();
+
+      const [snackDetailsData, userData] = await Promise.all([
+        snackDetailsTask,
+        userDataTask,
+      ]);
+
+      setCurrentSnack(snackDetailsData);
+      setUser(userData);
     }
 
     fetchSnackDetails();

@@ -4,19 +4,12 @@ import SnackCard from "./snack-card";
 
 interface SnacksProp {
   snacks: SnackDisplay[] | null | undefined;
-  onSnackClick: (snackId: number) => void;
 }
 
-const Snacks = ({ snacks, onSnackClick }: SnacksProp) => {
+const Snacks = ({ snacks }: SnacksProp) => {
   return (
     <>
-      {snacks?.map((snack) => (
-        <SnackCard
-          snack={snack}
-          onSnackImageClicked={onSnackClick}
-          key={snack.snack_id}
-        />
-      ))}
+      {snacks?.map((snack) => <SnackCard snack={snack} key={snack.snack_id} />)}
     </>
   );
 };

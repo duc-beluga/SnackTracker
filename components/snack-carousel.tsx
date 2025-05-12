@@ -38,7 +38,16 @@ const SnackCarousel = ({ images_locations }: SnackCarouselProps) => {
                       width={160}
                       height={220}
                       className="object-cover w-full h-full"
-                      loading="lazy"
+                      priority={
+                        image_location.image_location_id ===
+                        images_locations[0]?.image_location_id
+                      }
+                      loading={
+                        image_location.image_location_id ===
+                        images_locations[0]?.image_location_id
+                          ? "eager"
+                          : "lazy"
+                      }
                     />
                   </div>
                 </CardContent>

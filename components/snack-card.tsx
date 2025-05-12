@@ -7,13 +7,12 @@ import Link from "next/link";
 
 interface CardProps {
   snack: SnackDisplay;
-  onSnackImageClicked: (snackId: number) => void;
 }
 
 const IMAGE_HEIGHT = "220px";
 const IMAGE_WIDTH = "160px";
 
-const SnackCard = ({ snack, onSnackImageClicked }: CardProps) => {
+const SnackCard = ({ snack }: CardProps) => {
   return (
     <Card key={snack.snack_id} className="w-80 sm:w-52 md:w-44 lg:w-44">
       <CardContent className="p-2 h-96 md:h-64 lg:h-60">
@@ -30,7 +29,6 @@ const SnackCard = ({ snack, onSnackImageClicked }: CardProps) => {
               height={220}
               priority
               className="w-full h-full rounded-md cursor-pointer object-cover"
-              // onClick={() => onSnackImageClicked(snack.snack_id)}
             />
           </Link>
         ) : (
