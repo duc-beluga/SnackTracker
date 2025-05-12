@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import {
   SnackDetails,
+  SnackDetailsTest,
   SnackDisplay,
   SnackLike,
 } from "../../interfaces/SnackInterfaces";
@@ -126,6 +127,37 @@ export async function fetchSnackImagesAndLocations(snackId: number) {
 
   const snackDetails: SnackDetails = {
     images_locations: snackLocationsImages,
+    like_data: snackLikeData.userSnackLike,
+    like_count: snackLikeData.likeCount,
+  };
+
+  return snackDetails;
+}
+
+export async function fetchSnackImagesAndLocationsTest(snackId: number) {
+  const supabase = await createClient();
+
+  // Call the stored procedure to get snack details (without like info)
+  const { data: snackData, error } = await supabase.rpc(
+    "get_snack_details_by_id_v2",
+    {
+      p_snack_id: snackId,
+    }
+  );
+
+  if (error) {
+    console.error(error);
+    throw error; // Or handle error as needed
+  }
+
+  // Get the like data separately
+  const snackLikeData = await fetchSnackLikeInfo(snackId);
+
+  // Combine the results
+  const snackDetails: SnackDetailsTest = {
+    snack_id: snackData?.snack_id || snackId,
+    name: snackData?.name || "",
+    images_locations: snackData?.images_locations || [],
     like_data: snackLikeData.userSnackLike,
     like_count: snackLikeData.likeCount,
   };

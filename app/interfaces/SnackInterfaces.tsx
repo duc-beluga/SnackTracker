@@ -52,3 +52,11 @@ export interface SnackCityAndState {
   state: string;
   location_count: number;
 }
+
+export interface SnackDetailsTest {
+  snack_id: number;
+  name: string;
+  images_locations: SnackImageLocationVal[];
+  like_data: SnackLike | null;
+  like_count: number;
+}
