@@ -71,7 +71,7 @@ const Modal = ({ params }: { params: Promise<{ snackId: string }> }) => {
   return (
     <Dialog open={open} onOpenChange={onDialogVisibilityChange}>
       <DialogContent className="max-w-[350px] sm:max-w-[425px] rounded-md">
-        {!currentSnack || !user ? (
+        {currentSnack === undefined || user === undefined ? (
           <>
             <DialogDescription className="hidden"></DialogDescription>
             <DialogHeader>
@@ -112,7 +112,7 @@ const Modal = ({ params }: { params: Promise<{ snackId: string }> }) => {
                   snackId={currentSnack?.snack_id}
                 />
                 <div>
-                  {user ? (
+                  {user !== null ? (
                     <Button onClick={showNewLocationForm}>
                       Add new location <Plus />
                     </Button>
