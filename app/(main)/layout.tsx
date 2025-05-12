@@ -7,8 +7,10 @@ import { Upload } from "lucide-react";
 
 export const MainLayout = ({
   children,
+  snackModal,
 }: Readonly<{
   children: React.ReactNode;
+  snackModal: React.ReactNode;
 }>) => {
   return (
     <SidebarProvider>
@@ -25,6 +27,7 @@ export const MainLayout = ({
         </div>
         {/* 52 is header scroll height */}
         <div className="mt-[52px] md:mt-0">{children}</div>
+        {snackModal}
       </div>
     </SidebarProvider>
   );

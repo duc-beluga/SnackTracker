@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter } from "./ui/card";
 import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import Image from "next/image";
 import { Skeleton } from "./ui/skeleton";
+import Link from "next/link";
 
 interface CardProps {
   snack: SnackDisplay;
@@ -17,15 +18,21 @@ const SnackCard = ({ snack, onSnackImageClicked }: CardProps) => {
     <Card key={snack.snack_id} className="w-80 sm:w-52 md:w-44 lg:w-44">
       <CardContent className="p-2 h-96 md:h-64 lg:h-60">
         {snack.primary_image_url ? (
-          <Image
-            src={snack.primary_image_url}
-            alt="snack_image"
-            width={160}
-            height={220}
-            priority
-            className="w-full h-full rounded-md cursor-pointer object-cover"
-            onClick={() => onSnackImageClicked(snack.snack_id)}
-          />
+          <Link
+            href={`/?snackId=${snack.snack_id}`}
+            as={`/snacks/${snack.snack_id}`}
+            scroll={false}
+          >
+            <Image
+              src={snack.primary_image_url}
+              alt="snack_image"
+              width={160}
+              height={220}
+              priority
+              className="w-full h-full rounded-md cursor-pointer object-cover"
+              // onClick={() => onSnackImageClicked(snack.snack_id)}
+            />
+          </Link>
         ) : (
           <Skeleton
             style={{
