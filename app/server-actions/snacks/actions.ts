@@ -276,6 +276,16 @@ export async function fetchTrendingSnacks(
   return uploadedSnacks as SnackDisplay[] | null;
 }
 
+export async function fetchSnackIds(): Promise<number[] | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.from("snacks").select("snack_id");
+
+  if (error) throw error;
+
+  return data?.map((row) => row.snack_id) ?? null;
+}
+
 //#endregion
 
 //#region { Helper functions }

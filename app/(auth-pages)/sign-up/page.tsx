@@ -5,7 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Sign Up",
+};
 export default async function Signup(props: {
   searchParams: Promise<Message>;
 }) {

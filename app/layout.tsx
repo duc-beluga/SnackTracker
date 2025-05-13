@@ -10,8 +10,11 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "WutsDis",
-  description: "The fastest way to find your snacks",
+  title: {
+    default: "WutsDis",
+    template: "%s - WutsDis",
+  },
+  description: "Snap snacks. Tag spots.",
   icons: {
     icon: "/icon.ico",
   },

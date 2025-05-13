@@ -1,14 +1,16 @@
-"use client";
-
 import { Location } from "@/app/interfaces/SnackInterfaces";
 import SnackReels from "@/components/snack-reels";
-import { Suspense } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Snacks",
+};
 
 const SnackPage = () => {
   return (
-    <Suspense fallback={<div>Loading snacks...</div>}>
+    <>
       <SnackReels location={Location.Home} />
-    </Suspense>
+    </>
   );
 };
 

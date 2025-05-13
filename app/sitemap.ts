@@ -1,30 +1,52 @@
 import type { MetadataRoute } from "next";
+import { fetchSnackIds } from "./server-actions/snacks/actions";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const snackIds = await fetchSnackIds();
+
+  const defaultUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+
+  const snackEntries: MetadataRoute.Sitemap =
+    snackIds?.map((id) => ({
+      url: `${defaultUrl}/snacks/${id}`,
+      lastModified: new Date(), // required
+      changeFrequency: "weekly", // required
+      priority: 0.8,
+    })) ?? [];
+
   return [
     {
-      url: "https://myduckee.com",
+      url: defaultUrl,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: "https://myduckee.com/snacks",
+      url: `${defaultUrl}/snacks`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://myduckee.com/trending",
+      url: `${defaultUrl}/trending`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.5,
     },
     {
-      url: "https://myduckee.com/locations",
+      url: `${defaultUrl}/locations`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.5,
     },
+    {
+      url: `${defaultUrl}/settings`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.5,
+    },
+    ...snackEntries,
   ];
 }

@@ -6,9 +6,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Metadata } from "next";
 import Link from "next/link";
 
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Locations",
+};
 
 const LocationsPage = async () => {
   const cityAndStateFrequency = await fetchCityAndStateFrequencies();
