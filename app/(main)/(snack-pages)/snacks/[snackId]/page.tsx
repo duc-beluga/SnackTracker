@@ -15,9 +15,11 @@ const SnackPage = async ({
     <div className="flex mt-32 justify-center">
       <Card>
         <CardHeader>
-          <CardTitle>{snackDetails.name}</CardTitle>
+          <CardTitle className="flex justify-center">
+            {snackDetails.name}
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex justify-center">
           <SnackCarousel images_locations={snackDetails.images_locations} />
         </CardContent>
       </Card>

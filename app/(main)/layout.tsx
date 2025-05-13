@@ -4,6 +4,7 @@ import NavSideBar from "@/components/nav-sidebar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Upload } from "lucide-react";
+import UploadButton from "@/components/upload-button";
 
 export const MainLayout = ({
   children,
@@ -19,11 +20,7 @@ export const MainLayout = ({
         <div className="md:hidden flex justify-between fixed z-50 w-full p-2 bg-background">
           <SidebarTrigger className="ml-3" />
           <div className="flex items-center pl-12 font-bold">WutsDis</div>
-          <Button variant="outline" asChild>
-            <Link href="snacks/new">
-              Upload <Upload />
-            </Link>
-          </Button>
+          <UploadButton />
         </div>
         {/* 52 is header scroll height */}
         <div className="mt-[52px] md:mt-0">{children}</div>

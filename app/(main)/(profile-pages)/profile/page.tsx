@@ -76,7 +76,7 @@ const ProfilePage = () => {
       <div className="flex justify-center mt-10">
         <Tabs defaultValue="uploaded" className="w-full">
           <div className="flex w-full justify-center">
-            <TabsList className="grid w-[400px] grid-cols-2">
+            <TabsList className="grid w-[400px] grid-cols-2 mb-3">
               <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
               <TabsTrigger value="liked">Liked</TabsTrigger>
             </TabsList>
