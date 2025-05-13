@@ -11,7 +11,7 @@ export const autocomplete = async (input: string) => {
     const response = await client.placeAutocomplete({
       params: {
         input,
-        key: process.env.NEXT_PUBLIC_GOOGLE_PLACE_AUTOCOMPLETE_API_KEY!,
+        key: process.env.GOOGLE_PLACE_AUTOCOMPLETE_API_KEY!,
       },
     });
 
