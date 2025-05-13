@@ -6,12 +6,11 @@ import {
 } from "../interfaces/SnackInterfaces";
 import {
   fetchSnacks,
-  fetchSnackImagesAndLocations,
   fetchLikedSnacks,
   fetchUploadedSnacks,
   fetchTrendingSnacks,
 } from "../server-actions/snacks/actions";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSnackDialog } from "./useSnackDialog";
 
 import { useInView } from "react-intersection-observer";
@@ -42,7 +41,6 @@ export function useSnackReels(location: Location) {
   //#region { Dependencies }
 
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { ref, inView } = useInView();
   const dialogState = useSnackDialog();
 
@@ -52,10 +50,6 @@ export function useSnackReels(location: Location) {
   useEffect(() => {
     fetchInitialSnacks();
   }, []);
-
-  useEffect(() => {
-    fetchSnackDetails();
-  }, [searchParams]);
 
   useEffect(() => {
     if (inView) {
@@ -90,27 +84,6 @@ export function useSnackReels(location: Location) {
     }
 
     setSnacks(snacksData);
-  }
-
-  async function fetchSnackDetails() {
-    const snackIdParam = searchParams.get("snackId");
-    const snackId = snackIdParam ? parseInt(snackIdParam, 10) : null;
-
-    if (snackId === null) {
-      return;
-    }
-
-    if (selectedSnack) {
-      dialogState.setIsDialogOpen(true);
-    }
-
-    const snackDetailsData = await fetchSnackImagesAndLocations(snackId);
-
-    if (snackDetailsData === null) {
-      return;
-    }
-
-    setSnackDetails(snackDetailsData);
   }
 
   async function fetchMoreSnacks() {
