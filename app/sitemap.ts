@@ -4,9 +4,8 @@ import { fetchSnackIds } from "./server-actions/snacks/actions";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const snackIds = await fetchSnackIds();
 
-  const defaultUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+  const defaultUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
   const snackEntries: MetadataRoute.Sitemap =
     snackIds?.map((id) => ({
