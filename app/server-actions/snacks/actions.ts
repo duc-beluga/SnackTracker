@@ -304,7 +304,10 @@ const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
 
     const { error: uploadImageError } = await supabase.storage
       .from("snacks_pics")
-      .upload(`${uniqueImageId}.png`, uploadImageFile);
+      .upload(`${uniqueImageId}.png`, uploadImageFile, {
+        cacheControl: "2678400",
+        upsert: false,
+      });
 
     if (uploadImageError) {
       console.error(uploadImageError.message);

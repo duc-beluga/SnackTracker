@@ -5,11 +5,13 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2678400,
     remotePatterns: [
       {
+        //Snack image
         protocol: "https",
         hostname: "yjzinpfmkbsbtxcosviy.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
       {
+        //User avatar
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
         pathname: "/**",
