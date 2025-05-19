@@ -1,5 +1,5 @@
 import { Location } from "@/app/interfaces/SnackInterfaces";
-import { getCurrentSession } from "@/app/server-actions/auth/actions";
+import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import SnackReels from "@/components/snack-reels";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 };
 
 const SnackPage = async () => {
-  const session = await getCurrentSession();
+  const user = await getCurrentUser();
 
-  const href = session ? "/snacks/new" : "/sign-in";
+  const href = user ? "/snacks/new" : "/sign-in";
 
   return (
     <div className="flex flex-col gap-3 my-2">

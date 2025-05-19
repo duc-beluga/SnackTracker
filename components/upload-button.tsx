@@ -2,12 +2,12 @@ import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Upload } from "lucide-react";
-import { getCurrentSession } from "@/app/server-actions/auth/actions";
+import { getCurrentUser } from "@/app/server-actions/auth/actions";
 
 const UploadButton = async () => {
-  const session = await getCurrentSession();
+  const user = await getCurrentUser();
 
-  const href = session ? "/snacks/new" : "/sign-in";
+  const href = user ? "/snacks/new" : "/sign-in";
 
   return (
     <Button variant="outline" asChild>

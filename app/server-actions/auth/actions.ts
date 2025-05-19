@@ -165,12 +165,3 @@ export const getCurrentUser = async (): Promise<User | null> => {
 
   return currentUser;
 };
-
-export async function getCurrentSession(): Promise<Session | null> {
-  const supabase = await createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  return session;
-}
