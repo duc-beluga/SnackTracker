@@ -1,6 +1,8 @@
 export * from "./accordion";
+export * from "./alert";
 export * from "./button";
 export * from "./card";
+export * from "./carousel";
 export * from "./command";
 export * from "./dialog";
 export * from "./form";
@@ -11,4 +13,6 @@ export * from "./sidebar";
 export * from "./skeleton";
 export * from "./separator";
 export * from "./sheet";
+export * from "./spinner";
+export * from "./stepper";
 export * from "./tabs";

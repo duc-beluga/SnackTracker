@@ -6,11 +6,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Form,
+  Stepper,
 } from "@/components/ui";
-import { Form } from "@/components/ui";
 
 // Custom components
-import Stepper from "./ui/stepper";
 import FormNavigation from "./form-navigation";
 import SnackNameFormField from "./snack-name-form-field";
 

@@ -4,13 +4,15 @@ import Image from "next/image";
 import { SnackImageLocationVal } from "@/app/interfaces/SnackInterfaces";
 
 import {
+  Card,
+  CardContent,
+  CardDescription,
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./ui/carousel";
-import { Card, CardContent, CardDescription } from "./ui/card";
+} from "@/components/ui";
 import SnackCarouselItemSkeleton from "./skeletons/snack-carousel-item-skeleton";
 
 interface SnackCarouselProps {

@@ -1,6 +1,6 @@
 import { signOutAction } from "@/app/server-actions/auth/actions";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function AuthButton() {

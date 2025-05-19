@@ -3,8 +3,7 @@
 import { Location, SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import React from "react";
 import Snacks from "./snacks";
-import Spinner from "./ui/spinner";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import { Alert, AlertDescription, AlertTitle, Spinner } from "@/components/ui";
 import { Frown } from "lucide-react";
 
 interface MoreSnackProps {

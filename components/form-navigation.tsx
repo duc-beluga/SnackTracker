@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui";
 
 interface FormNavigationProps {
   totalSteps: number;

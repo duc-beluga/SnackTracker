@@ -12,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  Skeleton,
 } from "@/components/ui";
 
 import React, { ReactNode, useEffect, useState } from "react";
@@ -36,7 +37,6 @@ import {
 import { usePathname } from "next/navigation";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
-import { Skeleton } from "./ui/skeleton";
 
 interface NavbarGroupInterface {
   groupLabel: string;

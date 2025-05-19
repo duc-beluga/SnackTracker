@@ -1,7 +1,5 @@
 "use client";
 
-import { Form } from "@/components/ui";
-
 // Custom components
 import FormNavigation from "./form-navigation";
 import SnackNameFormField from "./snack-name-form-field";
@@ -16,7 +14,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
+  Form,
+} from "@/components/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

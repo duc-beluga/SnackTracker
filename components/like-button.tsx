@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui";
 import { ChevronUp } from "lucide-react";
 import { SnackLike } from "@/app/interfaces/SnackInterfaces";
 import { useSnackLike } from "@/app/hooks/useSnackLike";

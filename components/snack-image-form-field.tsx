@@ -1,6 +1,11 @@
 import React from "react";
-import { FormControl, FormField, FormItem, FormLabel } from "./ui/form";
-import { Input } from "./ui/input";
+import {
+  Input,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui";
 import { Control } from "react-hook-form";
 import { z } from "zod";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";

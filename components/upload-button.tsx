@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui";
 import Link from "next/link";
 import { Upload } from "lucide-react";
 import { getCurrentUser } from "@/app/server-actions/auth/actions";

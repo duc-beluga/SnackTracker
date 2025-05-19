@@ -5,12 +5,6 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import { createClient } from "@/utils/supabase/client";
 
-// Type imports
-// (None in this set)
-
-// Utility functions
-// (None in this set)
-
 // UI Components - shadcn
 import {
   Command,
@@ -18,10 +12,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "./ui/command";
-
-// Custom components
-// (None in this set)
+} from "@/components/ui";
 
 interface SnackType {
   name: string;

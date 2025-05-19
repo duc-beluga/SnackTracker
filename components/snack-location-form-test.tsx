@@ -3,8 +3,14 @@
 import React from "react";
 import { z } from "zod";
 
-import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
-import { Input } from "./ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  Input,
+} from "@/components/ui";
 import SnackLocationSearch from "./snack-location-search";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocationForm";

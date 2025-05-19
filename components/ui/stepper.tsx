@@ -32,4 +32,4 @@ const Stepper = ({
   );
 };
 
-export default Stepper;
+export { Stepper };
