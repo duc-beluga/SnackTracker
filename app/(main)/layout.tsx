@@ -1,9 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 import NavSideBar from "@/components/nav-sidebar";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Upload } from "lucide-react";
 import UploadButton from "@/components/upload-button";
 
 export const MainLayout = ({
