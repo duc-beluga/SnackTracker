@@ -1,7 +1,7 @@
 "use client";
 
 import { Edit, Loader, Settings } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Location } from "@/app/interfaces/SnackInterfaces";

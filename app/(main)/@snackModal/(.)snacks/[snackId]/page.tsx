@@ -7,16 +7,16 @@ import { DialogNewSnack } from "@/components/dialog-new-snack";
 import LikeButton from "@/components/like-button";
 import SnackCarousel from "@/components/snack-carousel";
 import SnackLocationFormTest from "@/components/snack-location-form-test";
-import { Button } from "@/components/ui/button";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton";
+  Skeleton,
+} from "@/components/ui";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { User } from "@supabase/supabase-js";
 import { MapPinCheck, Plus } from "lucide-react";

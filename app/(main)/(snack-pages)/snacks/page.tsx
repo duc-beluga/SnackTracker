@@ -1,7 +1,7 @@
 import { Location } from "@/app/interfaces/SnackInterfaces";
 import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import SnackReels from "@/components/snack-reels";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { Upload } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";

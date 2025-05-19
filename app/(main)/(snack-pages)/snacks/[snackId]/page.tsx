@@ -1,6 +1,6 @@
 import { fetchSnackImagesAndLocationsTest } from "@/app/server-actions/snacks/actions";
 import SnackCarousel from "@/components/snack-carousel";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import React from "react";
 
 const SnackPage = async ({

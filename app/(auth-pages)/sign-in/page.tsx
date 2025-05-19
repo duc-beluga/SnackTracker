@@ -2,9 +2,7 @@ import { googleSignUp, signInAction } from "@/app/server-actions/auth/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import GoogleIcon from "@/components/google-icon";
 import { SubmitButton } from "@/components/submit-button";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, Input, Label } from "@/components/ui";
 import Link from "next/link";
 import { Metadata } from "next";
 
