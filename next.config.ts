@@ -22,6 +22,8 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "3mb",
     },
+    // This could be helpful for third-party libraries, for now, it's not helpful for Barrel Import
+    // optimizePackageImports: ["@/components/ui"],
   },
 };
 

@@ -6,8 +6,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
+} from "@/components/ui";
+import { Form } from "@/components/ui";
 
 // Custom components
 import Stepper from "./ui/stepper";

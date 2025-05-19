@@ -6,7 +6,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from "@/components/ui";
 import { autocomplete } from "@/lib/google";
 import { PlaceAutocompleteResult } from "@googlemaps/google-maps-services-js";
 import { useEffect, useState } from "react";

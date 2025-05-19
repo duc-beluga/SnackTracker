@@ -1,6 +1,6 @@
 "use client";
 
-import { Form } from "@/components/ui/form";
+import { Form } from "@/components/ui";
 
 // Custom components
 import FormNavigation from "./form-navigation";
