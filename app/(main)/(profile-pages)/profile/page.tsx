@@ -10,7 +10,7 @@ import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 
-const ProfilePage = () => {
+export default function ProfilePage() {
   const [user, setUser] = useState<User | null>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -91,6 +91,4 @@ const ProfilePage = () => {
       </div>
     </div>
   );
-};
-
-export default ProfilePage;
+}

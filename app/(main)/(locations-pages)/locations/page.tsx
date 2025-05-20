@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: "Locations",
 };
 
-const LocationsPage = async () => {
+export default async function LocationsPage() {
   const cityAndStateFrequency = await fetchCityAndStateFrequencies();
 
   function groupByStates(snackCitiesAndStates: SnackCityAndState[] | null) {
@@ -60,6 +60,4 @@ const LocationsPage = async () => {
       </div>
     </div>
   );
-};
-
-export default LocationsPage;
+}

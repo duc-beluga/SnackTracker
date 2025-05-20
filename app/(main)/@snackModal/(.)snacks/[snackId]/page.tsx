@@ -23,7 +23,11 @@ import { MapPinCheck, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const Modal = ({ params }: { params: Promise<{ snackId: string }> }) => {
+export default function Modal({
+  params,
+}: {
+  params: Promise<{ snackId: string }>;
+}) {
   const router = useRouter();
   const [open, setOpen] = useState(true);
   const [user, setUser] = useState<User | null>();
@@ -148,6 +152,4 @@ const Modal = ({ params }: { params: Promise<{ snackId: string }> }) => {
       </DialogContent>
     </Dialog>
   );
-};
-
-export default Modal;
+}

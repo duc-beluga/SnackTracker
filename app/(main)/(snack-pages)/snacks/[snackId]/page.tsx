@@ -3,11 +3,11 @@ import SnackCarousel from "@/components/snack-carousel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import React from "react";
 
-const SnackPage = async ({
+export default async function SnackPage({
   params,
 }: {
   params: Promise<{ snackId: string }>;
-}) => {
+}) {
   const snackId = parseInt((await params).snackId);
   const snackDetails = await fetchSnackImagesAndLocationsTest(snackId);
 
@@ -25,6 +25,4 @@ const SnackPage = async ({
       </Card>
     </div>
   );
-};
-
-export default SnackPage;
+}

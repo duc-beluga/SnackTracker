@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Snacks",
 };
 
-const SnackPage = async () => {
+export default async function SnackPage() {
   const user = await getCurrentUser();
 
   const href = user ? "/snacks/new" : "/sign-in";
@@ -27,6 +27,4 @@ const SnackPage = async () => {
       <SnackReels location={Location.Home} />
     </div>
   );
-};
-
-export default SnackPage;
+}
