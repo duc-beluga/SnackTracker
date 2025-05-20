@@ -30,7 +30,7 @@ interface SnackSearchInputProps<
   isTyping: boolean;
 }
 
-const SnackSearchInput = <
+export function SnackSearchInput<
   TFieldValue extends FieldValues,
   TName extends Path<TFieldValue>,
 >({
@@ -39,7 +39,7 @@ const SnackSearchInput = <
   setIsTyping,
   setSnackSelected,
   isTyping,
-}: SnackSearchInputProps<TFieldValue, TName>) => {
+}: SnackSearchInputProps<TFieldValue, TName>) {
   const [predictions, setPredictions] = useState<SnackType[]>([]);
   const [snacks, setSnacks] = useState<SnackType[] | null>([]);
 
@@ -117,6 +117,4 @@ const SnackSearchInput = <
       </CommandList>
     </Command>
   );
-};
-
-export default SnackSearchInput;
+}

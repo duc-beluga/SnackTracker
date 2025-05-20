@@ -4,7 +4,7 @@ import { useSnackReels } from "@/app/hooks/useSnackReels";
 import { Location } from "@/app/interfaces/SnackInterfaces";
 import React from "react";
 import Snacks from "./snacks";
-import MoreSnack from "./more-snack";
+import { MoreSnack } from "./more-snack";
 
 interface SnackReelsProps {
   location: Location;

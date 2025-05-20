@@ -1,13 +1,13 @@
 "use client";
 
 // Custom components
-import FormNavigation from "./form-navigation";
-import SnackNameFormField from "./snack-name-form-field";
+import { FormNavigation } from "./form-navigation";
+import { SnackNameFormField } from "./snack-name-form-field";
 
 //Custom hooks
 import { useNewSnackForm } from "@/app/hooks/useMultistepSnackForm";
-import SnackLocationFormField from "./snack-location-form-field";
-import SnackImageFormField from "./snack-image-form-field";
+import { SnackLocationFormField } from "./snack-location-form-field";
+import { SnackImageFormField } from "./snack-image-form-field";
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,7 @@ import { useState } from "react";
 
 const TOTAL_STEPS = 2;
 
-export const DialogNewSnack = () => {
+export function DialogNewSnack() {
   const router = useRouter();
   const [open, setOpen] = useState(true);
 
@@ -83,4 +83,4 @@ export const DialogNewSnack = () => {
       </DialogContent>
     </Dialog>
   );
-};
+}

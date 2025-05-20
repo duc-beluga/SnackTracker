@@ -19,7 +19,7 @@ interface SnackCarouselProps {
   images_locations: SnackImageLocationVal[] | undefined;
 }
 
-const SnackCarousel = ({ images_locations }: SnackCarouselProps) => {
+export function SnackCarousel({ images_locations }: SnackCarouselProps) {
   return (
     <Carousel className="w-[calc(100%-52px)] sm:w-full max-w-xs">
       <CarouselContent>
@@ -64,6 +64,4 @@ const SnackCarousel = ({ images_locations }: SnackCarouselProps) => {
       <CarouselNext />
     </Carousel>
   );
-};
-
-export default SnackCarousel;
+}

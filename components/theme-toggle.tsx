@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui";
 
-export function ThemeTogge() {
+export function ThemeToggle() {
   const { setTheme } = useTheme();
 
   return (

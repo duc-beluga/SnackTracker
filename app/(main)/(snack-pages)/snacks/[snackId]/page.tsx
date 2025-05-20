@@ -1,5 +1,5 @@
 import { fetchSnackImagesAndLocationsTest } from "@/app/server-actions/snacks/actions";
-import SnackCarousel from "@/components/snack-carousel";
+import { SnackCarousel } from "@/components/snack-carousel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import React from "react";
 

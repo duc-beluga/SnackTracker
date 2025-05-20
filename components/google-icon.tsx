@@ -1,6 +1,6 @@
 import React from "react";
 
-const GoogleIcon = () => {
+export function GoogleIcon() {
   return (
     <svg
       className="mr-2 h-4 w-4"
@@ -25,6 +25,4 @@ const GoogleIcon = () => {
       />
     </svg>
   );
-};
-
-export default GoogleIcon;
+}

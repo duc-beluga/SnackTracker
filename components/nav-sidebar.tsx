@@ -86,7 +86,7 @@ const navbarGroups: NavbarGroupInterface[] = [
   communityGroup,
 ];
 
-const NavSideBar = () => {
+export function NavSideBar() {
   const [currentUser, setCurrentUser] = useState<User | null>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -181,6 +181,4 @@ const NavSideBar = () => {
       <SidebarRail />
     </Sidebar>
   );
-};
-
-export default NavSideBar;
+}

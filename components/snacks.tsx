@@ -1,6 +1,6 @@
 import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import React from "react";
-import SnackCard from "./snack-card";
+import { SnackCard } from "./snack-card";
 
 interface SnacksProp {
   snacks: SnackDisplay[] | null | undefined;

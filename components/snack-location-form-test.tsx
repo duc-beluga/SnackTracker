@@ -11,7 +11,7 @@ import {
   FormLabel,
   Input,
 } from "@/components/ui";
-import SnackLocationSearch from "./snack-location-search";
+import { SnackLocationSearch } from "./snack-location-search";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocationForm";
 import { addSnackLocation } from "@/app/server-actions/snacks/actions";
@@ -21,7 +21,7 @@ interface LocationImageFormProps {
   snackId: number;
 }
 
-const SnackLocationFormTest = ({ snackId }: LocationImageFormProps) => {
+export function SnackLocationFormTest({ snackId }: LocationImageFormProps) {
   const reactHookSnackLocationForm = getSnackLocationFormWithDefaultId(snackId);
   const { handleSubmit, control } = reactHookSnackLocationForm;
 
@@ -86,6 +86,4 @@ const SnackLocationFormTest = ({ snackId }: LocationImageFormProps) => {
       </form>
     </Form>
   );
-};
-
-export default SnackLocationFormTest;
+}

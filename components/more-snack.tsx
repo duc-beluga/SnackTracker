@@ -13,7 +13,7 @@ interface MoreSnackProps {
   ref: (node?: Element | null) => void;
 }
 
-const MoreSnack = ({ snacks, hasMore, ref }: MoreSnackProps) => {
+export function MoreSnack({ snacks, hasMore, ref }: MoreSnackProps) {
   return (
     <>
       <Snacks snacks={snacks} />
@@ -37,6 +37,4 @@ const MoreSnack = ({ snacks, hasMore, ref }: MoreSnackProps) => {
       )}
     </>
   );
-};
-
-export default MoreSnack;
+}

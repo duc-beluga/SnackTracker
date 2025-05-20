@@ -7,7 +7,11 @@ interface FormNavigationProps {
   setStep: Dispatch<SetStateAction<number>>;
 }
 
-const FormNavigation = ({ totalSteps, step, setStep }: FormNavigationProps) => {
+export function FormNavigation({
+  totalSteps,
+  step,
+  setStep,
+}: FormNavigationProps) {
   const handleBack = () => {
     if (step > 0) {
       setStep(step - 1);
@@ -50,6 +54,4 @@ const FormNavigation = ({ totalSteps, step, setStep }: FormNavigationProps) => {
       )}
     </div>
   );
-};
-
-export default FormNavigation;
+}

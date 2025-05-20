@@ -14,7 +14,7 @@ interface SnackImageFormFieldProps {
   control: Control<z.infer<typeof SnackNameLocationSchemaType>>;
 }
 
-const SnackImageFormField = ({ control }: SnackImageFormFieldProps) => {
+export function SnackImageFormField({ control }: SnackImageFormFieldProps) {
   return (
     <FormField
       control={control}
@@ -36,6 +36,4 @@ const SnackImageFormField = ({ control }: SnackImageFormFieldProps) => {
       )}
     />
   );
-};
-
-export default SnackImageFormField;
+}

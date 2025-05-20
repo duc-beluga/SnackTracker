@@ -1,7 +1,7 @@
 import React from "react";
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui";
 import { PackagePlus } from "lucide-react";
-import SnackSearchInput from "./snack-search-input";
+import { SnackSearchInput } from "./snack-search-input";
 import { z } from "zod";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { useNewSnackForm } from "@/app/hooks/useMultistepSnackForm";
@@ -10,9 +10,9 @@ interface SnackNameFormFieldProps {
   multipleStepSnackFormState: ReturnType<typeof useNewSnackForm>;
 }
 
-const SnackNameFormField = ({
+export function SnackNameFormField({
   multipleStepSnackFormState,
-}: SnackNameFormFieldProps) => {
+}: SnackNameFormFieldProps) {
   const {
     snack: { isNewSnack, setIsNewSnack, setSelectedSnackId },
     typing: { isTyping, setIsTyping },
@@ -52,6 +52,4 @@ const SnackNameFormField = ({
       )}
     />
   );
-};
-
-export default SnackNameFormField;
+}

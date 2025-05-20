@@ -4,9 +4,9 @@ import { SnackDetailsTest } from "@/app/interfaces/SnackInterfaces";
 import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import { fetchSnackImagesAndLocationsTest } from "@/app/server-actions/snacks/actions";
 import { DialogNewSnack } from "@/components/dialog-new-snack";
-import LikeButton from "@/components/like-button";
-import SnackCarousel from "@/components/snack-carousel";
-import SnackLocationFormTest from "@/components/snack-location-form-test";
+import { LikeButton } from "@/components/like-button";
+import { SnackCarousel } from "@/components/snack-carousel";
+import { SnackLocationFormTest } from "@/components/snack-location-form-test";
 import {
   Button,
   Dialog,

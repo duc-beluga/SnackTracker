@@ -14,11 +14,11 @@ interface LikeButtonProps {
   initialLikeCount: number | undefined;
 }
 
-const LikeButton = ({
+export function LikeButton({
   snackId,
   userLikeData,
   initialLikeCount,
-}: LikeButtonProps) => {
+}: LikeButtonProps) {
   // Move all hooks to the top level - before any conditional returns
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
@@ -54,6 +54,4 @@ const LikeButton = ({
       </div>
     </div>
   );
-};
-
-export default LikeButton;
+}

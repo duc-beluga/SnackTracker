@@ -20,12 +20,10 @@ interface SnackLocationSearchProps<
   field: ControllerRenderProps<TFieldValues, TName>;
 }
 
-const SnackLocationSearch = <
+export function SnackLocationSearch<
   TFieldValue extends FieldValues,
   TName extends Path<TFieldValue>,
->({
-  field,
-}: SnackLocationSearchProps<TFieldValue, TName>) => {
+>({ field }: SnackLocationSearchProps<TFieldValue, TName>) {
   const [predictions, setPredictions] = useState<PlaceAutocompleteResult[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   useEffect(() => {
@@ -72,6 +70,4 @@ const SnackLocationSearch = <
       </CommandList>
     </Command>
   );
-};
-
-export default SnackLocationSearch;
+}

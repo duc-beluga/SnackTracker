@@ -11,17 +11,17 @@ import {
 } from "@/components/ui";
 
 // Custom components
-import FormNavigation from "./form-navigation";
-import SnackNameFormField from "./snack-name-form-field";
+import { FormNavigation } from "./form-navigation";
+import { SnackNameFormField } from "./snack-name-form-field";
 
 //Custom hooks
 import { useNewSnackForm } from "@/app/hooks/useMultistepSnackForm";
-import SnackLocationFormField from "./snack-location-form-field";
-import SnackImageFormField from "./snack-image-form-field";
+import { SnackLocationFormField } from "./snack-location-form-field";
+import { SnackImageFormField } from "./snack-image-form-field";
 
 const TOTAL_STEPS = 2;
 
-export const FormNewSnack = () => {
+export function FormNewSnack() {
   const multipleStepSnackFormState = useNewSnackForm();
   const {
     steps: { currentStep, setCurrentStep },
@@ -74,4 +74,4 @@ export const FormNewSnack = () => {
       </Card>
     </div>
   );
-};
+}

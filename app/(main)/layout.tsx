@@ -1,7 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
-import NavSideBar from "@/components/nav-sidebar";
-import UploadButton from "@/components/upload-button";
+import { NavSideBar } from "@/components/nav-sidebar";
+import { UploadButton } from "@/components/upload-button";
 
 export const MainLayout = ({
   children,
