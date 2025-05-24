@@ -33,14 +33,14 @@ export function SnackCarousel({ images_locations }: SnackCarouselProps) {
                     {image_location.snack_address}
                   </CardDescription>
                 </div>
-                <CardContent className="p-0 pt-2 relative aspect-square">
+                <CardContent className="p-0 relative aspect-square">
                   <div className="relative w-full h-full">
                     <Image
                       src={image_location.image_url}
                       alt="snackImage"
                       width={160}
                       height={220}
-                      className="object-cover w-full h-full"
+                      className="object-cover w-full h-full rounded-md"
                       priority={
                         image_location.image_location_id ===
                         images_locations[0]?.image_location_id

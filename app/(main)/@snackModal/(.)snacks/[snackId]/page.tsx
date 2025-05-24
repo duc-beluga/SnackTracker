@@ -94,8 +94,8 @@ export default function Modal({
               />
             </div>
             <DialogFooter>
-              <div className="flex flex-row justify-between w-full pl-3 pr-3">
-                <Skeleton className="w-full h-9" />
+              <div className="flex items-center justify-center w-full">
+                <Skeleton className="w-[248px] sm:w-[320px] h-9" />
               </div>
             </DialogFooter>
           </>
@@ -113,9 +113,12 @@ export default function Modal({
             <DialogFooter>
               <div className="flex items-center justify-center w-full">
                 {user === null || user === undefined ? (
-                  <Skeleton className="w-full h-9" />
+                  <Skeleton className="w-[248px] sm:w-[320px] h-9" />
                 ) : (
-                  <Button onClick={showNewLocationForm} className="w-full">
+                  <Button
+                    onClick={showNewLocationForm}
+                    className="w-[248px] sm:w-[320px]"
+                  >
                     Add new location <Plus />
                   </Button>
                 )}
