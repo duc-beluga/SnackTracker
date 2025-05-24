@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { SnackImageLocationVal } from "@/app/interfaces/SnackInterfaces";
+import { ImageLocation } from "@/app/interfaces/SnackInterfaces";
 
 import {
   Card,
@@ -14,9 +14,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui";
 import SnackCarouselItemSkeleton from "./skeletons/snack-carousel-item-skeleton";
+import LikeButtonTest from "./like-button-test";
 
 interface SnackCarouselProps {
-  images_locations: SnackImageLocationVal[] | undefined;
+  images_locations: ImageLocation[] | undefined;
 }
 
 export function SnackCarousel({ images_locations }: SnackCarouselProps) {
@@ -52,6 +53,11 @@ export function SnackCarousel({ images_locations }: SnackCarouselProps) {
                       }
                     />
                   </div>
+                  <LikeButtonTest
+                    like_count={image_location.like_count}
+                    like_id={image_location.like_id}
+                    image_location_id={image_location.image_location_id}
+                  />
                 </CardContent>
               </Card>
             </CarouselItem>

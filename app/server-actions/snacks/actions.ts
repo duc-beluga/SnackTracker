@@ -4,12 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import {
-  SnackDetails,
-  SnackDetailsTest,
-  SnackDisplay,
-  SnackLike,
-} from "../../interfaces/SnackInterfaces";
+import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 
 //#region { Snack Detail Operations }
@@ -42,127 +37,40 @@ export const addSnackLocation = async (
   }
 };
 
-export async function addSnackLike(snack_id: number) {
+export async function addSnackLikeTest(imageLocationId: number) {
   const supabase = await createClient();
 
   const {
     data: { user: currentUser },
   } = await supabase.auth.getUser();
 
-  if (!currentUser) {
-    throw new Error("User not authenticated");
-  }
-
-  const { data: newLike, error } = await supabase
+  const { error } = await supabase
     .from("likes")
-    .insert({ user_id: currentUser.id, snack_id: snack_id })
-    .select("like_id, user_id, snack_id")
-    .single();
+    .insert({ image_location_id: imageLocationId, user_id: currentUser?.id });
 
   if (error) {
     console.error("Error adding like:", error);
     throw error;
   }
-
-  return newLike as SnackLike | null;
 }
 
-export async function removeSnackLike(userLike: SnackLike | null) {
+export async function removeSnackLikeTest(imageLocationId: number) {
   const supabase = await createClient();
+
+  const {
+    data: { user: currentUser },
+  } = await supabase.auth.getUser();
 
   const { error } = await supabase
     .from("likes")
     .delete()
-    .eq("like_id", userLike?.like_id);
+    .eq("image_location_id", imageLocationId)
+    .eq("user_id", currentUser?.id);
 
   if (error) {
-    console.error("Error adding like:", error);
+    console.error("Error removing like:", error);
     throw error;
   }
-}
-
-export const fetchSnackLikeInfo = async (snack_id: number) => {
-  const supabase = await createClient();
-
-  const { count } = await supabase
-    .from("likes")
-    .select("*", { count: "exact", head: true })
-    .eq("snack_id", snack_id);
-
-  const {
-    data: { user: currentUser },
-  } = await supabase.auth.getUser();
-
-  let userSnackLike = null;
-  if (currentUser) {
-    const { data }: { data: SnackLike | null } = await supabase
-      .from("likes")
-      .select("like_id, user_id, snack_id")
-      .eq("user_id", currentUser.id || "")
-      .eq("snack_id", snack_id)
-      .maybeSingle();
-
-    userSnackLike = data;
-  }
-  return {
-    userSnackLike,
-    likeCount: count || 0,
-  };
-};
-
-export async function fetchSnackImagesAndLocations(snackId: number) {
-  const supabase = await createClient();
-
-  const { data: snackLocationsImages, error } = await supabase.rpc(
-    "get_images_and_locations_by_snackid",
-    {
-      p_snack_id: snackId,
-    }
-  );
-  if (error) {
-    console.error(error);
-  }
-
-  const snackLikeData = await fetchSnackLikeInfo(snackId);
-
-  const snackDetails: SnackDetails = {
-    images_locations: snackLocationsImages,
-    like_data: snackLikeData.userSnackLike,
-    like_count: snackLikeData.likeCount,
-  };
-
-  return snackDetails;
-}
-
-export async function fetchSnackImagesAndLocationsTest(snackId: number) {
-  const supabase = await createClient();
-
-  // Call the stored procedure to get snack details (without like info)
-  const { data: snackData, error } = await supabase.rpc(
-    "get_snack_details_by_id_v2",
-    {
-      p_snack_id: snackId,
-    }
-  );
-
-  if (error) {
-    console.error(error);
-    throw error; // Or handle error as needed
-  }
-
-  // Get the like data separately
-  const snackLikeData = await fetchSnackLikeInfo(snackId);
-
-  // Combine the results
-  const snackDetails: SnackDetailsTest = {
-    snack_id: snackData?.snack_id || snackId,
-    name: snackData?.name || "",
-    images_locations: snackData?.images_locations || [],
-    like_data: snackLikeData.userSnackLike,
-    like_count: snackLikeData.likeCount,
-  };
-
-  return snackDetails;
 }
 
 //#endregion
@@ -284,6 +192,27 @@ export async function fetchSnackIds(): Promise<number[] | null> {
   if (error) throw error;
 
   return data?.map((row) => row.snack_id) ?? null;
+}
+
+export async function fetchSnackDetail(
+  snackId: number
+): Promise<SnackDetail | null> {
+  const supabase = await createClient();
+
+  const {
+    data: { user: currentUser },
+  } = await supabase.auth.getUser();
+  const { data: fetchSnackDetailsData, error: fetchSnackDetailsError } =
+    await supabase.rpc("get_snack_details_by_id_v3", {
+      p_snack_id: snackId,
+      p_user_id: currentUser?.id,
+    });
+  if (fetchSnackDetailsError) {
+    console.error(fetchSnackDetailsError);
+    return null;
+  }
+
+  return fetchSnackDetailsData as SnackDetail | null;
 }
 
 //#endregion

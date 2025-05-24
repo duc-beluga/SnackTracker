@@ -1,4 +1,4 @@
-import { fetchSnackImagesAndLocationsTest } from "@/app/server-actions/snacks/actions";
+import { fetchSnackDetail } from "@/app/server-actions/snacks/actions";
 import { SnackCarousel } from "@/components/snack-carousel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import React from "react";
@@ -9,18 +9,18 @@ export default async function SnackPage({
   params: Promise<{ snackId: string }>;
 }) {
   const snackId = parseInt((await params).snackId);
-  const snackDetails = await fetchSnackImagesAndLocationsTest(snackId);
+  const snackDetails = await fetchSnackDetail(snackId);
 
   return (
     <div className="flex mt-32 justify-center">
       <Card>
         <CardHeader>
           <CardTitle className="flex justify-center">
-            {snackDetails.name}
+            {snackDetails?.name}
           </CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
-          <SnackCarousel images_locations={snackDetails.images_locations} />
+          <SnackCarousel images_locations={snackDetails?.images_locations} />
         </CardContent>
       </Card>
     </div>

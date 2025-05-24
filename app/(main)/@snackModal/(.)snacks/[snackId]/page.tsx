@@ -1,10 +1,9 @@
 "use client";
 
-import { SnackDetailsTest } from "@/app/interfaces/SnackInterfaces";
+import { SnackDetail } from "@/app/interfaces/SnackInterfaces";
 import { getCurrentUser } from "@/app/server-actions/auth/actions";
-import { fetchSnackImagesAndLocationsTest } from "@/app/server-actions/snacks/actions";
+import { fetchSnackDetail } from "@/app/server-actions/snacks/actions";
 import { DialogNewSnack } from "@/components/dialog-new-snack";
-import { LikeButton } from "@/components/like-button";
 import { SnackCarousel } from "@/components/snack-carousel";
 import { SnackLocationFormTest } from "@/components/snack-location-form-test";
 import {
@@ -32,7 +31,7 @@ export default function Modal({
   const [open, setOpen] = useState(true);
   const [user, setUser] = useState<User | null>();
   const [currentSnack, setCurrentSnack] = useState<
-    SnackDetailsTest | undefined
+    SnackDetail | undefined | null
   >();
   const [isNewLocationSelected, setIsNewLocationSelected] = useState(false);
   const [isUploadSnack, setIsUploadSnack] = useState<boolean>(false);
@@ -59,7 +58,7 @@ export default function Modal({
         setIsUploadSnack(true);
         return;
       }
-      const snackDetailsTask = fetchSnackImagesAndLocationsTest(snackId);
+      const snackDetailsTask = fetchSnackDetail(snackId);
       const userDataTask = getCurrentUser();
 
       const [snackDetailsData, userData] = await Promise.all([
@@ -96,10 +95,7 @@ export default function Modal({
             </div>
             <DialogFooter>
               <div className="flex flex-row justify-between w-full pl-3 pr-3">
-                <Skeleton className="w-[50px] h-9" />
-                <div>
-                  <Skeleton className="w-44 h-9" />
-                </div>
+                <Skeleton className="w-full h-9" />
               </div>
             </DialogFooter>
           </>
@@ -115,21 +111,14 @@ export default function Modal({
               />
             </div>
             <DialogFooter>
-              <div className="flex flex-row justify-between w-full pl-3 pr-3">
-                <LikeButton
-                  initialLikeCount={currentSnack?.like_count}
-                  userLikeData={currentSnack?.like_data}
-                  snackId={currentSnack?.snack_id}
-                />
-                <div>
-                  {user !== null ? (
-                    <Button onClick={showNewLocationForm}>
-                      Add new location <Plus />
-                    </Button>
-                  ) : (
-                    user && <Skeleton className="w-44 h-9" />
-                  )}
-                </div>
+              <div className="flex items-center justify-center w-full">
+                {user === null || user === undefined ? (
+                  <Skeleton className="w-full h-9" />
+                ) : (
+                  <Button onClick={showNewLocationForm} className="w-full">
+                    Add new location <Plus />
+                  </Button>
+                )}
               </div>
             </DialogFooter>
           </>
@@ -139,7 +128,9 @@ export default function Modal({
               <DialogTitle>{currentSnack?.name}</DialogTitle>
               <DialogDescription>Where did you find it?</DialogDescription>
             </DialogHeader>
-            <SnackLocationFormTest snackId={currentSnack.snack_id} />
+            {currentSnack && (
+              <SnackLocationFormTest snackId={currentSnack.snack_id} />
+            )}
             <DialogFooter>
               <DialogClose asChild>
                 <Button form="addSnackLocationForm" type="submit">

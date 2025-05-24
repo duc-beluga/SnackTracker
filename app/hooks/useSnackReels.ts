@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Location,
-  SnackDetails,
-  SnackDisplay,
-} from "../interfaces/SnackInterfaces";
+import { Location, SnackDisplay } from "../interfaces/SnackInterfaces";
 import {
   fetchSnacks,
   fetchLikedSnacks,
@@ -29,7 +25,6 @@ export function useSnackReels(location: Location) {
 
   const [snacks, setSnacks] = useState<SnackDisplay[] | null>();
   const [selectedSnack, setSelectedSnack] = useState<SnackDisplay | null>(null);
-  const [snackDetails, setSnackDetails] = useState<SnackDetails | null>(null);
 
   const [startRange, setStartRange] = useState<number>(0);
   const [endRange, setEndRange] = useState<number>(11);
@@ -133,25 +128,9 @@ export function useSnackReels(location: Location) {
     }
   }
 
-  function onDialogVisibilityChange(isOpen: boolean) {
-    if (!isOpen) {
-      handleModalClose();
-    } else {
-      dialogState.setIsDialogOpen(true);
-    }
-  }
-
   //#endregion
 
   //#region { Helper functions }
-
-  function handleModalClose() {
-    router.push(window.location.pathname, { scroll: false });
-    dialogState.setIsDialogOpen(false);
-    setSelectedSnack(null);
-    setSnackDetails(null);
-    dialogState.hideNewLocationForm();
-  }
 
   //#endregion
 
@@ -159,9 +138,7 @@ export function useSnackReels(location: Location) {
     snacks,
     onSnackClick,
     selectedSnack,
-    snackDetails,
     dialogState,
-    onDialogVisibilityChange,
     ref,
     hasMore,
   };
