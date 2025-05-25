@@ -65,7 +65,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="flex justify-between">
-        <div className="pt-20 px-8 pb-2">
+        <div className="pt-20 px-6 sm:px-8 pb-2">
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-2xl font-bold">
@@ -75,7 +75,7 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-end gap-2 p-8">
+        <div className="flex flex-col items-end gap-2 p-2 pt-4 sm:p-8">
           <div className="flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-1 shadow-sm border border-yellow-300">
             <Coins size={20} className="text-yellow-600" />
             <span className="text-base font-semibold text-yellow-800">
