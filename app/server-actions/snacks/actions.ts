@@ -7,6 +7,8 @@ import { z } from "zod";
 import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 
+const EMPTY_GUID = "00000000-0000-0000-0000-000000000000";
+
 //#region { Snack Detail Operations }
 
 export const addSnackLocation = async (
@@ -202,10 +204,19 @@ export async function fetchSnackDetail(
   const {
     data: { user: currentUser },
   } = await supabase.auth.getUser();
+
+  let currentUserId;
+
+  if (!currentUser?.id) {
+    currentUserId = EMPTY_GUID;
+  } else {
+    currentUserId = currentUser.id;
+  }
+
   const { data: fetchSnackDetailsData, error: fetchSnackDetailsError } =
     await supabase.rpc("get_snack_details_by_id_v3", {
       p_snack_id: snackId,
-      p_user_id: currentUser?.id,
+      p_user_id: currentUserId,
     });
   if (fetchSnackDetailsError) {
     console.error(fetchSnackDetailsError);

@@ -112,7 +112,9 @@ export default function Modal({
             </div>
             <DialogFooter>
               <div className="flex items-center justify-center w-full">
-                {user === null || user === undefined ? (
+                {user === null ? (
+                  <></>
+                ) : user === undefined ? (
                   <Skeleton className="w-[248px] sm:w-[320px] h-9" />
                 ) : (
                   <Button
