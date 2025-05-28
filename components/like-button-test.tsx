@@ -1,11 +1,15 @@
 "use client";
 
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { useRouter } from "next/navigation";
+import { Heart } from "lucide-react";
+import React, { useState } from "react";
+
 import {
   addSnackLikeTest,
   removeSnackLikeTest,
 } from "@/app/server-actions/snacks/actions";
-import { Heart } from "lucide-react";
-import React, { useState } from "react";
 
 type LikeButtonTestProps = {
   like_count: number;
@@ -21,14 +25,21 @@ export default function LikeButtonTest({
   const [isLiked, setIsLiked] = useState<boolean>(like_id ? true : false);
   const [likeCount, setLikeCount] = useState<number>(like_count);
 
+  const router = useRouter();
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+
   async function handleLiked() {
-    setIsLiked(!isLiked);
-    if (isLiked) {
-      setLikeCount(likeCount - 1);
-      await removeSnackLikeTest(image_location_id);
+    if (currentUser !== null) {
+      setIsLiked(!isLiked);
+      if (isLiked) {
+        setLikeCount(likeCount - 1);
+        await removeSnackLikeTest(image_location_id);
+      } else {
+        setLikeCount(likeCount + 1);
+        await addSnackLikeTest(image_location_id);
+      }
     } else {
-      setLikeCount(likeCount + 1);
-      await addSnackLikeTest(image_location_id);
+      router.push("/sign-in");
     }
   }
 

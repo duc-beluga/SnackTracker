@@ -15,7 +15,7 @@ import {
   Skeleton,
 } from "@/components/ui";
 
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 import Link from "next/link";
 
 import {
@@ -35,8 +35,8 @@ import {
   signOutAction,
 } from "@/app/server-actions/auth/actions";
 import { usePathname } from "next/navigation";
-import { User } from "@supabase/supabase-js";
-import { createClient } from "@/utils/supabase/client";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
 
 interface NavbarGroupInterface {
   groupLabel: string;
@@ -87,26 +87,7 @@ const navbarGroups: NavbarGroupInterface[] = [
 ];
 
 export function NavSideBar() {
-  const [currentUser, setCurrentUser] = useState<User | null>();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function getCurrentUser() {
-      setIsLoading(true);
-
-      try {
-        //Might try a way to use useSelector
-        const supabase = createClient();
-        const user = await supabase.auth.getUser();
-        setCurrentUser(user.data.user);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getCurrentUser();
-  }, []);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   const pathName = usePathname();
 
@@ -158,9 +139,9 @@ export function NavSideBar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            {isLoading ? (
+            {currentUser === undefined ? (
               <Skeleton className="w-40 h-7" />
-            ) : currentUser ? (
+            ) : currentUser !== null ? (
               <SidebarMenuButton
                 className="bg-red-400 hover:bg-red-500 hover:text-white text-white flex-row justify-center"
                 onClick={signOutAction}
