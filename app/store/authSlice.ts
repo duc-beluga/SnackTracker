@@ -3,11 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { User } from "@supabase/supabase-js";
 
 export interface UserState {
-  currentUser: User | null;
+  currentUser: User | null | undefined;
 }
 
 const initialState: UserState = {
-  currentUser: null,
+  currentUser: undefined,
 };
 
 export const authSlice = createSlice({

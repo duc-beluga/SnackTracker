@@ -1,8 +1,8 @@
 "use client";
 
 import { SnackDetail } from "@/app/interfaces/SnackInterfaces";
-import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import { fetchSnackDetail } from "@/app/server-actions/snacks/actions";
+import { RootState } from "@/app/store/store";
 import { DialogNewSnack } from "@/components/dialog-new-snack";
 import { SnackCarousel } from "@/components/snack-carousel";
 import { SnackLocationFormTest } from "@/components/snack-location-form-test";
@@ -17,10 +17,10 @@ import {
   Skeleton,
 } from "@/components/ui";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { User } from "@supabase/supabase-js";
 import { MapPinCheck, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Modal({
   params,
@@ -29,12 +29,13 @@ export default function Modal({
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(true);
-  const [user, setUser] = useState<User | null>();
   const [currentSnack, setCurrentSnack] = useState<
     SnackDetail | undefined | null
   >();
   const [isNewLocationSelected, setIsNewLocationSelected] = useState(false);
   const [isUploadSnack, setIsUploadSnack] = useState<boolean>(false);
+
+  const user = useSelector((state: RootState) => state.user.currentUser);
 
   const showNewLocationForm = () => setIsNewLocationSelected(true);
   function onDialogVisibilityChange(isOpen: boolean) {
@@ -58,16 +59,10 @@ export default function Modal({
         setIsUploadSnack(true);
         return;
       }
-      const snackDetailsTask = fetchSnackDetail(snackId);
-      const userDataTask = getCurrentUser();
 
-      const [snackDetailsData, userData] = await Promise.all([
-        snackDetailsTask,
-        userDataTask,
-      ]);
+      const snackDetailsData = await fetchSnackDetail(snackId);
 
       setCurrentSnack(snackDetailsData);
-      setUser(userData);
     }
 
     fetchSnackDetails();
@@ -80,12 +75,18 @@ export default function Modal({
   return (
     <Dialog open={open} onOpenChange={onDialogVisibilityChange}>
       <DialogContent className="max-w-[350px] sm:max-w-[425px] rounded-md">
-        {currentSnack === undefined || user === undefined ? (
+        {!isNewLocationSelected ? (
           <>
             <DialogDescription className="hidden"></DialogDescription>
             <DialogHeader>
               <DialogTitle>
-                <Skeleton className="h-[18px] w-12" />
+                {currentSnack === undefined ? (
+                  <Skeleton className="h-[18px] w-12" />
+                ) : currentSnack === null ? (
+                  "Snack Not Found"
+                ) : (
+                  currentSnack.name
+                )}
               </DialogTitle>
             </DialogHeader>
             <div className="flex justify-center">
@@ -95,34 +96,17 @@ export default function Modal({
             </div>
             <DialogFooter>
               <div className="flex items-center justify-center w-full">
-                <Skeleton className="w-[248px] sm:w-[320px] h-9" />
-              </div>
-            </DialogFooter>
-          </>
-        ) : !isNewLocationSelected ? (
-          <>
-            <DialogDescription className="hidden"></DialogDescription>
-            <DialogHeader>
-              <DialogTitle>{currentSnack?.name}</DialogTitle>
-            </DialogHeader>
-            <div className="flex justify-center">
-              <SnackCarousel
-                images_locations={currentSnack?.images_locations}
-              />
-            </div>
-            <DialogFooter>
-              <div className="flex items-center justify-center w-full">
-                {user === null ? (
-                  <></>
-                ) : user === undefined ? (
+                {user === undefined ? (
                   <Skeleton className="w-[248px] sm:w-[320px] h-9" />
                 ) : (
-                  <Button
-                    onClick={showNewLocationForm}
-                    className="w-[248px] sm:w-[320px]"
-                  >
-                    Add new location <Plus />
-                  </Button>
+                  user !== null && (
+                    <Button
+                      onClick={showNewLocationForm}
+                      className="w-[248px] sm:w-[320px]"
+                    >
+                      Add new location <Plus />
+                    </Button>
+                  )
                 )}
               </div>
             </DialogFooter>
