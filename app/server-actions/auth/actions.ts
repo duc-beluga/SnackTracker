@@ -1,10 +1,13 @@
 "use server";
 
-import { encodedRedirect } from "@/utils/utils";
-import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { Session, User } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
+import { z } from "zod";
+
+import { SignInSchemaType } from "@/utils/zod/schemas/SignInSchema";
+import { encodedRedirect } from "@/utils/utils";
+import { createClient } from "@/utils/supabase/server";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -40,21 +43,21 @@ export const signUpAction = async (formData: FormData) => {
   }
 };
 
-export const signInAction = async (formData: FormData) => {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+export const passwordSignInAction = async (
+  values: z.infer<typeof SignInSchemaType>
+) => {
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: values.email,
+    password: values.password,
   });
 
   if (error) {
-    return encodedRedirect("error", "/sign-in", error.message);
+    return { error: error.message, user: null };
   }
 
-  return redirect("/");
+  return { error: null, user: data.user };
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -134,7 +137,7 @@ export const signOutAction = async () => {
   return redirect("/sign-in");
 };
 
-export const googleSignUp = async () => {
+export const googleSignInAction = async () => {
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
