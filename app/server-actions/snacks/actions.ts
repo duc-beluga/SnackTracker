@@ -154,7 +154,20 @@ export async function fetchSnacks(startRange: number, endRange: number) {
 
   const { data: snacks, error: fetchSnacksError } = await supabase
     .from("snacks")
-    .select("snack_id, name, primary_image_url")
+    .select(
+      `
+      snack_id,
+      name,
+      primary_image_url,
+      snack_images(
+        image_id,
+        images_locations(
+          image_location_id,
+          likes(count)
+        )
+      )
+    `
+    )
     .order("created_at", { ascending: false })
     .order("snack_id", { ascending: true })
     .range(startRange, endRange);
@@ -164,7 +177,28 @@ export async function fetchSnacks(startRange: number, endRange: number) {
     return null;
   }
 
-  return snacks as SnackDisplay[] | null;
+  const formattedSnacks = snacks?.map((snack) => {
+    let totalLikes = 0;
+    const imageCount = snack.snack_images?.length ?? 0;
+
+    // Count total likes
+    snack.snack_images?.forEach((image) => {
+      image.images_locations?.forEach((location) => {
+        const likesCount = location.likes?.[0]?.count ?? 0;
+        totalLikes += likesCount;
+      });
+    });
+
+    return {
+      snack_id: snack.snack_id,
+      name: snack.name,
+      primary_image_url: snack.primary_image_url,
+      image_count: imageCount,
+      like_count: totalLikes,
+    };
+  });
+
+  return formattedSnacks as SnackDisplay[] | null;
 }
 
 export async function fetchTrendingSnacks(
