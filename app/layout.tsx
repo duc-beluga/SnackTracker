@@ -30,6 +30,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
+      <head>
+        {/* Preconnect to Supabase */}
+        <link
+          rel="preconnect"
+          href="https://yjzinpfmkbsbtxcosviy.supabase.co"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
