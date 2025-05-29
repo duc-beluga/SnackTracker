@@ -16,9 +16,9 @@ export function SnackCard({ snack }: CardProps) {
   return (
     <Card
       key={snack.snack_id}
-      className="w-[350px] sm:w-52 md:w-44 lg:w-44 rounded-lg overflow-hidden shadow-md transition-all duration-300"
+      className="w-full max-w-sm sm:max-w-52 md:max-w-44 lg:max-w-44 rounded-lg overflow-hidden shadow-md bg-white"
     >
-      <CardContent className="h-96 md:h-64 lg:h-60 p-0">
+      <CardContent className="h-64 sm:h-56 md:h-52 p-0">
         {snack.primary_image_url ? (
           <Link
             href={`/?snackId=${snack.snack_id}`}
@@ -31,7 +31,7 @@ export function SnackCard({ snack }: CardProps) {
               width={160}
               height={220}
               priority
-              className="w-full h-full object-cover rounded-t-lg cursor-pointer"
+              className="w-full h-full object-cover"
             />
           </Link>
         ) : (
@@ -44,18 +44,20 @@ export function SnackCard({ snack }: CardProps) {
           />
         )}
       </CardContent>
-      <CardFooter className="flex flex-col items-center justify-center p-3 h-24 text-center gap-2">
-        <p className="text-lg sm:text-sm font-semibold leading-snug line-clamp-2 h-10">
+
+      <CardFooter className="flex flex-col sm:flex-col items-start sm:items-center justify-between p-4 h-28 sm:h-24 text-left gap-2 sm:gap-1">
+        <p className="text-base sm:text-sm font-semibold leading-relaxed line-clamp-2">
           {snack.name}
         </p>
-        <div className="flex justify-between items-center w-3/4">
-          <div className="flex items-center gap-1 text-gray-500 text-sm">
-            <MapPin className="w-6 h-6 sm:w-4 sm:h-4" />
-            <span className="text-lg sm:text-sm">{snack.image_count}</span>
+
+        <div className="flex justify-between items-center w-full  mt-auto">
+          <div className="flex items-center gap-1 text-gray-600 text-sm">
+            <MapPin className="w-5 h-5 sm:w-4 sm:h-4" />
+            <span className="text-base sm:text-sm">{snack.image_count}</span>
           </div>
-          <div className="flex items-center gap-1 text-gray-500 text-sm">
-            <Heart className="w-6 h-6 sm:w-4 sm:h-4" />
-            <span className="text-lg sm:text-sm">{snack.like_count}</span>
+          <div className="flex items-center gap-1 text-gray-600 text-sm">
+            <Heart className="w-5 h-5 sm:w-4 sm:h-4 " />
+            <span className="text-base sm:text-sm">{snack.like_count}</span>
           </div>
         </div>
       </CardFooter>
