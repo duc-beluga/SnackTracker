@@ -1,27 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui";
 import Link from "next/link";
 import { Upload } from "lucide-react";
-import { getCurrentUser } from "@/app/server-actions/auth/actions";
+import { RootState } from "@/app/store/store";
+import { useSelector } from "react-redux";
 
 export function UploadButton() {
-  const [uploadLink, setUploadLink] = useState<string>("");
-
-  useEffect(() => {
-    async function setDestinationLink() {
-      const currentUser = await getCurrentUser();
-      const destination = currentUser ? "/snacks/new" : "/sign-in";
-      setUploadLink(destination);
-    }
-
-    setDestinationLink();
-  }, []);
+  const user = useSelector((state: RootState) => state.user.currentUser);
 
   return (
     <Button variant="outline" asChild>
-      <Link href={uploadLink}>
+      <Link href={user ? "/snacks/new" : "/sign-in"}>
         Upload <Upload />
       </Link>
     </Button>
