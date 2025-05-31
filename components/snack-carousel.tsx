@@ -14,7 +14,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui";
 import SnackCarouselItemSkeleton from "./skeletons/snack-carousel-item-skeleton";
-import LikeButtonTest from "./like-button-test";
+import LikeButton from "./like-button";
 
 interface SnackCarouselProps {
   images_locations: ImageLocation[] | undefined;
@@ -53,7 +53,7 @@ export function SnackCarousel({ images_locations }: SnackCarouselProps) {
                       }
                     />
                   </div>
-                  <LikeButtonTest
+                  <LikeButton
                     like_count={image_location.like_count}
                     like_id={image_location.like_id}
                     image_location_id={image_location.image_location_id}

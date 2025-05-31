@@ -5,7 +5,7 @@ export * from "./form-navigation";
 export * from "./form-new-snack";
 export * from "./google-icon";
 export * from "./header-auth";
-export * from "./like-button-test";
+export * from "./like-button";
 export * from "./more-snack";
 export * from "./nav-sidebar";
 export * from "./snack-card";

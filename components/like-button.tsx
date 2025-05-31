@@ -11,17 +11,17 @@ import {
   removeSnackLikeTest,
 } from "@/app/server-actions/snacks/actions";
 
-type LikeButtonTestProps = {
+type LikeButtonProps = {
   like_count: number;
   like_id: number | null;
   image_location_id: number;
 };
 
-export default function LikeButtonTest({
+export default function LikeButton({
   like_count,
   like_id,
   image_location_id,
-}: LikeButtonTestProps) {
+}: LikeButtonProps) {
   const [isLiked, setIsLiked] = useState<boolean>(like_id ? true : false);
   const [likeCount, setLikeCount] = useState<number>(like_count);
 
