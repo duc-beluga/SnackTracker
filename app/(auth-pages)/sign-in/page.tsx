@@ -11,7 +11,7 @@ import {
   googleSignInAction,
   passwordSignInAction,
 } from "@/app/server-actions/auth/actions";
-import { GoogleIcon } from "@/components/google-icon";
+import { GoogleIcon } from "@/components/ui/google-icon";
 import {
   Button,
   Form,

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bean, Coins, Loader } from "lucide-react";
+import { Coins, Loader } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import { getUserTokens } from "@/app/server-actions/user/actions";
-import { MaterialSymbolsLightMoneyBag } from "@/components/dusty-pouch";
+import { DustyPouch } from "@/components/ui/dusty-pouch";
 
 export default function ProfilePage() {
   const [currentUser, setCurrentUser] = useState<User | null>();
@@ -84,7 +84,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="flex items-center gap-2 rounded-full bg-blue-100 px-3 py-0.5 shadow-sm border border-blue-300">
-            <MaterialSymbolsLightMoneyBag />
+            <DustyPouch />
             <span className="text-base font-semibold text-blue-800">
               Dusty Pouch
             </span>
