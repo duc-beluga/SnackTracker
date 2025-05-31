@@ -19,9 +19,13 @@ import { toast } from "sonner";
 
 interface LocationImageFormProps {
   snackId: number;
+  closeDialog: () => void;
 }
 
-export function SnackLocationFormTest({ snackId }: LocationImageFormProps) {
+export function SnackLocationFormTest({
+  snackId,
+  closeDialog,
+}: LocationImageFormProps) {
   const reactHookSnackLocationForm = getSnackLocationFormWithDefaultId(snackId);
   const { handleSubmit, control } = reactHookSnackLocationForm;
 
@@ -31,6 +35,7 @@ export function SnackLocationFormTest({ snackId }: LocationImageFormProps) {
     try {
       await addSnackLocation(values);
       toast.success("New location successfully added");
+      closeDialog();
     } catch (e: unknown) {
       if (e instanceof Error) {
         toast.error(e.message);

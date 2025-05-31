@@ -118,14 +118,15 @@ export default function Modal({
               <DialogDescription>Where did you find it?</DialogDescription>
             </DialogHeader>
             {currentSnack && (
-              <SnackLocationFormTest snackId={currentSnack.snack_id} />
+              <SnackLocationFormTest
+                snackId={currentSnack.snack_id}
+                closeDialog={handleModalClose}
+              />
             )}
             <DialogFooter>
-              <DialogClose asChild>
-                <Button form="addSnackLocationForm" type="submit">
-                  Put me on the Map <MapPinCheck />
-                </Button>
-              </DialogClose>
+              <Button form="addSnackLocationForm" type="submit">
+                Put me on the Map <MapPinCheck />
+              </Button>
             </DialogFooter>
           </>
         )}
