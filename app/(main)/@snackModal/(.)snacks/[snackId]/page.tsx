@@ -5,7 +5,7 @@ import { fetchSnackDetail } from "@/app/server-actions/snacks/actions";
 import { RootState } from "@/app/store/store";
 import { DialogNewSnack } from "@/components/dialog-new-snack";
 import { SnackCarousel } from "@/components/snack-carousel";
-import { SnackLocationFormTest } from "@/components/snack-location-form-test";
+import { SnackLocationForm } from "@/components/snack-location-form";
 import {
   Button,
   Dialog,
@@ -118,7 +118,7 @@ export default function Modal({
               <DialogDescription>Where did you find it?</DialogDescription>
             </DialogHeader>
             {currentSnack && (
-              <SnackLocationFormTest
+              <SnackLocationForm
                 snackId={currentSnack.snack_id}
                 closeDialog={handleModalClose}
               />

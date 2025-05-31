@@ -12,7 +12,7 @@ export * from "./snack-card";
 export * from "./snack-carousel";
 export * from "./snack-image-form-field";
 export * from "./snack-location-form-field";
-export * from "./snack-location-form-test";
+export * from "./snack-location-form";
 export * from "./snack-location-search";
 export * from "./snack-name-form-field";
 export * from "./snack-reels";

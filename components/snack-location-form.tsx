@@ -22,7 +22,7 @@ interface LocationImageFormProps {
   closeDialog: () => void;
 }
 
-export function SnackLocationFormTest({
+export function SnackLocationForm({
   snackId,
   closeDialog,
 }: LocationImageFormProps) {
