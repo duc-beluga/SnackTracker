@@ -25,7 +25,7 @@ export function MoreSnack({ snacks, hasMore, ref }: MoreSnackProps) {
           <Spinner />
         </div>
       ) : (
-        <div className="p-4 col-span-1 sm:col-span-3 md:col-span-3 lg:col-span-4 xl:col-span-6 2xl:col-span-7">
+        <div className="p-4 col-span-2 sm:col-span-3 md:col-span-3 lg:col-span-4 xl:col-span-6 2xl:col-span-7">
           <Alert>
             <Frown className="h-4 w-4" />
             <AlertTitle>Uh oh!</AlertTitle>

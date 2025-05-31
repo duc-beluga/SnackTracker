@@ -1,30 +1,20 @@
 import { Location } from "@/app/interfaces/SnackInterfaces";
-import { getCurrentUser } from "@/app/server-actions/auth/actions";
+import NavTopBar from "@/components/nav-topbar";
 import SnackReels from "@/components/snack-reels";
-import { Button } from "@/components/ui";
-import { Upload } from "lucide-react";
 import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Snacks",
 };
 
-export default async function SnackPage() {
-  const user = await getCurrentUser();
-
-  const href = user ? "/snacks/new" : "/sign-in";
-
+export default function SnackPage() {
   return (
-    <div className="flex flex-col gap-3 my-2">
-      <div className="flex justify-start pt-4 md:px-4">
-        <Button variant="outline" className="hidden md:inline-flex" asChild>
-          <Link href={href}>
-            Upload <Upload />
-          </Link>
-        </Button>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <NavTopBar />
+
+      <div className="w-full py-6">
+        <SnackReels location={Location.Home} />
       </div>
-      <SnackReels location={Location.Home} />
     </div>
   );
 }

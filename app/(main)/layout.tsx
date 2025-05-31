@@ -14,13 +14,7 @@ export const MainLayout = ({
     <SidebarProvider>
       <NavSideBar />
       <div className="w-full">
-        <div className="md:hidden flex justify-between fixed z-50 w-full p-2 bg-background">
-          <SidebarTrigger className="ml-3" />
-          <div className="flex items-center pl-12 font-bold">WutsDis</div>
-          <UploadButton />
-        </div>
-        {/* 52 is header scroll height */}
-        <div className="mt-[52px] md:mt-0">{children}</div>
+        <div>{children}</div>
         {snackModal}
       </div>
     </SidebarProvider>
