@@ -2,6 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 import { NavSideBar } from "@/components/nav-sidebar";
 import { UploadButton } from "@/components/upload-button";
+import NavTopBar from "@/components/nav-topbar";
 
 export const MainLayout = ({
   children,
@@ -13,7 +14,9 @@ export const MainLayout = ({
   return (
     <SidebarProvider>
       <NavSideBar />
-      <div className="w-full">
+
+      <div className="w-full min-h-screen">
+        <NavTopBar />
         <div>{children}</div>
         {snackModal}
       </div>

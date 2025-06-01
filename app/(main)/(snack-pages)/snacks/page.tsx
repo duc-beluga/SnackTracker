@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function SnackPage() {
   return (
-    <div className="min-h-screen">
-      <NavTopBar />
-
-      <div className="w-full py-6">
-        <SnackReels location={Location.Home} />
-      </div>
+    <div className="w-full py-6">
+      <SnackReels location={Location.Home} />
     </div>
   );
 }
