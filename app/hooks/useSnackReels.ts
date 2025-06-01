@@ -47,11 +47,7 @@ export function useSnackReels(
   //#region { Effect }
   useEffect(() => {
     fetchInitialSnacks();
-  }, []);
-
-  useEffect(() => {
-    fetchInitialSnacks();
-  }, [timeRange]);
+  }, [location, timeRange]);
 
   useEffect(() => {
     if (inView) {
@@ -64,6 +60,12 @@ export function useSnackReels(
   //#region { Effect Callbacks }
 
   async function fetchInitialSnacks() {
+    setSnacks([]);
+    setStartRange(INITIAL_START_RANGE);
+    setEndRange(INITIAL_END_RANGE);
+    setHasMore(true);
+    setLoading(false);
+
     let snacksData;
 
     if (location === Location.Home) {
@@ -79,19 +81,11 @@ export function useSnackReels(
         INITIAL_END_RANGE
       );
     } else if (location === Location.Trending) {
-      if (timeRange === undefined) {
-        snacksData = await fetchTrendingSnacks(
-          INITIAL_START_RANGE,
-          INITIAL_END_RANGE,
-          "all"
-        );
-      } else {
-        snacksData = await fetchTrendingSnacks(
-          INITIAL_START_RANGE,
-          INITIAL_END_RANGE,
-          timeRange
-        );
-      }
+      snacksData = await fetchTrendingSnacks(
+        INITIAL_START_RANGE,
+        INITIAL_END_RANGE,
+        timeRange ?? "all"
+      );
     }
 
     setSnacks(snacksData);
