@@ -203,15 +203,27 @@ export async function fetchSnacks(startRange: number, endRange: number) {
 
 export async function fetchTrendingSnacks(
   startRange: number,
-  endRange: number
+  endRange: number,
+  days_back: "7days" | "1month" | "all"
 ): Promise<SnackDisplay[] | null> {
   const supabase = await createClient();
 
+  // Convert days_back string to integer
+  const daysBackMap: Record<typeof days_back, number> = {
+    "7days": 7,
+    "1month": 30, // Approximate 1 month as 30 days
+    all: 9999, // Or another large number to indicate 'all'
+  };
+
+  const daysBackInt = daysBackMap[days_back];
+
   const { data: uploadedSnacks, error: fetchTrendingSnacksError } =
-    await supabase.rpc("get_trending_snacks_with_range", {
+    await supabase.rpc("get_trending_snacks_by_time", {
       start_range: startRange,
       end_range: endRange,
+      days_back: daysBackInt,
     });
+
   if (fetchTrendingSnacksError) {
     console.error(fetchTrendingSnacksError);
     return null;

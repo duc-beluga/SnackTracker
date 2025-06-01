@@ -7,7 +7,7 @@ import Link from "next/link";
 export default async function NavTopBar() {
   const user = await getCurrentUser();
   return (
-    <div className="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200/50 dark:border-slate-700/50 supports-[backdrop-filter]:bg-white/80 supports-[backdrop-filter]:dark:bg-slate-900/80">
+    <div className="sticky top-0 z-50 bg-background border-b">
       <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2 sm:gap-4 py-3 sm:py-4">
           <SidebarTrigger className="md:hidden" />

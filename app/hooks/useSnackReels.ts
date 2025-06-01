@@ -20,7 +20,10 @@ const INITIAL_END_RANGE = SNACK_PER_LOAD - 1;
 
 //#endregion
 
-export function useSnackReels(location: Location) {
+export function useSnackReels(
+  location: Location,
+  timeRange?: "7days" | "1month" | "all"
+) {
   //#region { State }
 
   const [snacks, setSnacks] = useState<SnackDisplay[] | null>();
@@ -45,6 +48,10 @@ export function useSnackReels(location: Location) {
   useEffect(() => {
     fetchInitialSnacks();
   }, []);
+
+  useEffect(() => {
+    fetchInitialSnacks();
+  }, [timeRange]);
 
   useEffect(() => {
     if (inView) {
@@ -72,10 +79,19 @@ export function useSnackReels(location: Location) {
         INITIAL_END_RANGE
       );
     } else if (location === Location.Trending) {
-      snacksData = await fetchTrendingSnacks(
-        INITIAL_START_RANGE,
-        INITIAL_END_RANGE
-      );
+      if (timeRange === undefined) {
+        snacksData = await fetchTrendingSnacks(
+          INITIAL_START_RANGE,
+          INITIAL_END_RANGE,
+          "all"
+        );
+      } else {
+        snacksData = await fetchTrendingSnacks(
+          INITIAL_START_RANGE,
+          INITIAL_END_RANGE,
+          timeRange
+        );
+      }
     }
 
     setSnacks(snacksData);
@@ -99,8 +115,18 @@ export function useSnackReels(location: Location) {
       newSnacks =
         (await fetchUploadedSnacks(nextStartRange, nextEndRange)) ?? [];
     } else {
-      newSnacks =
-        (await fetchTrendingSnacks(nextStartRange, nextEndRange)) ?? [];
+      if (timeRange === undefined) {
+        newSnacks =
+          (await fetchTrendingSnacks(nextStartRange, nextEndRange, "all")) ??
+          [];
+      } else {
+        newSnacks =
+          (await fetchTrendingSnacks(
+            nextStartRange,
+            nextEndRange,
+            timeRange
+          )) ?? [];
+      }
     }
     // newSnack can be null here
     if (newSnacks.length === 0 || newSnacks.length < SNACK_PER_LOAD) {

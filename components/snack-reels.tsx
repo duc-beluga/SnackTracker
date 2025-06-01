@@ -8,10 +8,11 @@ import { MoreSnack } from "./more-snack";
 
 interface SnackReelsProps {
   location: Location;
+  timeRange?: "7days" | "1month" | "all";
 }
 
-const SnackReels = ({ location }: SnackReelsProps) => {
-  const { snacks, ref, hasMore } = useSnackReels(location);
+const SnackReels = ({ location, timeRange }: SnackReelsProps) => {
+  const { snacks, ref, hasMore } = useSnackReels(location, timeRange);
 
   return (
     <div className="grid place-items-center grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4 mx-4 snap-y snap-mandatory sm:snap-none">
