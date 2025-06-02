@@ -9,7 +9,12 @@ export default function InputSnack() {
   const router = useRouter();
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (
+      e.key === "Enter" ||
+      e.key === "Go" ||
+      e.key === "Search" ||
+      e.key === "Done"
+    ) {
       e.preventDefault();
       const query = inputRef.current?.value || "";
       if (query.trim()) {
@@ -22,6 +27,7 @@ export default function InputSnack() {
     <Input
       ref={inputRef}
       onKeyDown={handleSearch}
+      type="search"
       placeholder="Search snacks..."
       className="pl-10 pr-4 py-2 sm:py-2.5 w-full bg-white/80 dark:bg-slate-800/80 border-slate-200/80 dark:border-slate-700/80 focus:bg-white dark:focus:bg-slate-800 transition-colors duration-200 rounded-lg sm:rounded-xl shadow-sm text-base" // text-base prevents zoom on iOS
     />
