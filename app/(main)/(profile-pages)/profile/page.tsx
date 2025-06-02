@@ -111,10 +111,10 @@ export default function ProfilePage() {
             </TabsList>
           </div>
 
-          <TabsContent value="uploaded" className="mx-4">
+          <TabsContent value="uploaded">
             <SnackReels location={Location.Uploaded} />
           </TabsContent>
-          <TabsContent value="liked" className="mx-4">
+          <TabsContent value="liked">
             <SnackReels location={Location.Liked} />
           </TabsContent>
         </Tabs>
