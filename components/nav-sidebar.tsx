@@ -74,7 +74,7 @@ const linkMap: Record<string, string> = {
   Profile: "/profile",
   Settings: "/settings",
   Locations: "/locations",
-  Leaderboard: "#",
+  Leaderboard: "/leaderboard",
   "Popular Tags": "#",
 };
 

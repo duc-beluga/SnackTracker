@@ -3,7 +3,7 @@ import React from "react";
 
 export default function SettingsPage() {
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="pt-28 flex justify-center items-center">
       <ThemeToggle />
     </div>
   );

@@ -1,7 +1,13 @@
 "use client";
 
 import { Coins, Loader } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
+import {
+  Spinner,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Location } from "@/app/interfaces/SnackInterfaces";
@@ -10,7 +16,7 @@ import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import { getUserTokens } from "@/app/server-actions/user/actions";
-import { DustyPouch } from "@/components/ui/dusty-pouch";
+import AncientMapIcon from "@/components/icons/map";
 
 export default function ProfilePage() {
   const [currentUser, setCurrentUser] = useState<User | null>();
@@ -34,7 +40,11 @@ export default function ProfilePage() {
   }, []);
 
   if (isLoading) {
-    return <Loader />; // or some loading state
+    return (
+      <div className="w-full flex justify-center pt-20">
+        <Spinner />
+      </div>
+    );
   }
 
   if (!currentUser) {
@@ -84,9 +94,9 @@ export default function ProfilePage() {
           </div>
 
           <div className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-blue-100 px-3 py-1 shadow-sm border border-blue-300">
-            <DustyPouch className="shrink-0" />
+            <AncientMapIcon />
             <span className="text-sm sm:text-base font-semibold text-blue-800">
-              Dusty Pouch
+              Ancient Map
             </span>
           </div>
         </div>

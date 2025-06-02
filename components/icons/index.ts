@@ -1,0 +1,10 @@
+export { default as JeweledChaliceIcon } from "./chalice";
+export { default as CopperCompassIcon } from "./compass";
+export { default as SilverDaggerIcon } from "./dagger";
+export { default as DragonHoardIcon } from "./dragon";
+export { default as BronzeGauntletIcon } from "./gauntlet";
+export { default as MythrilKeyIcon } from "./key";
+export { default as AncientMapIcon } from "./map";
+export { default as DustyPouchIcon } from "./pouch";
+export { default as RunestoneIcon } from "./stone";
+export { default as GoldenIdolIcon } from "./totem";
