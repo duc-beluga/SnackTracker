@@ -9,7 +9,7 @@ export default async function SearchPage({
   const { query: searchString } = await searchParams;
 
   return (
-    <div className="flex flex-col py-6 gap-4 w-full mx-6">
+    <div className="flex flex-col py-6 gap-4 w-full px-6">
       <div className="text-sm text-gray-500">
         Showing results for:{" "}
         <span className="font-medium text-gray-700">
