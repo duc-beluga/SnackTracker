@@ -86,7 +86,7 @@ export default function LeaderboardPage() {
   ];
 
   return (
-    <div className="flex justify-center py-6">
+    <div className="flex justify-center p-2 py-6">
       <div className="w-full max-w-3xl">
         <Table>
           <TableCaption>Leaderboard - Top Hunters</TableCaption>
