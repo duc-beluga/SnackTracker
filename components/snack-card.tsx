@@ -16,9 +16,9 @@ export function SnackCard({ snack }: CardProps) {
   return (
     <Card
       key={snack.snack_id}
-      className="w-full rounded-lg overflow-hidden shadow-md  snap-center"
+      className="w-full rounded-lg overflow-hidden shadow-md snap-center"
     >
-      <CardContent className="h-64 sm:h-56 md:h-52 p-0">
+      <CardContent className="h-56 md:h-52 p-0">
         {snack.primary_image_url ? (
           <Link
             href={`/?snackId=${snack.snack_id}`}
