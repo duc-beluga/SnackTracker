@@ -1,8 +1,9 @@
 import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import React from "react";
-import { Button, Input, SidebarTrigger } from "./ui";
+import { Button, SidebarTrigger } from "./ui";
 import { Search, Upload } from "lucide-react";
 import Link from "next/link";
+import InputSnack from "./input-snack";
 
 export default async function NavTopBar() {
   const user = await getCurrentUser();
@@ -14,10 +15,7 @@ export default async function NavTopBar() {
           <div className="flex-1 max-w-2xl">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-              <Input
-                placeholder="Search snacks..."
-                className="pl-10 pr-4 py-2 sm:py-2.5 w-full bg-white/80 dark:bg-slate-800/80 border-slate-200/80 dark:border-slate-700/80 focus:bg-white dark:focus:bg-slate-800 transition-colors duration-200 rounded-lg sm:rounded-xl shadow-sm text-base" // text-base prevents zoom on iOS
-              />
+              <InputSnack />
             </div>
           </div>
 
