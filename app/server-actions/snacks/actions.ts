@@ -272,6 +272,62 @@ export async function fetchSnackDetail(
   return fetchSnackDetailsData as SnackDetail | null;
 }
 
+export async function fetchSearchSnacks(
+  startRange: number,
+  endRange: number,
+  searchQuery: string
+): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+
+  console.log("fetchSearchSnacks");
+
+  const { data: snacks, error } = await supabase
+    .from("snacks")
+    .select(
+      `
+      snack_id,
+      name,
+      primary_image_url,
+      snack_images(
+        image_id,
+        images_locations(
+          image_location_id,
+          likes(count)
+        )
+      )
+    `
+    )
+    .textSearch("name", searchQuery, { type: "websearch", config: "english" })
+    .range(startRange, endRange);
+
+  if (error) {
+    console.error("Error fetching search snacks:", error);
+    return null;
+  }
+
+  const formattedSnacks = snacks?.map((snack) => {
+    let totalLikes = 0;
+    const imageCount = snack.snack_images?.length ?? 0;
+
+    snack.snack_images?.forEach((image) => {
+      image.images_locations?.forEach((location) => {
+        const likesCount = location.likes?.[0]?.count ?? 0;
+        totalLikes += likesCount;
+      });
+    });
+
+    return {
+      snack_id: snack.snack_id,
+      name: snack.name,
+      primary_image_url: snack.primary_image_url,
+      image_count: imageCount,
+      like_count: totalLikes,
+    };
+  });
+
+  return formattedSnacks as SnackDisplay[] | null;
+}
+
 //#endregion
 
 //#region { Helper functions }

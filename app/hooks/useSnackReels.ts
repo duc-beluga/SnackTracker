@@ -5,6 +5,7 @@ import {
   fetchLikedSnacks,
   fetchUploadedSnacks,
   fetchTrendingSnacks,
+  fetchSearchSnacks,
 } from "../server-actions/snacks/actions";
 import { useRouter } from "next/navigation";
 import { useSnackDialog } from "./useSnackDialog";
@@ -22,7 +23,8 @@ const INITIAL_END_RANGE = SNACK_PER_LOAD - 1;
 
 export function useSnackReels(
   location: Location,
-  timeRange?: "7days" | "1month" | "all"
+  timeRange?: "7days" | "1month" | "all",
+  searchString?: string
 ) {
   //#region { State }
 
@@ -47,7 +49,7 @@ export function useSnackReels(
   //#region { Effect }
   useEffect(() => {
     fetchInitialSnacks();
-  }, [location, timeRange]);
+  }, [location, timeRange, searchString]);
 
   useEffect(() => {
     if (inView) {
@@ -86,6 +88,27 @@ export function useSnackReels(
         INITIAL_END_RANGE,
         timeRange ?? "all"
       );
+    } else if (location === Location.Search) {
+      const query = searchString?.trim() ?? "";
+      console.log("query", query);
+      console.log(!query);
+      snacksData = !query
+        ? await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE)
+        : await fetchSearchSnacks(
+            INITIAL_START_RANGE,
+            INITIAL_END_RANGE,
+            query
+          );
+    } else {
+      snacksData = [];
+    }
+
+    if (
+      !snacksData ||
+      snacksData.length === 0 ||
+      snacksData.length < SNACK_PER_LOAD
+    ) {
+      setHasMore(false);
     }
 
     setSnacks(snacksData);
@@ -108,20 +131,21 @@ export function useSnackReels(
     } else if (location === Location.Uploaded) {
       newSnacks =
         (await fetchUploadedSnacks(nextStartRange, nextEndRange)) ?? [];
+    } else if (location === Location.Trending) {
+      newSnacks =
+        (await fetchTrendingSnacks(
+          nextStartRange,
+          nextEndRange,
+          timeRange ?? "all"
+        )) ?? [];
     } else {
-      if (timeRange === undefined) {
-        newSnacks =
-          (await fetchTrendingSnacks(nextStartRange, nextEndRange, "all")) ??
-          [];
-      } else {
-        newSnacks =
-          (await fetchTrendingSnacks(
-            nextStartRange,
-            nextEndRange,
-            timeRange
-          )) ?? [];
-      }
+      const query = searchString?.trim() ?? "";
+      newSnacks =
+        (!query
+          ? await fetchSnacks(nextStartRange, nextEndRange)
+          : await fetchSearchSnacks(nextStartRange, nextEndRange, query)) ?? [];
     }
+
     // newSnack can be null here
     if (newSnacks.length === 0 || newSnacks.length < SNACK_PER_LOAD) {
       setHasMore(false);

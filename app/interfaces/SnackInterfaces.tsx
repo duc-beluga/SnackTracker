@@ -11,6 +11,7 @@ export enum Location {
   Liked = "Liked",
   Uploaded = "Uploaded",
   Trending = "Trending",
+  Search = "Search",
 }
 
 export interface SnackCityAndState {
