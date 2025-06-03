@@ -7,7 +7,7 @@ const SnackCarouselItemSkeleton = () => {
   return (
     <CarouselItem>
       <Card className="w-full border-none">
-        <div className="h-20 sm:h-14 p-2 overflow-y-auto">
+        <div className="h-14 sm:h-14 p-2 overflow-y-auto">
           <CardDescription>
             <Skeleton className="w-52 sm:w-64 h-5" />
           </CardDescription>
