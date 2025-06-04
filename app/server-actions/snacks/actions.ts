@@ -336,6 +336,18 @@ export async function fetchSearchSnacks(
   return formattedSnacks as SnackDisplay[] | null;
 }
 
+export async function fetchRandomSnackId() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.rpc("get_random_snack_id");
+
+  if (error || !data || data.length === 0) {
+    console.error("Error fetching random snack ID:", error);
+    return null;
+  }
+  return data;
+}
+
 //#endregion
 
 //#region { Helper functions }
