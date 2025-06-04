@@ -1,4 +1,3 @@
-import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import React from "react";
 import { Button, SidebarTrigger } from "./ui";
 import { Search, Upload } from "lucide-react";
@@ -6,7 +5,6 @@ import Link from "next/link";
 import InputSnack from "./input-snack";
 
 export default async function NavTopBar() {
-  const user = await getCurrentUser();
   return (
     <div className="sticky top-0 z-50 bg-background border-b">
       <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -26,7 +24,7 @@ export default async function NavTopBar() {
             asChild
           >
             <Link
-              href={user ? "/snacks/new" : "/sign-in"}
+              href="/snacks/new"
               className="flex items-center gap-1 sm:gap-2"
             >
               <Upload className="w-4 h-4" />
