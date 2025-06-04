@@ -8,7 +8,6 @@ import {
   fetchSearchSnacks,
 } from "../server-actions/snacks/actions";
 import { useRouter } from "next/navigation";
-import { useSnackDialog } from "./useSnackDialog";
 
 import { useInView } from "react-intersection-observer";
 import { delay } from "@/utils/utils";
@@ -42,7 +41,6 @@ export function useSnackReels(
 
   const router = useRouter();
   const { ref, inView } = useInView();
-  const dialogState = useSnackDialog();
 
   //#endregion
 
@@ -182,7 +180,6 @@ export function useSnackReels(
     snacks,
     onSnackClick,
     selectedSnack,
-    dialogState,
     ref,
     hasMore,
   };

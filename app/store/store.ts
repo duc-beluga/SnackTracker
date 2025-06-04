@@ -1,12 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import dialogReducer from "./dialogSlice";
-import snackReducer from "./snackSlice";
 import authReducer from "./authSlice";
 
 export const store = configureStore({
   reducer: {
-    dialog: dialogReducer,
-    snack: snackReducer,
     user: authReducer,
   },
 });
