@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function SnackPage() {
   return (
-    <div className="w-full py-6 p-2">
+    <div className="w-full p-4">
       <SnackReels location={Location.Home} />
     </div>
   );
