@@ -5,9 +5,9 @@ export default async function SnackModalPage({
 }: {
   params: Promise<{ snackId: string }>;
 }) {
-  const snackId = parseInt((await params).snackId);
+  const snackId = (await params).snackId;
 
-  if (isNaN(snackId)) {
+  if (snackId === "new") {
     return <DialogNewSnack />;
   }
 

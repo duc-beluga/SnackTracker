@@ -8,7 +8,7 @@ export default async function SnackPage({
 }: {
   params: Promise<{ snackId: string }>;
 }) {
-  const snackId = parseInt((await params).snackId);
+  const snackId = (await params).snackId;
   const snackDetails = await fetchSnackDetail(snackId);
 
   return (

@@ -21,7 +21,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 type DialogImageLocationType = {
-  snackId: number;
+  snackId: string;
 };
 
 export default function DialogImageLocation({

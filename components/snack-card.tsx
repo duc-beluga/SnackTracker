@@ -4,6 +4,7 @@ import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, MapPin } from "lucide-react";
+import { encodeId } from "@/utils/hashids";
 
 interface CardProps {
   snack: SnackDisplay;
@@ -13,6 +14,7 @@ const IMAGE_HEIGHT = "220px";
 const IMAGE_WIDTH = "160px";
 
 export function SnackCard({ snack }: CardProps) {
+  const encodedSnackId = encodeId(snack.snack_id);
   return (
     <Card
       key={snack.snack_id}
@@ -21,8 +23,8 @@ export function SnackCard({ snack }: CardProps) {
       <CardContent className="h-56 md:h-52 p-0">
         {snack.primary_image_url ? (
           <Link
-            href={`/?snackId=${snack.snack_id}`}
-            as={`/snacks/${snack.snack_id}`}
+            href={`/?snackId=${encodedSnackId}`}
+            as={`/snacks/${encodedSnackId}`}
             scroll={false}
           >
             <Image

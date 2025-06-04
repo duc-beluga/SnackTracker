@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
+import { decodeId } from "@/utils/hashids";
 
 const EMPTY_GUID = "00000000-0000-0000-0000-000000000000";
 
@@ -248,8 +249,10 @@ export async function fetchSnackIds(): Promise<number[] | null> {
 }
 
 export async function fetchSnackDetail(
-  snackId: number
+  snackId: string
 ): Promise<SnackDetail | null> {
+  const decodedSnackId = decodeId(snackId);
+
   const supabase = await createClient();
 
   const {
@@ -266,7 +269,7 @@ export async function fetchSnackDetail(
 
   const { data: fetchSnackDetailsData, error: fetchSnackDetailsError } =
     await supabase.rpc("get_snack_details_by_id_v3", {
-      p_snack_id: snackId,
+      p_snack_id: decodedSnackId,
       p_user_id: currentUserId,
     });
   if (fetchSnackDetailsError) {
