@@ -26,7 +26,7 @@ export default async function SnackPage({
   const encodedSnackId = encodeId(randomSnackId);
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full justify-center p-2">
       <div className="flex flex-col mt-10 item justify-center gap-10 max-w-md">
         <Card>
           <CardHeader>
