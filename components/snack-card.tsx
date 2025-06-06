@@ -47,8 +47,8 @@ export function SnackCard({ snack }: CardProps) {
         )}
       </CardContent>
 
-      <CardFooter className="flex flex-col sm:flex-col items-start sm:items-center justify-between p-4 h-28 sm:h-24 text-left gap-2 sm:gap-1">
-        <p className="text-base sm:text-sm font-semibold leading-relaxed line-clamp-2">
+      <CardFooter className="flex flex-col sm:flex-col items-start justify-between p-3 h-28 sm:h-24 text-left gap-2 sm:gap-1 space-y-1.5">
+        <p className="text-base font-semibold leading-tight line-clamp-2 min-h-[2.5rem]">
           {snack.name}
         </p>
 
