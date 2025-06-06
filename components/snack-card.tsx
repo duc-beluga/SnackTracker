@@ -55,11 +55,15 @@ export function SnackCard({ snack }: CardProps) {
         <div className="flex justify-between items-center w-full  mt-auto">
           <div className="flex items-center gap-1 text-gray-600 text-sm">
             <MapPin className="w-5 h-5 sm:w-4 sm:h-4" />
-            <span className="text-base sm:text-sm">{snack.image_count}</span>
+            <span>{snack.image_count}</span>
+            <span className="hidden sm:inline">
+              {snack.image_count === 1 ? "location" : "locations"}
+            </span>
           </div>
           <div className="flex items-center gap-1 text-gray-600 text-sm">
             <Heart className="w-5 h-5 sm:w-4 sm:h-4 " />
-            <span className="text-base sm:text-sm">{snack.like_count}</span>
+            <span>{snack.like_count}</span>
+            <span>{snack.like_count === 1 ? "like" : "likes"}</span>
           </div>
         </div>
       </CardFooter>
