@@ -103,7 +103,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="flex justify-center mt-10 px-3 sm:px-0">
-        <Tabs defaultValue="uploaded" className="w-full p-2">
+        <Tabs defaultValue="uploaded" className="w-full p-4">
           <div className="flex w-full justify-center">
             <TabsList className="grid w-full sm:w-[400px] grid-cols-2 mb-3">
               <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
