@@ -45,11 +45,8 @@ export default async function LocationsPage() {
                 <ul>
                   {cities.map(([city, count]) => (
                     <li key={city} className="py-1">
-                      <Link
-                        href={`/locations/${state.toLowerCase()}-${city.toLowerCase()}`}
-                      >
-                        {city} ({count})
-                      </Link>
+                      {/* TODO: Make this a link so it navigate back to the filter page with the selected state, city*/}
+                      {city} ({count})
                     </li>
                   ))}
                 </ul>
