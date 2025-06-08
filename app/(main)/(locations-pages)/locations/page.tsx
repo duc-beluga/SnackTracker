@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import SnackReels from "@/components/snack-reels";
 import { Location } from "@/app/interfaces/SnackInterfaces";
 import { STATE_NAMES } from "@/utils/locationCommon";
+import Link from "next/link";
 
 const usStatesOnly = Object.keys(STATE_NAMES);
 
@@ -162,14 +163,22 @@ export default function LocationsPage() {
               </Button>
             )}
           </div>
-          {selectedStateCode && selectedCity && (
-            <div className="hidden lg:flex items-center space-x-2 text-sm text-gray-600 whitespace-nowrap">
-              <MapPin className="w-4 h-4" />
-              <span>
-                {selectedCity}, {STATE_NAMES[selectedStateCode]}
-              </span>
-            </div>
-          )}
+          <div className="flex items-center gap-4">
+            {/* Location display */}
+            {selectedStateCode && selectedCity && (
+              <div className="hidden lg:flex items-center space-x-2 text-sm text-gray-600 whitespace-nowrap">
+                <MapPin className="w-4 h-4" />
+                <span>
+                  {selectedCity}, {STATE_NAMES[selectedStateCode]}
+                </span>
+              </div>
+            )}
+
+            {/* Distribution link */}
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/locations/distribution">View Distribution</Link>
+            </Button>
+          </div>
         </div>
       </div>
       <div className="p-4">
