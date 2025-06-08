@@ -19,6 +19,8 @@ export const addSnackLocation = async (
 
   const supabase = await createClient();
 
+  const formatedAddress = formatAddress(values.snackLocation.address);
+
   const { error: addNewSnackLocationError } = await supabase.rpc(
     "handle_add_new_image_location_for_snack",
     {
@@ -27,7 +29,9 @@ export const addSnackLocation = async (
       },
       location_data: {
         google_place_id: values.snackLocation.place_id,
-        address: values.snackLocation.address,
+        address: formatedAddress.address,
+        city: formatedAddress.city,
+        state: formatedAddress.state,
       },
       image_data: {
         image_url: snackImageUrl,
@@ -348,6 +352,28 @@ export async function fetchRandomSnackId() {
   return data;
 }
 
+export async function fetchSnackByLocation(
+  startRange: number,
+  endRange: number,
+  city: string,
+  state: string
+): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.rpc("get_snacks_by_location", {
+    start_range: startRange,
+    end_range: endRange,
+    p_city: city,
+    p_state: state,
+  });
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data as SnackDisplay[] | null;
+}
+
 //#endregion
 
 //#region { Helper functions }
@@ -388,5 +414,24 @@ const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
     return emptyString;
   }
 };
+
+function formatAddress(description: string) {
+  // Split by commas and trim whitespace
+  const parts = description.split(",").map((part) => part.trim());
+
+  // Remove the last element (USA)
+  const withoutUSA = parts.slice(0, -1);
+
+  const state = withoutUSA[withoutUSA.length - 1] || "";
+  const city = withoutUSA[withoutUSA.length - 2] || "";
+  const address =
+    withoutUSA.length > 2 ? withoutUSA.slice(0, -2).join(", ") : "";
+
+  return {
+    address,
+    city,
+    state,
+  };
+}
 
 //#endregion

@@ -6,6 +6,7 @@ import {
   fetchUploadedSnacks,
   fetchTrendingSnacks,
   fetchSearchSnacks,
+  fetchSnackByLocation,
 } from "../server-actions/snacks/actions";
 import { useRouter } from "next/navigation";
 
@@ -23,7 +24,9 @@ const INITIAL_END_RANGE = SNACK_PER_LOAD - 1;
 export function useSnackReels(
   location: Location,
   timeRange?: "7days" | "1month" | "all",
-  searchString?: string
+  searchString?: string,
+  state?: string,
+  city?: string
 ) {
   //#region { State }
 
@@ -34,6 +37,7 @@ export function useSnackReels(
   const [endRange, setEndRange] = useState<number>(11);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasNone, setHasNone] = useState<boolean>(false);
 
   //#endregion
 
@@ -48,6 +52,10 @@ export function useSnackReels(
   useEffect(() => {
     fetchInitialSnacks();
   }, [location, timeRange, searchString]);
+
+  useEffect(() => {
+    fetchInitialSnacks();
+  }, [state, city]);
 
   useEffect(() => {
     if (inView) {
@@ -65,6 +73,7 @@ export function useSnackReels(
     setEndRange(INITIAL_END_RANGE);
     setHasMore(true);
     setLoading(false);
+    setHasNone(false);
 
     let snacksData;
 
@@ -88,8 +97,6 @@ export function useSnackReels(
       );
     } else if (location === Location.Search) {
       const query = searchString?.trim() ?? "";
-      console.log("query", query);
-      console.log(!query);
       snacksData = !query
         ? await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE)
         : await fetchSearchSnacks(
@@ -97,15 +104,24 @@ export function useSnackReels(
             INITIAL_END_RANGE,
             query
           );
+    } else if (location === Location.Location) {
+      if (!state) {
+        snacksData = [];
+      } else {
+        snacksData = await fetchSnackByLocation(
+          INITIAL_START_RANGE,
+          INITIAL_END_RANGE,
+          city ?? "",
+          state
+        );
+      }
     } else {
       snacksData = [];
     }
 
-    if (
-      !snacksData ||
-      snacksData.length === 0 ||
-      snacksData.length < SNACK_PER_LOAD
-    ) {
+    if (!snacksData || snacksData.length === 0) {
+      setHasNone(true);
+    } else if (snacksData.length < SNACK_PER_LOAD) {
       setHasMore(false);
     }
 
@@ -136,12 +152,24 @@ export function useSnackReels(
           nextEndRange,
           timeRange ?? "all"
         )) ?? [];
-    } else {
+    } else if (location === Location.Search) {
       const query = searchString?.trim() ?? "";
       newSnacks =
         (!query
           ? await fetchSnacks(nextStartRange, nextEndRange)
           : await fetchSearchSnacks(nextStartRange, nextEndRange, query)) ?? [];
+    } else {
+      if (!city || !state) {
+        newSnacks = [];
+      } else {
+        newSnacks =
+          (await fetchSnackByLocation(
+            nextStartRange,
+            nextEndRange,
+            city,
+            state
+          )) ?? [];
+      }
     }
 
     // newSnack can be null here
@@ -182,5 +210,6 @@ export function useSnackReels(
     selectedSnack,
     ref,
     hasMore,
+    hasNone,
   };
 }

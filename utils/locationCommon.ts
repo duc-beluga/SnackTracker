@@ -1,4 +1,4 @@
-const STATE_NAMES: Record<string, string> = {
+export const STATE_NAMES: Record<string, string> = {
   AL: "Alabama",
   AK: "Alaska",
   AZ: "Arizona",
@@ -50,7 +50,3 @@ const STATE_NAMES: Record<string, string> = {
   WI: "Wisconsin",
   WY: "Wyoming",
 };
-
-export function getStateName(abbrev: string): string {
-  return STATE_NAMES[abbrev];
-}
