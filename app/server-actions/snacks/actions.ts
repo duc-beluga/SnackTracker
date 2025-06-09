@@ -362,18 +362,65 @@ export async function fetchSnackByLocation(
 ): Promise<SnackDisplay[] | null> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.rpc("get_snacks_by_location", {
-    start_range: startRange,
-    end_range: endRange,
-    p_city: city,
-    p_state: state,
-  });
+  let query = supabase
+    .from("snacks")
+    .select(
+      `
+      snack_id,
+      name,
+      primary_image_url,
+      snack_images(
+        image_id,
+        images_locations(
+          image_location_id,
+          likes(count)
+        )
+      ),
+      snacks_locations!inner(
+        locations!inner(
+          city,
+          state
+        )
+      )
+    `
+    )
+    .eq("snacks_locations.locations.state", state);
+
+  // Add city filter if provided and not empty
+  if (city && city.trim() !== "") {
+    query = query.eq("snacks_locations.locations.city", city);
+  }
+
+  // Apply range and execute query
+  const { data: snacks, error } = await query.range(startRange, endRange);
+
   if (error) {
-    console.error(error);
+    console.error("Error fetching snacks by location:", error);
     return null;
   }
 
-  return data as SnackDisplay[] | null;
+  // Format the results exactly like fetchSearchSnacks
+  const formattedSnacks = snacks?.map((snack) => {
+    let totalLikes = 0;
+    const imageCount = snack.snack_images?.length ?? 0;
+
+    snack.snack_images?.forEach((image) => {
+      image.images_locations?.forEach((location) => {
+        const likesCount = location.likes?.[0]?.count ?? 0;
+        totalLikes += likesCount;
+      });
+    });
+
+    return {
+      snack_id: snack.snack_id,
+      name: snack.name,
+      primary_image_url: snack.primary_image_url,
+      image_count: imageCount,
+      like_count: totalLikes,
+    };
+  });
+
+  return formattedSnacks as SnackDisplay[] | null;
 }
 
 //#endregion
