@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, CardFooter, Skeleton } from "@/components/ui";
+import { Card, Skeleton } from "@/components/ui";
 import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,63 +10,63 @@ interface CardProps {
   snack: SnackDisplay;
 }
 
-const IMAGE_HEIGHT = "220px";
-const IMAGE_WIDTH = "160px";
-
 export function SnackCard({ snack }: CardProps) {
   const encodedSnackId = encodeId(snack.snack_id);
+
   return (
     <Card
       key={snack.snack_id}
-      className="w-full rounded-lg overflow-hidden shadow-md snap-center"
+      className="relative w-full h-80 rounded-lg overflow-hidden shadow-md snap-center"
     >
-      <CardContent className="h-56 md:h-52 p-0">
-        {snack.primary_image_url ? (
-          <Link
-            href={`/?snackId=${encodedSnackId}`}
-            as={`/snacks/${encodedSnackId}`}
-            scroll={false}
-          >
+      {snack.primary_image_url ? (
+        <Link
+          href={`/?snackId=${encodedSnackId}`}
+          as={`/snacks/${encodedSnackId}`}
+          scroll={false}
+          className="block w-full h-full relative"
+        >
+          {/* Image */}
+          <div className="absolute inset-0 z-0">
             <Image
               src={snack.primary_image_url}
               alt="snack_image"
-              width={160}
-              height={220}
+              fill
+              sizes="100%"
+              className="object-cover"
               priority
-              className="w-full h-full object-cover"
             />
-          </Link>
-        ) : (
-          <Skeleton
-            style={{
-              height: IMAGE_HEIGHT,
-              width: IMAGE_WIDTH,
-            }}
-            className="rounded-t-lg"
-          />
-        )}
-      </CardContent>
-
-      <CardFooter className="flex flex-col sm:flex-col items-start justify-between p-3 h-28 sm:h-24 text-left gap-2 sm:gap-1 space-y-1.5">
-        <p className="text-base font-semibold leading-tight line-clamp-2 min-h-[2.5rem]">
-          {snack.name}
-        </p>
-
-        <div className="flex justify-between items-center w-full  mt-auto">
-          <div className="flex items-center gap-1 text-gray-600 text-sm">
-            <MapPin className="w-5 h-5 sm:w-4 sm:h-4" />
-            <span>{snack.image_count}</span>
-            <span className="hidden sm:inline">
-              {snack.image_count === 1 ? "location" : "locations"}
-            </span>
           </div>
-          <div className="flex items-center gap-1 text-gray-600 text-sm">
-            <Heart className="w-5 h-5 sm:w-4 sm:h-4 " />
-            <span>{snack.like_count}</span>
-            <span>{snack.like_count === 1 ? "like" : "likes"}</span>
+
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10" />
+
+          {/* Footer Overlay */}
+          <div className="absolute bottom-0 left-0 w-full p-3 text-white space-y-1.5 z-20">
+            <p className="text-base font-semibold leading-tight line-clamp-2 min-h-[2.5rem] drop-shadow-lg">
+              {snack.name}
+            </p>
+
+            <div className="flex justify-between items-center text-sm pt-1">
+              <div className="flex items-center gap-1">
+                <MapPin className="w-4 h-4" />
+                <span>{snack.image_count}</span>
+                <span className="hidden sm:inline">
+                  {snack.image_count === 1 ? "location" : "locations"}
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Heart className="w-4 h-4" />
+                <span>{snack.like_count}</span>
+                <span>{snack.like_count === 1 ? "like" : "likes"}</span>
+              </div>
+            </div>
           </div>
+        </Link>
+      ) : (
+        <div className="relative w-full h-full">
+          <Skeleton className="w-full h-full" />
         </div>
-      </CardFooter>
+      )}
     </Card>
   );
 }
