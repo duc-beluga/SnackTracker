@@ -29,7 +29,8 @@ export function FormNewSnack() {
     form: {
       control,
       nameLocationImageForm,
-      handleSnackNameLocationImageSubmit,
+      handleSubmit,
+      onNameLocationImageSubmit,
     },
   } = multipleStepSnackFormState;
 
@@ -48,7 +49,7 @@ export function FormNewSnack() {
         <CardContent>
           <Form {...nameLocationImageForm}>
             <form
-              onSubmit={handleSnackNameLocationImageSubmit}
+              onSubmit={handleSubmit(onNameLocationImageSubmit)}
               className="grid gap-y-4"
             >
               {currentStep === 0 ? (
