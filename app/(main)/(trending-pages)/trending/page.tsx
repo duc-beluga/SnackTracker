@@ -2,16 +2,13 @@
 
 import { Location } from "@/app/interfaces/SnackInterfaces";
 import SnackReels from "@/components/snack-reels";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function TrendingPage() {
   const [timeRange, setTimeRange] = useState<"7days" | "1month" | "all">(
     "7days"
   );
 
-  useEffect(() => {
-    console.log(timeRange);
-  }, [timeRange]);
   return (
     <div className="p-4">
       <div className="flex gap-2 mb-4">

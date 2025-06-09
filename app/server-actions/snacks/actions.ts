@@ -39,8 +39,7 @@ export const addSnackLocation = async (
     }
   );
   if (addNewSnackLocationError) {
-    console.log(addNewSnackLocationError);
-    console.error(addNewSnackLocationError?.hint);
+    console.error(addNewSnackLocationError);
     return;
   }
 };
@@ -93,8 +92,6 @@ export const createSnack = async (
   const formattedAddress = formatAddress(values.snackLocation.address);
 
   const supabase = await createClient();
-
-  console.log(formattedAddress);
 
   const { error: snackAddError } = await supabase.rpc("add_snack", {
     new_snack_data: {
@@ -297,8 +294,6 @@ export async function fetchSearchSnacks(
   searchQuery: string
 ): Promise<SnackDisplay[] | null> {
   const supabase = await createClient();
-
-  console.log("fetchSearchSnacks");
 
   const { data: snacks, error } = await supabase
     .from("snacks")
