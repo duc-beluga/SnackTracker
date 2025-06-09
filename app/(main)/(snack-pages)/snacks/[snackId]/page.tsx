@@ -28,7 +28,7 @@ export default async function SnackPage({
   return (
     <div className="flex w-full justify-center p-2">
       <div className="flex flex-col mt-10 item justify-center gap-10 max-w-md">
-        <Card>
+        <Card className="w-[350px] sm:w-[425px]">
           <CardHeader>
             <CardTitle className="flex justify-center">
               {snackDetails?.name}
