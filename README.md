@@ -17,3 +17,5 @@ If you switch to a separate route (/snacks/[snackId]), you'd lose these benefits
 1. A complete separate page
 2. Back navigation
 3. Potentially scroll position restoration when returning to the feed
+
+Allow users to filter snacks based on location.
