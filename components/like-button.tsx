@@ -44,7 +44,7 @@ export default function LikeButton({
   }
 
   return (
-    <div className="absolute bottom-2 right-2 flex items-center gap-1 px-2 py-1 rounded-md backdrop-blur-sm bg-black/40 shadow-md group">
+    <div className="flex items-center gap-1 px-2 py-1 rounded-md backdrop-blur-sm bg-black/40 shadow-md group">
       <div
         className="text-white h-7 w-7 p-1 cursor-pointer flex items-center justify-center"
         role="button"

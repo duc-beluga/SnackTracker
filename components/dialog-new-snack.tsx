@@ -27,11 +27,15 @@ export function DialogNewSnack() {
 
   function onDialogOpenChange(isOpen: boolean) {
     if (!isOpen) {
-      router.back();
-      setOpen(false);
+      handleModalClose();
     } else {
       setOpen(true);
     }
+  }
+
+  function handleModalClose() {
+    router.back();
+    setOpen(false);
   }
 
   const multipleStepSnackFormState = useNewSnackForm();
@@ -41,7 +45,8 @@ export function DialogNewSnack() {
     form: {
       control,
       nameLocationImageForm,
-      handleSnackNameLocationImageSubmit,
+      handleSubmit,
+      onNameLocationImageSubmit,
     },
   } = multipleStepSnackFormState;
 
@@ -58,7 +63,12 @@ export function DialogNewSnack() {
         </DialogHeader>
         <Form {...nameLocationImageForm}>
           <form
-            onSubmit={handleSnackNameLocationImageSubmit}
+            onSubmit={async (e) => {
+              await handleSubmit(async (values) => {
+                await onNameLocationImageSubmit(values);
+                handleModalClose();
+              })(e);
+            }}
             className="grid gap-y-4"
           >
             {currentStep === 0 ? (

@@ -22,7 +22,7 @@ export const addSnackLocation = async (
   const formatedAddress = formatAddress(values.snackLocation.address);
 
   const { error: addNewSnackLocationError } = await supabase.rpc(
-    "handle_add_new_image_location_for_snack",
+    "add_snack_image_location",
     {
       snack_data: {
         snack_id: values.snackId,
@@ -39,6 +39,7 @@ export const addSnackLocation = async (
     }
   );
   if (addNewSnackLocationError) {
+    console.log(addNewSnackLocationError);
     console.error(addNewSnackLocationError?.hint);
     return;
   }
@@ -89,15 +90,21 @@ export const createSnack = async (
 ) => {
   const snackImageUrl = await uploadSnackImage(values.snackImage);
 
+  const formattedAddress = formatAddress(values.snackLocation.address);
+
   const supabase = await createClient();
 
-  const { error: snackAddError } = await supabase.rpc("add_new_snack", {
+  console.log(formattedAddress);
+
+  const { error: snackAddError } = await supabase.rpc("add_snack", {
     new_snack_data: {
       name: values.snackName,
     },
     location_data: {
       google_place_id: values.snackLocation.place_id,
-      address: values.snackLocation.address,
+      address: formattedAddress.address,
+      city: formattedAddress.city,
+      state: formattedAddress.state,
     },
     image_data: {
       image_url: snackImageUrl,

@@ -24,9 +24,13 @@ export interface SnackCityAndState {
 export interface ImageLocation {
   image_location_id: number;
   image_url: string;
-  snack_address: string;
+  address: string;
+  city: string;
+  state: string;
+  aisle: string;
   like_count: number;
   like_id: number | null;
+  uploaded_at: string;
 }
 
 export interface SnackDetail {

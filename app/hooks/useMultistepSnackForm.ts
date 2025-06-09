@@ -48,12 +48,6 @@ export function useNewSnackForm() {
     toast.success("Form successfully submitted");
   };
 
-  function handleSnackNameLocationImageSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ) {
-    handleSubmit(onNameLocationImageSubmit)(event);
-  }
-
   //#endregion
 
   return {
@@ -74,7 +68,8 @@ export function useNewSnackForm() {
     form: {
       control,
       nameLocationImageForm,
-      handleSnackNameLocationImageSubmit,
+      onNameLocationImageSubmit,
+      handleSubmit,
     },
   };
 }

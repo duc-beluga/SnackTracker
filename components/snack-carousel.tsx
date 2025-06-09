@@ -6,7 +6,6 @@ import { ImageLocation } from "@/app/interfaces/SnackInterfaces";
 import {
   Card,
   CardContent,
-  CardDescription,
   Carousel,
   CarouselContent,
   CarouselItem,
@@ -22,25 +21,24 @@ interface SnackCarouselProps {
 
 export function SnackCarousel({ images_locations }: SnackCarouselProps) {
   return (
-    <Carousel className="w-[calc(100%-52px)] sm:w-full max-w-xs">
-      <CarouselContent>
+    <Carousel className="w-full max-w-sm mx-auto">
+      <CarouselContent className="-ml-2 md:-ml-4">
         {images_locations !== undefined && images_locations.length > 0 ? (
           images_locations.map((image_location) => (
-            <CarouselItem key={image_location.image_location_id}>
-              <Card className="w-full border-none">
-                <div className="h-14 sm:h-14 p-2 overflow-y-auto">
-                  <CardDescription>
-                    {image_location.snack_address}
-                  </CardDescription>
-                </div>
-                <CardContent className="p-0 relative aspect-square">
-                  <div className="relative w-full h-full">
+            <CarouselItem
+              key={image_location.image_location_id}
+              className="pl-2 md:pl-4"
+            >
+              <Card className="border-0 shadow-none bg-transparent">
+                <CardContent className="p-0 space-y-3">
+                  {/* Image Container */}
+                  <div className="relative aspect-square overflow-hidden rounded-xl bg-gray-100">
                     <Image
                       src={image_location.image_url}
-                      alt="snackImage"
-                      width={160}
-                      height={220}
-                      className="object-cover w-full h-full rounded-md"
+                      alt="Snack location"
+                      fill
+                      sizes="(max-width: 640px) 280px, 320px"
+                      className="object-cover"
                       priority={
                         image_location.image_location_id ===
                         images_locations[0]?.image_location_id
@@ -52,22 +50,57 @@ export function SnackCarousel({ images_locations }: SnackCarouselProps) {
                           : "lazy"
                       }
                     />
+
+                    {/* Like Button Overlay */}
+                    <div className="absolute bottom-3 right-3">
+                      <LikeButton
+                        like_count={image_location.like_count}
+                        like_id={image_location.like_id}
+                        image_location_id={image_location.image_location_id}
+                      />
+                    </div>
                   </div>
-                  <LikeButton
-                    like_count={image_location.like_count}
-                    like_id={image_location.like_id}
-                    image_location_id={image_location.image_location_id}
-                  />
+
+                  {/* Location Info */}
+                  <div className="space-y-1">
+                    <h3 className="font-medium text-sm leading-tight line-clamp-2">
+                      {image_location.address}
+                    </h3>
+
+                    {image_location.aisle && (
+                      <p className="text-xs text-muted-foreground font-medium">
+                        Aisle {image_location.aisle}
+                      </p>
+                    )}
+
+                    {(image_location.city || image_location.state) && (
+                      <p className="text-xs text-muted-foreground">
+                        {[image_location.city, image_location.state]
+                          .filter(Boolean)
+                          .join(", ")}
+                      </p>
+                    )}
+
+                    {image_location.uploaded_at && (
+                      <p className="text-xs text-muted-foreground/70">
+                        {new Date(
+                          image_location.uploaded_at
+                        ).toLocaleDateString()}
+                      </p>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </CarouselItem>
           ))
         ) : (
-          <SnackCarouselItemSkeleton />
+          <CarouselItem className="pl-2 md:pl-4">
+            <SnackCarouselItemSkeleton />
+          </CarouselItem>
         )}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="left-0" />
+      <CarouselNext className="right-0" />
     </Carousel>
   );
 }
