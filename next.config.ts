@@ -1,17 +1,26 @@
 import type { NextConfig } from "next";
 
+const cspHeader = `
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval';
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' https://yjzinpfmkbsbtxcosviy.supabase.co https://lh3.googleusercontent.com data: blob:;
+  font-src 'self';
+  connect-src 'self' https://yjzinpfmkbsbtxcosviy.supabase.co;
+  object-src 'none';
+  frame-src 'none';
+`;
+
 const nextConfig: NextConfig = {
   images: {
     minimumCacheTTL: 2678400,
     remotePatterns: [
       {
-        //Snack image
         protocol: "https",
         hostname: "yjzinpfmkbsbtxcosviy.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
       {
-        //User avatar
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
         pathname: "/**",
@@ -22,8 +31,20 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "3mb",
     },
-    // This could be helpful for third-party libraries, for now, it's not helpful for Barrel Import
     optimizePackageImports: ["@/components/ui"],
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)", // apply CSP to all routes
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: cspHeader.replace(/\n/g, "").trim(),
+          },
+        ],
+      },
+    ];
   },
 };
 
