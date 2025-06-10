@@ -31,7 +31,7 @@ export default function AboutUs() {
         {features.map((feature, index) => (
           <Card
             key={index}
-            className="max-w-md p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow bg-white text-center flex flex-col items-center"
+            className="max-w-md p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow  bg-white dark:bg-zinc-900 text-center flex flex-col items-center"
           >
             <Image
               src={feature.image}
