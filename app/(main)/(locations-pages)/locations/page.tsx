@@ -77,7 +77,7 @@ export default function LocationsPage() {
     );
   return (
     <div className="min-h-screen">
-      <div className="bg-white shadow-sm border-b border-gray-100">
+      <div className="shadow-sm border-b border-gray-100">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-6 py-4">
           {typeof window !== "undefined" && isMobile ? (
             <div className="space-y-4">
