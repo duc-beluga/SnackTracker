@@ -1,6 +1,6 @@
 "use client";
 
-import { Coins, Loader } from "lucide-react";
+import { Coins } from "lucide-react";
 import {
   Spinner,
   Tabs,
@@ -15,22 +15,31 @@ import SnackReels from "@/components/snack-reels";
 import { getCurrentUser } from "@/app/server-actions/auth/actions";
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
-import { getUserTokens } from "@/app/server-actions/user/actions";
-import AncientMapIcon from "@/components/icons/map";
+import {
+  getRankByTokenAmount,
+  getUserTokens,
+} from "@/app/server-actions/user/actions";
+import RankIconBase from "@/components/icons/icon-base";
 
 export default function ProfilePage() {
   const [currentUser, setCurrentUser] = useState<User | null>();
   const [isLoading, setIsLoading] = useState(true);
   const [userTokens, setUserTokens] = useState(0);
+  const [userRank, setUserRank] = useState<{
+    rank_name: string;
+    rank_icon: string;
+  } | null>(null);
 
   useEffect(() => {
     async function loadUserData() {
       try {
         const user = await getCurrentUser();
         const tokens = await getUserTokens();
+        const rank = await getRankByTokenAmount(tokens);
 
         setCurrentUser(user);
         setUserTokens(tokens);
+        setUserRank(rank);
       } finally {
         setIsLoading(false);
       }
@@ -94,9 +103,12 @@ export default function ProfilePage() {
           </div>
 
           <div className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-blue-100 px-3 py-1 shadow-sm border border-blue-300">
-            <AncientMapIcon />
+            <RankIconBase
+              url={`/icons/${userRank?.rank_icon}.svg`}
+              alt={userRank?.rank_name || ""}
+            />
             <span className="text-sm sm:text-base font-semibold text-blue-800">
-              Ancient Map
+              {userRank?.rank_name || "Rank Not Found"}
             </span>
           </div>
         </div>

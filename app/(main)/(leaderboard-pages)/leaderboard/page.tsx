@@ -68,13 +68,13 @@ export default function LeaderboardPage() {
     {
       username: "ava",
       rankIcon: <BronzeGauntletIcon />,
-      rankName: "Dusty Pouch",
+      rankName: "Bronze Gauntlet",
       tokens: 45,
     },
     {
       username: "lucas",
       rankIcon: <RunestoneIcon />,
-      rankName: "Dusty Pouch",
+      rankName: "Runestone",
       tokens: 40,
     },
     {
