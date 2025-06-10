@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
+const env = process.env.NODE_ENV || "production";
+const isDev = env === "development";
+
 const cspHeader = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-inline' ${isDev ? " 'unsafe-eval'" : ""};;
   style-src 'self' 'unsafe-inline';
   img-src 'self' https://yjzinpfmkbsbtxcosviy.supabase.co https://lh3.googleusercontent.com data: blob:;
   font-src 'self';
