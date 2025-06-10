@@ -3,12 +3,12 @@ import type { NextConfig } from "next";
 const cspHeader = `
   default-src 'self';
   script-src 'self';
-  style-src 'self'
+  style-src 'self';
   img-src 'self' https://yjzinpfmkbsbtxcosviy.supabase.co https://lh3.googleusercontent.com data: blob:;
   font-src 'self';
   connect-src 'self' https://yjzinpfmkbsbtxcosviy.supabase.co;
   object-src 'none';
-  frame-src 'none';
+  frame-ancestors 'none';
 `;
 
 const nextConfig: NextConfig = {
