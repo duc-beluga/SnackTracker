@@ -62,6 +62,7 @@ export const updateSession = async (request: NextRequest) => {
       "/leaderboard",
       "/sitemap.xml",
       "/robots.txt",
+      "/about",
     ];
 
     // Check if the current path is a public route

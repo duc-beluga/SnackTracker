@@ -29,6 +29,7 @@ import {
   LogIn,
   Dessert,
   Aperture,
+  BookMarked,
 } from "lucide-react";
 import {
   redirectToSignIn,
@@ -51,6 +52,7 @@ const iconMap: Record<string, ReactNode> = {
   Leaderboard: <Drumstick />,
   Snack: <Dessert />,
   "Popular Tags": <Tags />,
+  About: <BookMarked />,
 };
 
 const contentGroup: NavbarGroupInterface = {
@@ -65,7 +67,7 @@ const settingGroup: NavbarGroupInterface = {
 
 const communityGroup: NavbarGroupInterface = {
   groupLabel: "Community",
-  groupItems: ["Leaderboard", "Popular Tags"],
+  groupItems: ["Leaderboard", "Popular Tags", "About"],
 };
 
 const linkMap: Record<string, string> = {
@@ -76,6 +78,7 @@ const linkMap: Record<string, string> = {
   Locations: "/locations",
   Leaderboard: "/leaderboard",
   "Popular Tags": "#",
+  About: "about",
 };
 
 const authenticatedLinks = ["Profile"];
