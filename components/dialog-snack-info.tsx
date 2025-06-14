@@ -20,6 +20,22 @@ export function DialogSnackInfo({
   user: User | null | undefined;
   onAddLocationClick: () => void;
 }) {
+  function renderActionContent() {
+    if (user === undefined) {
+      return <Skeleton className="w-[248px] sm:w-[320px] h-9" />;
+    }
+
+    if (user !== null) {
+      return (
+        <Button onClick={onAddLocationClick} className="w-[248px] sm:w-[320px]">
+          Add new location <Plus />
+        </Button>
+      );
+    }
+
+    return null;
+  }
+
   return (
     <>
       <DialogDescription className="hidden"></DialogDescription>
@@ -31,18 +47,7 @@ export function DialogSnackInfo({
       </div>
       <DialogFooter>
         <div className="flex items-center justify-center w-full">
-          {user === undefined ? (
-            <Skeleton className="w-[248px] sm:w-[320px] h-9" />
-          ) : (
-            user !== null && (
-              <Button
-                onClick={onAddLocationClick}
-                className="w-[248px] sm:w-[320px]"
-              >
-                Add new location <Plus />
-              </Button>
-            )
-          )}
+          {renderActionContent()}
         </div>
       </DialogFooter>
     </>
