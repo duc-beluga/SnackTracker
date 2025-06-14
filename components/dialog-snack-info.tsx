@@ -1,0 +1,50 @@
+import { SnackDetail } from "@/app/interfaces/SnackInterfaces";
+import { User } from "@supabase/supabase-js";
+import {
+  Button,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Skeleton,
+} from "./ui";
+import { SnackCarousel } from "./snack-carousel";
+import { Plus } from "lucide-react";
+
+export function DialogSnackInfo({
+  snack,
+  user,
+  onAddLocationClick,
+}: {
+  snack: SnackDetail;
+  user: User | null | undefined;
+  onAddLocationClick: () => void;
+}) {
+  return (
+    <>
+      <DialogDescription className="hidden"></DialogDescription>
+      <DialogHeader>
+        <DialogTitle>{snack.name}</DialogTitle>
+      </DialogHeader>
+      <div className="flex justify-center">
+        <SnackCarousel images_locations={snack.images_locations} />
+      </div>
+      <DialogFooter>
+        <div className="flex items-center justify-center w-full">
+          {user === undefined ? (
+            <Skeleton className="w-[248px] sm:w-[320px] h-9" />
+          ) : (
+            user !== null && (
+              <Button
+                onClick={onAddLocationClick}
+                className="w-[248px] sm:w-[320px]"
+              >
+                Add new location <Plus />
+              </Button>
+            )
+          )}
+        </div>
+      </DialogFooter>
+    </>
+  );
+}

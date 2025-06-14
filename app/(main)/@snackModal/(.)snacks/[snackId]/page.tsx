@@ -1,4 +1,4 @@
-import DialogImageLocation from "@/components/dialog-image-location";
+import DialogSnackDetail from "@/components/dialog-snack-detail";
 import { DialogNewSnack } from "@/components/dialog-new-snack";
 export default async function SnackModalPage({
   params,
@@ -11,5 +11,5 @@ export default async function SnackModalPage({
     return <DialogNewSnack />;
   }
 
-  return <DialogImageLocation snackId={snackId} />;
+  return <DialogSnackDetail snackId={snackId} />;
 }
