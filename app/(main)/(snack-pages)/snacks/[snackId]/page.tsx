@@ -11,8 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { encodeId } from "@/utils/hashids";
+import { decodeId, encodeId } from "@/utils/hashids";
 import { Dice5 } from "lucide-react";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function SnackPage({
@@ -21,7 +22,14 @@ export default async function SnackPage({
   params: Promise<{ snackId: string }>;
 }) {
   const snackId = (await params).snackId;
-  const snackDetails = await fetchSnackDetail(snackId);
+
+  const decodedSnackId = decodeId(snackId);
+
+  if (!decodedSnackId) {
+    redirect("/snacks");
+  }
+
+  const snackDetails = await fetchSnackDetail(decodedSnackId);
   const randomSnackId = await fetchRandomSnackId();
   const encodedSnackId = encodeId(randomSnackId);
 

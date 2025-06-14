@@ -257,10 +257,8 @@ export async function fetchSnackIds(): Promise<number[] | null> {
 }
 
 export async function fetchSnackDetail(
-  snackId: string
+  snackId: number
 ): Promise<SnackDetail | null> {
-  const decodedSnackId = decodeId(snackId);
-
   const supabase = await createClient();
 
   const {
@@ -277,7 +275,7 @@ export async function fetchSnackDetail(
 
   const { data: fetchSnackDetailsData, error: fetchSnackDetailsError } =
     await supabase.rpc("get_snack_details_by_id", {
-      p_snack_id: decodedSnackId,
+      p_snack_id: snackId,
       p_user_id: currentUserId,
     });
   if (fetchSnackDetailsError) {

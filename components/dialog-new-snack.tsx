@@ -38,7 +38,7 @@ export function DialogNewSnack() {
     setOpen(false);
   }
 
-  const multipleStepSnackFormState = useNewSnackForm();
+  const createSnackFormState = useNewSnackForm();
   const {
     steps: { currentStep, setCurrentStep },
     snack: { isNewSnack },
@@ -48,7 +48,7 @@ export function DialogNewSnack() {
       handleSubmit,
       onNameLocationImageSubmit,
     },
-  } = multipleStepSnackFormState;
+  } = createSnackFormState;
 
   return (
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
@@ -73,7 +73,7 @@ export function DialogNewSnack() {
           >
             {currentStep === 0 ? (
               <SnackNameFormField
-                multipleStepSnackFormState={multipleStepSnackFormState}
+                multipleStepSnackFormState={createSnackFormState}
               />
             ) : (
               <>
