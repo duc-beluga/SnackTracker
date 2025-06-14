@@ -9,7 +9,7 @@ export async function getUserTokens() {
     data: { user: currentUser },
   } = await supabase.auth.getUser();
 
-  const { data, error } = await supabase.rpc("get_user_total_coints", {
+  const { data, error } = await supabase.rpc("get_user_total_coins", {
     p_user_id: currentUser?.id,
   });
 

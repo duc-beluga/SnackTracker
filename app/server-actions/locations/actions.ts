@@ -9,7 +9,7 @@ export async function fetchCityAndStateFrequencies(): Promise<
   const supabase = await createClient();
 
   const { data: uploadedSnacks, error: fetchSnackCitiesAndStates } =
-    await supabase.rpc("get_city_state_counts_v2");
+    await supabase.rpc("get_snack_counts_by_city_state");
   if (fetchSnackCitiesAndStates) {
     console.error(fetchSnackCitiesAndStates);
     return null;
