@@ -41,11 +41,6 @@ export const updateSession = async (request: NextRequest) => {
       error,
     } = await supabase.auth.getUser();
 
-    // Edge case: /snacks/new overlapse with /snacks/[snackId]
-    if (!user && request.nextUrl.pathname.startsWith("/snacks/new")) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
-
     // Define public routes that don't require authentication
     const publicRoutes = [
       "/snacks",
