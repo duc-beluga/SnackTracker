@@ -125,7 +125,7 @@ export async function fetchLikedSnacks(
   } = await supabase.auth.getUser();
 
   const { data: likedSnacks, error: fetchLikedSnacksError } =
-    await supabase.rpc("get_user_liked_snacks_with_range_v2", {
+    await supabase.rpc("get_user_liked_snacks_in_range", {
       p_user_id: currentUser?.id,
       start_range: startRange,
       end_range: endRange,
@@ -150,7 +150,7 @@ export async function fetchUploadedSnacks(
   } = await supabase.auth.getUser();
 
   const { data: uploadedSnacks, error: fetchUploadedSnacksError } =
-    await supabase.rpc("get_user_uploaded_snacks_with_range_v2", {
+    await supabase.rpc("get_user_uploaded_snacks_in_range", {
       p_user_id: currentUser?.id,
       start_range: startRange,
       end_range: endRange,
