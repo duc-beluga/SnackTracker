@@ -232,7 +232,7 @@ export async function fetchTrendingSnacks(
   const daysBackInt = daysBackMap[days_back];
 
   const { data: uploadedSnacks, error: fetchTrendingSnacksError } =
-    await supabase.rpc("get_trending_snacks_by_time", {
+    await supabase.rpc("get_trending_snacks_by_time_range", {
       start_range: startRange,
       end_range: endRange,
       days_back: daysBackInt,
@@ -276,7 +276,7 @@ export async function fetchSnackDetail(
   }
 
   const { data: fetchSnackDetailsData, error: fetchSnackDetailsError } =
-    await supabase.rpc("get_snack_details_by_id_v3", {
+    await supabase.rpc("get_snack_details_by_id", {
       p_snack_id: decodedSnackId,
       p_user_id: currentUserId,
     });
