@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui";
+import { useFormStatus } from "react-dom";
 
 interface FormNavigationProps {
   totalSteps: number;
@@ -12,6 +13,8 @@ export function FormNavigation({
   step,
   setStep,
 }: FormNavigationProps) {
+  const { pending } = useFormStatus();
+
   const handleBack = () => {
     if (step > 0) {
       setStep(step - 1);
@@ -49,7 +52,7 @@ export function FormNavigation({
         </Button>
       ) : (
         <Button type="submit" size="sm" className="font-medium">
-          Submit
+          {pending ? "Submitting..." : "Submit"}
         </Button>
       )}
     </div>
