@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
-import { decodeId } from "@/utils/hashids";
 
 const EMPTY_GUID = "00000000-0000-0000-0000-000000000000";
 
@@ -21,26 +20,23 @@ export const addSnackLocation = async (
 
   const formatedAddress = formatAddress(values.snackLocation.address);
 
-  const { error: addNewSnackLocationError } = await supabase.rpc(
-    "add_snack_image_location",
-    {
-      snack_data: {
-        snack_id: values.snackId,
-      },
-      location_data: {
-        google_place_id: values.snackLocation.place_id,
-        address: formatedAddress.address,
-        city: formatedAddress.city,
-        state: formatedAddress.state,
-      },
-      image_data: {
-        image_url: snackImageUrl,
-      },
-    }
-  );
-  if (addNewSnackLocationError) {
-    console.error(addNewSnackLocationError);
-    return;
+  const { error } = await supabase.rpc("add_snack_image_location", {
+    snack_data: {
+      snack_id: values.snackId,
+    },
+    location_data: {
+      google_place_id: values.snackLocation.place_id,
+      address: formatedAddress.address,
+      city: formatedAddress.city,
+      state: formatedAddress.state,
+    },
+    image_data: {
+      image_url: snackImageUrl,
+    },
+  });
+
+  if (error) {
+    throw new Error(`Upload failed: ${error.message}`);
   }
 };
 
@@ -427,39 +423,25 @@ export async function fetchSnackByLocation(
 
 const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
   const supabase = await createClient();
-  const emptyString = "";
 
-  if (!uploadImageFile) {
-    console.error("No file selected!");
-    return emptyString;
+  const uniqueImageId = uuidv4();
+
+  const { error } = await supabase.storage
+    .from("snacks_pics")
+    .upload(`${uniqueImageId}.png`, uploadImageFile, {
+      cacheControl: "2678400",
+      upsert: false,
+    });
+
+  if (error) {
+    throw new Error(`Upload failed: ${error.message}`);
   }
 
-  try {
-    const uniqueImageId = uuidv4();
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("snacks_pics").getPublicUrl(`${uniqueImageId}.png`);
 
-    const { error: uploadImageError } = await supabase.storage
-      .from("snacks_pics")
-      .upload(`${uniqueImageId}.png`, uploadImageFile, {
-        cacheControl: "2678400",
-        upsert: false,
-      });
-
-    if (uploadImageError) {
-      console.error(uploadImageError.message);
-      return emptyString;
-    }
-    const {
-      data: { publicUrl },
-    } = supabase.storage
-      .from("snacks_pics")
-      .getPublicUrl(`${uniqueImageId}.png`);
-
-    return publicUrl;
-  } catch (unexpectedError) {
-    console.error(`Unexpected Error: ${unexpectedError}`);
-
-    return emptyString;
-  }
+  return publicUrl;
 };
 
 function formatAddress(description: string) {

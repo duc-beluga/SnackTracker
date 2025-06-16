@@ -8,6 +8,7 @@ import {
   addSnackLocation,
   createSnack,
 } from "@/app/server-actions/snacks/actions";
+import { catchError } from "@/utils/exceptionHandler";
 
 export function useNewSnackForm() {
   //#region { State }
@@ -39,7 +40,11 @@ export function useNewSnackForm() {
         snackLocation: values.snackLocation,
         snackImage: values.snackImage,
       };
-      await addSnackLocation(snackLocationImage);
+      const [error] = await catchError(addSnackLocation(snackLocationImage));
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
     }
 
     // Reset the form and step count after successful submission

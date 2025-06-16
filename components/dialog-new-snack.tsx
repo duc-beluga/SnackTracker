@@ -18,6 +18,9 @@ import {
 } from "@/components/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
+import { z } from "zod";
+import { handleValidationError } from "@/utils/exceptionHandler";
 
 const TOTAL_STEPS = 2;
 
@@ -50,6 +53,13 @@ export function DialogNewSnack() {
     },
   } = createSnackFormState;
 
+  const handleValidSubmit = async (
+    values: z.infer<typeof SnackNameLocationSchemaType>
+  ) => {
+    await onNameLocationImageSubmit(values);
+    handleModalClose();
+  };
+
   return (
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent className="w-2/3 md:w-1/2">
@@ -63,12 +73,7 @@ export function DialogNewSnack() {
         </DialogHeader>
         <Form {...nameLocationImageForm}>
           <form
-            onSubmit={async (e) => {
-              await handleSubmit(async (values) => {
-                await onNameLocationImageSubmit(values);
-                handleModalClose();
-              })(e);
-            }}
+            onSubmit={handleSubmit(handleValidSubmit, handleValidationError)}
             className="grid gap-y-4"
           >
             {currentStep === 0 ? (
