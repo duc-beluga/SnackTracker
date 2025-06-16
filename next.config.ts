@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      bodySizeLimit: "5mb",
+      bodySizeLimit: "3mb",
     },
     optimizePackageImports: ["@/components/ui"],
   },
