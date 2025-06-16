@@ -1,10 +1,8 @@
 import { z } from "zod";
+import { snackImageSchema, snackLocationSchema } from "./snack/shared";
 
 export const SnackLocationSchemaType = z.object({
   snackId: z.number().min(1),
-  snackLocation: z.object({
-    address: z.string().min(1, "Address is required"),
-    place_id: z.string().min(1, "Place_id is required"),
-  }),
-  snackImage: z.instanceof(File),
+  snackLocation: snackLocationSchema,
+  snackImage: snackImageSchema,
 });
