@@ -50,6 +50,7 @@ export function DialogNewSnack() {
       nameLocationImageForm,
       handleSubmit,
       onNameLocationImageSubmit,
+      isLoading,
     },
   } = createSnackFormState;
 
@@ -92,6 +93,7 @@ export function DialogNewSnack() {
               totalSteps={TOTAL_STEPS}
               step={currentStep}
               setStep={setCurrentStep}
+              isLoading={isLoading}
             />
           </form>
         </Form>

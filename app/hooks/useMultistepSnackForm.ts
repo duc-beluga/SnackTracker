@@ -17,7 +17,7 @@ export function useNewSnackForm() {
   const [isNewSnack, setIsNewSnack] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [selectedSnackId, setSelectedSnackId] = useState<number>(0);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   //#endregion
 
   //#region { Dependencies }
@@ -32,6 +32,7 @@ export function useNewSnackForm() {
   const onNameLocationImageSubmit = async (
     values: z.infer<typeof SnackNameLocationSchemaType>
   ) => {
+    setIsLoading(true);
     if (isNewSnack) {
       await createSnack(values);
     } else {
@@ -41,6 +42,7 @@ export function useNewSnackForm() {
         snackImage: values.snackImage,
       };
       const [error] = await catchError(addSnackLocation(snackLocationImage));
+      setIsLoading(false);
       if (error) {
         toast.error(error.message);
         return;
@@ -75,6 +77,7 @@ export function useNewSnackForm() {
       nameLocationImageForm,
       onNameLocationImageSubmit,
       handleSubmit,
+      isLoading,
     },
   };
 }
