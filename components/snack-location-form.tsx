@@ -16,6 +16,7 @@ import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema
 import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocationForm";
 import { addSnackLocation } from "@/app/server-actions/snacks/actions";
 import { toast } from "sonner";
+import { catchError, handleValidationError } from "@/utils/exceptionHandler";
 
 interface LocationImageFormProps {
   snackId: number;
@@ -32,23 +33,20 @@ export function SnackLocationForm({
   const onNewLocationSubmit = async (
     values: z.infer<typeof SnackLocationSchemaType>
   ) => {
-    try {
-      await addSnackLocation(values);
+    const [error] = await catchError(addSnackLocation(values));
+
+    if (error) {
+      toast.error(error.message);
+    } else {
       toast.success("New location successfully added");
       closeDialog();
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        toast.error(e.message);
-      } else {
-        toast.error("Failed to add location");
-      }
     }
   };
 
   return (
     <Form {...reactHookSnackLocationForm}>
       <form
-        onSubmit={handleSubmit(onNewLocationSubmit)}
+        onSubmit={handleSubmit(onNewLocationSubmit, handleValidationError)}
         className="space-y-6"
         id="addSnackLocationForm"
       >
