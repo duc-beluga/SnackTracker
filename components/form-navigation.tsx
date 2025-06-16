@@ -6,15 +6,15 @@ interface FormNavigationProps {
   totalSteps: number;
   step: number;
   setStep: Dispatch<SetStateAction<number>>;
+  isLoading: boolean;
 }
 
 export function FormNavigation({
   totalSteps,
   step,
   setStep,
+  isLoading,
 }: FormNavigationProps) {
-  const { pending } = useFormStatus();
-
   const handleBack = () => {
     if (step > 0) {
       setStep(step - 1);
@@ -52,7 +52,7 @@ export function FormNavigation({
         </Button>
       ) : (
         <Button type="submit" size="sm" className="font-medium">
-          {pending ? "Submitting..." : "Submit"}
+          {isLoading ? "Submitting..." : "Submit"}
         </Button>
       )}
     </div>
