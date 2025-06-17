@@ -60,7 +60,7 @@ export function DialogNewSnack() {
 
   return (
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
-      <DialogContent className="w-2/3 md:w-1/2">
+      <DialogContent className="w-11/12 md:w-1/2">
         <DialogHeader>
           <DialogTitle>Adding new snack</DialogTitle>
           <DialogDescription />
