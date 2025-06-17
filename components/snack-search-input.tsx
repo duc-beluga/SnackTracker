@@ -1,11 +1,8 @@
 "use client";
 
-// React and external libraries
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useCallback } from "react";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
-import { createClient } from "@/utils/supabase/client";
-
-// UI Components - shadcn
+import { useRouter } from "next/navigation";
 import {
   Command,
   CommandGroup,
@@ -13,11 +10,10 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui";
-
-interface SnackType {
-  name: string;
-  snack_id: number;
-}
+import { encodeId } from "@/utils/hashids";
+import { useSnackNames } from "@/app/hooks/useSnackNames";
+import { SnackName } from "@/app/interfaces/SnackInterfaces";
+import { useFilteredSnackNames } from "@/app/hooks/useFilteredSnackNames";
 
 interface SnackSearchInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -25,9 +21,7 @@ interface SnackSearchInputProps<
 > {
   field: ControllerRenderProps<TFieldValues, TName>;
   setIsNewSnack: Dispatch<SetStateAction<boolean>>;
-  setIsTyping: Dispatch<SetStateAction<boolean>>;
-  setSnackSelected: Dispatch<SetStateAction<number>>;
-  isTyping: boolean;
+  isNewSnack: boolean;
 }
 
 export function SnackSearchInput<
@@ -35,83 +29,62 @@ export function SnackSearchInput<
   TName extends Path<TFieldValue>,
 >({
   field,
+  isNewSnack,
   setIsNewSnack,
-  setIsTyping,
-  setSnackSelected,
-  isTyping,
 }: SnackSearchInputProps<TFieldValue, TName>) {
-  const [predictions, setPredictions] = useState<SnackType[]>([]);
-  const [snacks, setSnacks] = useState<SnackType[] | null>([]);
+  const snacks = useSnackNames();
+  const predictions = useFilteredSnackNames(
+    snacks,
+    field.value ?? "",
+    isNewSnack
+  );
+  const router = useRouter();
 
-  useEffect(() => {
-    async function fetchSnacks() {
-      const supabase = createClient();
-      const { data } = await supabase.from("snacks").select("name, snack_id");
-
-      if (data) {
-        const snackNamesList = data.map((item) => ({
-          name: item.name,
-          snack_id: item.snack_id,
-        }));
-        setSnacks(snackNamesList);
+  const handleSnackSelect = useCallback(
+    (selectedSnack: SnackName) => {
+      if (selectedSnack.snack_id === 0) {
+        setIsNewSnack(true);
+        return;
       }
-    }
-    fetchSnacks();
-  }, []);
 
-  useEffect(() => {
-    if (field.value == "") {
-      setIsTyping(false);
-    }
-    const snacksFound =
-      snacks
-        ?.filter((snack) =>
-          snack.name
-            .toLowerCase()
-            .includes(field.value.toLocaleLowerCase().trim())
-        )
-        .slice(0, 5) || [];
+      router.push(`/snacks/${encodeId(selectedSnack.snack_id)}`);
+    },
+    [setIsNewSnack, router]
+  );
 
-    setPredictions(snacksFound);
-  }, [field.value]);
+  const handleInputChange = useCallback(
+    (value: string) => {
+      field.onChange(value);
+    },
+    [field]
+  );
 
-  useEffect(() => {
-    if (predictions.length == 0 && isTyping) {
-      setIsNewSnack(true);
-    } else {
-      setIsNewSnack(false);
-    }
-  }, [predictions]);
-
-  const handleSnackSelect = (value: SnackType) => {
-    field.onChange(value.name);
-    setSnackSelected(value.snack_id);
-    setIsNewSnack(false);
-    setIsTyping(false);
-  };
+  const hasResults = predictions.length > 0;
+  const isAddNewSnackShown = predictions[0]?.snack_id === 0;
+  const groupHeading = isAddNewSnackShown
+    ? "Snack Not Found"
+    : "Existing snacks...";
 
   return (
-    <Command>
+    <Command shouldFilter={false}>
       <CommandInput
-        placeholder="Type a snack..."
-        value={field.value}
-        onValueChange={(value) => {
-          field.onChange(value);
-          setIsTyping(true);
-        }}
+        placeholder="Type snack name..."
+        value={field.value || ""}
+        onValueChange={handleInputChange}
+        disabled={isNewSnack}
       />
+
       <CommandList>
-        {isTyping && (
-          <CommandGroup heading="Existing snacks...">
-            {predictions.length > 0 &&
-              predictions.map((prediction) => (
-                <CommandItem
-                  key={prediction.snack_id}
-                  onSelect={() => handleSnackSelect(prediction)}
-                >
-                  {prediction.name}
-                </CommandItem>
-              ))}
+        {hasResults && (
+          <CommandGroup heading={groupHeading}>
+            {predictions.map((prediction) => (
+              <CommandItem
+                key={prediction.snack_id}
+                onSelect={() => handleSnackSelect(prediction)}
+              >
+                {prediction.name}
+              </CommandItem>
+            ))}
           </CommandGroup>
         )}
       </CommandList>

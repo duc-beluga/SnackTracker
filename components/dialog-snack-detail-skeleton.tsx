@@ -1,6 +1,7 @@
 import React from "react";
 import { DialogFooter, DialogHeader, DialogTitle, Skeleton } from "./ui";
 import SnackCarouselItemSkeleton from "./skeletons/snack-carousel-item-skeleton";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 type DialogSnackDetailSkeletonProps = {
   isUndefined: boolean;
@@ -19,6 +20,7 @@ export default function DialogSnackDetailSkeleton({
             "Snack Not Found"
           )}
         </DialogTitle>
+        <DialogDescription />
       </DialogHeader>
 
       <div className="flex justify-center">

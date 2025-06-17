@@ -1,7 +1,6 @@
 "use client";
 
 // Custom components
-import { FormNavigation } from "./form-navigation";
 import { SnackNameFormField } from "./snack-name-form-field";
 
 //Custom hooks
@@ -9,6 +8,7 @@ import { useNewSnackForm } from "@/app/hooks/useMultistepSnackForm";
 import { SnackLocationFormField } from "./snack-location-form-field";
 import { SnackImageFormField } from "./snack-image-form-field";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -21,8 +21,6 @@ import { useState } from "react";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { z } from "zod";
 import { handleValidationError } from "@/utils/exceptionHandler";
-
-const TOTAL_STEPS = 2;
 
 export function DialogNewSnack() {
   const router = useRouter();
@@ -43,14 +41,13 @@ export function DialogNewSnack() {
 
   const createSnackFormState = useNewSnackForm();
   const {
-    steps: { currentStep, setCurrentStep },
     snack: { isNewSnack },
     form: {
       control,
       nameLocationImageForm,
       handleSubmit,
-      onNameLocationImageSubmit,
       isLoading,
+      onNameLocationImageSubmit,
     },
   } = createSnackFormState;
 
@@ -65,36 +62,26 @@ export function DialogNewSnack() {
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent className="w-2/3 md:w-1/2">
         <DialogHeader>
-          <DialogTitle>
-            {!isNewSnack && currentStep === 1
-              ? "Adding existing snack"
-              : "Adding new snack"}
-          </DialogTitle>
-          <DialogDescription>Step {currentStep + 1}</DialogDescription>
+          <DialogTitle>Adding new snack</DialogTitle>
+          <DialogDescription />
         </DialogHeader>
         <Form {...nameLocationImageForm}>
           <form
             onSubmit={handleSubmit(handleValidSubmit, handleValidationError)}
             className="grid gap-y-4"
           >
-            {currentStep === 0 ? (
-              <SnackNameFormField
-                multipleStepSnackFormState={createSnackFormState}
-              />
-            ) : (
+            <SnackNameFormField newSnackFormState={createSnackFormState} />
+            {isNewSnack && (
               <>
                 <SnackLocationFormField control={control} />
 
                 <SnackImageFormField control={control} />
+
+                <Button type="submit" size="sm" className="font-medium">
+                  {isLoading ? "Submitting..." : "Submit"}
+                </Button>
               </>
             )}
-
-            <FormNavigation
-              totalSteps={TOTAL_STEPS}
-              step={currentStep}
-              setStep={setCurrentStep}
-              isLoading={isLoading}
-            />
           </form>
         </Form>
       </DialogContent>
