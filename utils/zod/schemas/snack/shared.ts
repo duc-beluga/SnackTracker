@@ -17,7 +17,7 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ];
 
-const validateImageDimensions = (file: File): Promise<boolean> => {
+const validateImageDimensions = (file: File | Blob): Promise<boolean> => {
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -37,7 +37,7 @@ const validateImageDimensions = (file: File): Promise<boolean> => {
 };
 
 export const snackImageSchema = z
-  .instanceof(File, {
+  .custom<Blob>((file) => file instanceof Blob, {
     message: "Please select an image file.",
   })
   .refine((file) => file.size <= MAX_FILE_SIZE, {
