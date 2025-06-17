@@ -14,6 +14,7 @@ import { encodeId } from "@/utils/hashids";
 import { useSnackNames } from "@/app/hooks/useSnackNames";
 import { SnackName } from "@/app/interfaces/SnackInterfaces";
 import { useFilteredSnackNames } from "@/app/hooks/useFilteredSnackNames";
+import { useDebounce } from "@/app/hooks/useDebounce";
 
 interface SnackSearchInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -33,9 +34,11 @@ export function SnackSearchInput<
   setIsNewSnack,
 }: SnackSearchInputProps<TFieldValue, TName>) {
   const snacks = useSnackNames();
+  const debouncedQuery = useDebounce(field.value, 300);
+
   const predictions = useFilteredSnackNames(
     snacks,
-    field.value ?? "",
+    debouncedQuery ?? "",
     isNewSnack
   );
   const router = useRouter();
