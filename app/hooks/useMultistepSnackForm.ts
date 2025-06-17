@@ -33,23 +33,27 @@ export function useNewSnackForm() {
     values: z.infer<typeof SnackNameLocationSchemaType>
   ) => {
     setIsLoading(true);
+
+    let error: Error | undefined = undefined;
+
     if (isNewSnack) {
-      await createSnack(values);
+      [error] = await catchError(createSnack(values));
     } else {
       const snackLocationImage: z.infer<typeof SnackLocationSchemaType> = {
         snackId: selectedSnackId,
         snackLocation: values.snackLocation,
         snackImage: values.snackImage,
       };
-      const [error] = await catchError(addSnackLocation(snackLocationImage));
-      setIsLoading(false);
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
+      [error] = await catchError(addSnackLocation(snackLocationImage));
     }
 
-    // Reset the form and step count after successful submission
+    setIsLoading(false);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
     setStep(0);
     reset();
     toast.success("Form successfully submitted");

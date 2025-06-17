@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
+import { uploadSnackImage } from "@/lib/image";
 
 const EMPTY_GUID = "00000000-0000-0000-0000-000000000000";
 
@@ -420,29 +421,6 @@ export async function fetchSnackByLocation(
 //#endregion
 
 //#region { Helper functions }
-
-const uploadSnackImage = async (uploadImageFile: File): Promise<string> => {
-  const supabase = await createClient();
-
-  const uniqueImageId = uuidv4();
-
-  const { error } = await supabase.storage
-    .from("snacks_pics")
-    .upload(`${uniqueImageId}.png`, uploadImageFile, {
-      cacheControl: "2678400",
-      upsert: false,
-    });
-
-  if (error) {
-    throw new Error(`Upload failed: ${error.message}`);
-  }
-
-  const {
-    data: { publicUrl },
-  } = supabase.storage.from("snacks_pics").getPublicUrl(`${uniqueImageId}.png`);
-
-  return publicUrl;
-};
 
 function formatAddress(description: string) {
   // Split by commas and trim whitespace
