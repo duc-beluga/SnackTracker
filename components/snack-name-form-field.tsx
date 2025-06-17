@@ -7,17 +7,16 @@ import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocati
 import { useNewSnackForm } from "@/app/hooks/useMultistepSnackForm";
 
 interface SnackNameFormFieldProps {
-  multipleStepSnackFormState: ReturnType<typeof useNewSnackForm>;
+  newSnackFormState: ReturnType<typeof useNewSnackForm>;
 }
 
 export function SnackNameFormField({
-  multipleStepSnackFormState,
+  newSnackFormState,
 }: SnackNameFormFieldProps) {
   const {
-    snack: { isNewSnack, setIsNewSnack, setSelectedSnackId },
-    typing: { isTyping, setIsTyping },
+    snack: { isNewSnack, setIsNewSnack },
     form: { control },
-  } = multipleStepSnackFormState;
+  } = newSnackFormState;
 
   return (
     <FormField
@@ -42,10 +41,8 @@ export function SnackNameFormField({
               "snackName"
             >
               field={field}
+              isNewSnack={isNewSnack}
               setIsNewSnack={setIsNewSnack}
-              setIsTyping={setIsTyping}
-              setSnackSelected={setSelectedSnackId}
-              isTyping={isTyping}
             />
           </FormControl>
         </FormItem>

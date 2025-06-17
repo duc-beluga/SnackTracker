@@ -38,3 +38,8 @@ export interface SnackDetail {
   name: string;
   images_locations: ImageLocation[];
 }
+
+export type SnackName = {
+  name: string;
+  snack_id: number;
+};

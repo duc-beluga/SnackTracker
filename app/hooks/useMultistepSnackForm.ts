@@ -3,21 +3,15 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { getSnackNameLocationForm } from "@/utils/zod/forms/SnackNameLocationForm";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
-import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
-import {
-  addSnackLocation,
-  createSnack,
-} from "@/app/server-actions/snacks/actions";
+import { createSnack } from "@/app/server-actions/snacks/actions";
 import { catchError } from "@/utils/exceptionHandler";
 
 export function useNewSnackForm() {
   //#region { State }
 
-  const [step, setStep] = useState<number>(0);
   const [isNewSnack, setIsNewSnack] = useState<boolean>(false);
-  const [isTyping, setIsTyping] = useState<boolean>(false);
-  const [selectedSnackId, setSelectedSnackId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   //#endregion
 
   //#region { Dependencies }
@@ -34,18 +28,7 @@ export function useNewSnackForm() {
   ) => {
     setIsLoading(true);
 
-    let error: Error | undefined = undefined;
-
-    if (isNewSnack) {
-      [error] = await catchError(createSnack(values));
-    } else {
-      const snackLocationImage: z.infer<typeof SnackLocationSchemaType> = {
-        snackId: selectedSnackId,
-        snackLocation: values.snackLocation,
-        snackImage: values.snackImage,
-      };
-      [error] = await catchError(addSnackLocation(snackLocationImage));
-    }
+    const [error] = await catchError(createSnack(values));
 
     setIsLoading(false);
 
@@ -54,7 +37,6 @@ export function useNewSnackForm() {
       return;
     }
 
-    setStep(0);
     reset();
     toast.success("Form successfully submitted");
   };
@@ -62,19 +44,9 @@ export function useNewSnackForm() {
   //#endregion
 
   return {
-    steps: {
-      currentStep: step,
-      setCurrentStep: setStep,
-    },
     snack: {
       isNewSnack,
       setIsNewSnack,
-      // selectedSnackId,
-      setSelectedSnackId,
-    },
-    typing: {
-      isTyping,
-      setIsTyping,
     },
     form: {
       control,
