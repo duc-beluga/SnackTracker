@@ -25,15 +25,11 @@ export function DialogSnackInfo({
       return <Skeleton className="w-[248px] sm:w-[320px] h-9" />;
     }
 
-    if (user !== null) {
-      return (
-        <Button onClick={onAddLocationClick} className="w-[248px] sm:w-[320px]">
-          Add new location <Plus />
-        </Button>
-      );
-    }
-
-    return null;
+    return (
+      <Button onClick={onAddLocationClick} className="w-[248px] sm:w-[320px]">
+        Add new location <Plus />
+      </Button>
+    );
   }
 
   return (
