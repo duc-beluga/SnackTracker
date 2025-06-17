@@ -12,6 +12,7 @@ import { PlaceAutocompleteResult } from "@googlemaps/google-maps-services-js";
 import { useEffect, useState } from "react";
 import { ControllerRenderProps } from "react-hook-form/dist/types/controller";
 import { FieldValues, Path } from "react-hook-form";
+import { useDebounce } from "@/app/hooks/useDebounce";
 
 interface SnackLocationSearchProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -26,13 +27,15 @@ export function SnackLocationSearch<
 >({ field }: SnackLocationSearchProps<TFieldValue, TName>) {
   const [predictions, setPredictions] = useState<PlaceAutocompleteResult[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const debouncedAddress = useDebounce(field.value.address, 300);
+
   useEffect(() => {
     const fetchPredictions = async () => {
-      const googleMapspredictions = await autocomplete(field.value.address);
+      const googleMapspredictions = await autocomplete(debouncedAddress);
       setPredictions(googleMapspredictions ?? []);
     };
     fetchPredictions();
-  }, [field.value.address]);
+  }, [debouncedAddress]);
 
   const handleLocationSelect = (prediction: PlaceAutocompleteResult) => {
     field.onChange({
