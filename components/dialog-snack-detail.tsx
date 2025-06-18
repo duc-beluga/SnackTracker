@@ -20,7 +20,7 @@ export default function DialogSnackDetail({ snackId }: DialogSnackDetailProps) {
 
   const router = useRouter();
   const user = useSelector((state: RootState) => state.user.currentUser);
-  const snack = useSnackDetail(snackId);
+  const { data: snack, isLoading, isError } = useSnackDetail(snackId);
 
   function onDialogVisibilityChange(isOpen: boolean) {
     if (!isOpen) {
@@ -37,7 +37,7 @@ export default function DialogSnackDetail({ snackId }: DialogSnackDetailProps) {
   }
 
   function renderDialogContent() {
-    if (!snack) {
+    if (isLoading || !snack) {
       return <DialogSnackDetailSkeleton isUndefined={snack === undefined} />;
     }
 

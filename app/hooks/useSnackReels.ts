@@ -7,11 +7,14 @@ import {
   fetchTrendingSnacks,
   fetchSearchSnacks,
   fetchSnackByLocation,
+  fetchSnackDetail,
 } from "../server-actions/snacks/actions";
 import { useRouter } from "next/navigation";
 
 import { useInView } from "react-intersection-observer";
 import { delay } from "@/utils/utils";
+import { useQueryClient } from "@tanstack/react-query";
+import { encodeId } from "@/utils/hashids";
 
 //#region { Constants }
 
@@ -45,6 +48,7 @@ export function useSnackReels(
 
   const router = useRouter();
   const { ref, inView } = useInView();
+  const queryClient = useQueryClient();
 
   //#endregion
 
@@ -75,7 +79,7 @@ export function useSnackReels(
     setLoading(false);
     setHasNone(false);
 
-    let snacksData;
+    let snacksData: SnackDisplay[] | null;
 
     if (location === Location.Home) {
       snacksData = await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE);
@@ -126,6 +130,9 @@ export function useSnackReels(
     }
 
     setSnacks(snacksData);
+    if (snacksData) {
+      prefetchSnackDetails(snacksData);
+    }
   }
 
   async function fetchMoreSnacks() {
@@ -137,7 +144,8 @@ export function useSnackReels(
     const nextStartRange = startRange + SNACK_PER_LOAD;
     const nextEndRange = endRange + SNACK_PER_LOAD;
 
-    let newSnacks: SnackDisplay[];
+    let newSnacks: SnackDisplay[] | null;
+
     if (location === Location.Home) {
       newSnacks = (await fetchSnacks(nextStartRange, nextEndRange)) ?? [];
     } else if (location === Location.Liked) {
@@ -182,6 +190,8 @@ export function useSnackReels(
     setStartRange(nextStartRange);
     setEndRange(nextEndRange);
     setLoading(false);
+
+    prefetchSnackDetails(newSnacks);
   }
 
   //#endregion
@@ -195,6 +205,18 @@ export function useSnackReels(
       if (foundSnack) {
         setSelectedSnack(foundSnack);
       }
+    }
+  }
+
+  function prefetchSnackDetails(snacks: SnackDisplay[]) {
+    for (const snack of snacks) {
+      queryClient.prefetchQuery({
+        queryKey: ["snackDetail", encodeId(snack.snack_id)],
+        queryFn: async () => {
+          return await fetchSnackDetail(snack.snack_id);
+        },
+        staleTime: 5 * 60 * 1000,
+      });
     }
   }
 

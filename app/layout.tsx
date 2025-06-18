@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { StoreProvider } from "./store/StoreProvider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { QueryProviders } from "./provider";
 
 const defaultUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -46,12 +47,14 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <StoreProvider>
-            <main className="min-h-screen flex flex-col items-center">
-              <div className="flex-1 w-full flex flex-col gap-20 items-center">
-                {children}
-              </div>
-              <Toaster />
-            </main>
+            <QueryProviders>
+              <main className="min-h-screen flex flex-col items-center">
+                <div className="flex-1 w-full flex flex-col gap-20 items-center">
+                  {children}
+                </div>
+                <Toaster />
+              </main>
+            </QueryProviders>
           </StoreProvider>
         </ThemeProvider>
       </body>
