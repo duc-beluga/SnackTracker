@@ -23,10 +23,16 @@ export function ThemeToggle() {
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col justify-between gap-4">
-        <Button variant="outline" onClick={() => setTheme("light")}>
+        <Button
+          className="bg-white text-black hover:bg-gray-300"
+          onClick={() => setTheme("light")}
+        >
           <Sun />
         </Button>
-        <Button onClick={() => setTheme("dark")}>
+        <Button
+          className="bg-black text-white hover:bg-gray-700"
+          onClick={() => setTheme("dark")}
+        >
           <Moon />
         </Button>
       </CardContent>
