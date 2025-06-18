@@ -224,22 +224,9 @@ export async function fetchSnackDetail(
 ): Promise<SnackDetail | null> {
   const supabase = await createClient();
 
-  const {
-    data: { user: currentUser },
-  } = await supabase.auth.getUser();
-
-  let currentUserId;
-
-  if (!currentUser?.id) {
-    currentUserId = EMPTY_GUID;
-  } else {
-    currentUserId = currentUser.id;
-  }
-
   const { data: fetchSnackDetailsData, error: fetchSnackDetailsError } =
     await supabase.rpc("get_snack_details_by_id", {
       p_snack_id: snackId,
-      p_user_id: currentUserId,
     });
   if (fetchSnackDetailsError) {
     console.error(fetchSnackDetailsError);
@@ -247,6 +234,22 @@ export async function fetchSnackDetail(
   }
 
   return fetchSnackDetailsData as SnackDetail | null;
+}
+
+export async function fetchSnackDetailByIds(
+  snackIds: number[]
+): Promise<SnackDetail[] | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.rpc("get_snack_details_by_ids", {
+    p_snack_ids: snackIds,
+  });
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data as SnackDetail[] | null;
 }
 
 export async function fetchSearchSnacks(

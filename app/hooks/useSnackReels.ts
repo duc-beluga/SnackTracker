@@ -7,22 +7,83 @@ import {
   fetchTrendingSnacks,
   fetchSearchSnacks,
   fetchSnackByLocation,
-  fetchSnackDetail,
+  fetchSnackDetailByIds,
 } from "../server-actions/snacks/actions";
 import { useRouter } from "next/navigation";
-
 import { useInView } from "react-intersection-observer";
-import { delay } from "@/utils/utils";
-import { useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { encodeId } from "@/utils/hashids";
 
 //#region { Constants }
 
 const SNACK_PER_LOAD = 12;
-const INITIAL_START_RANGE = 0;
-const INITIAL_END_RANGE = SNACK_PER_LOAD - 1;
 
 //#endregion
+
+// Helper function to create query key
+function createSnackQueryKey(
+  location: Location,
+  timeRange?: "7days" | "1month" | "all",
+  searchString?: string,
+  state?: string,
+  city?: string
+) {
+  return [
+    "snacks",
+    location,
+    timeRange,
+    searchString?.trim(),
+    state,
+    city,
+  ].filter(Boolean);
+}
+
+// Helper function to fetch snacks based on location and parameters
+async function fetchSnacksByLocation(
+  location: Location,
+  startRange: number,
+  endRange: number,
+  timeRange?: "7days" | "1month" | "all",
+  searchString?: string,
+  state?: string,
+  city?: string
+): Promise<SnackDisplay[]> {
+  let snacksData: SnackDisplay[] | null;
+
+  if (location === Location.Home) {
+    snacksData = await fetchSnacks(startRange, endRange);
+  } else if (location === Location.Liked) {
+    snacksData = await fetchLikedSnacks(startRange, endRange);
+  } else if (location === Location.Uploaded) {
+    snacksData = await fetchUploadedSnacks(startRange, endRange);
+  } else if (location === Location.Trending) {
+    snacksData = await fetchTrendingSnacks(
+      startRange,
+      endRange,
+      timeRange ?? "all"
+    );
+  } else if (location === Location.Search) {
+    const query = searchString?.trim() ?? "";
+    snacksData = !query
+      ? await fetchSnacks(startRange, endRange)
+      : await fetchSearchSnacks(startRange, endRange, query);
+  } else if (location === Location.Location) {
+    if (!state) {
+      snacksData = [];
+    } else {
+      snacksData = await fetchSnackByLocation(
+        startRange,
+        endRange,
+        city ?? "",
+        state
+      );
+    }
+  } else {
+    snacksData = [];
+  }
+
+  return snacksData ?? [];
+}
 
 export function useSnackReels(
   location: Location,
@@ -33,14 +94,7 @@ export function useSnackReels(
 ) {
   //#region { State }
 
-  const [snacks, setSnacks] = useState<SnackDisplay[] | null>();
   const [selectedSnack, setSelectedSnack] = useState<SnackDisplay | null>(null);
-
-  const [startRange, setStartRange] = useState<number>(0);
-  const [endRange, setEndRange] = useState<number>(11);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [hasNone, setHasNone] = useState<boolean>(false);
 
   //#endregion
 
@@ -52,151 +106,88 @@ export function useSnackReels(
 
   //#endregion
 
-  //#region { Effect }
-  useEffect(() => {
-    fetchInitialSnacks();
-  }, [location, timeRange, searchString]);
+  //#region { TanStack Query }
 
-  useEffect(() => {
-    fetchInitialSnacks();
-  }, [state, city]);
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: createSnackQueryKey(
+      location,
+      timeRange,
+      searchString,
+      state,
+      city
+    ),
+    queryFn: async ({ pageParam = 0 }) => {
+      const startRange = pageParam * SNACK_PER_LOAD;
+      const endRange = startRange + SNACK_PER_LOAD - 1;
 
-  useEffect(() => {
-    if (inView) {
-      fetchMoreSnacks();
-    }
-  }, [inView]);
-
-  // #endregion
-
-  //#region { Effect Callbacks }
-
-  async function fetchInitialSnacks() {
-    setSnacks([]);
-    setStartRange(INITIAL_START_RANGE);
-    setEndRange(INITIAL_END_RANGE);
-    setHasMore(true);
-    setLoading(false);
-    setHasNone(false);
-
-    let snacksData: SnackDisplay[] | null;
-
-    if (location === Location.Home) {
-      snacksData = await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE);
-    } else if (location === Location.Liked) {
-      snacksData = await fetchLikedSnacks(
-        INITIAL_START_RANGE,
-        INITIAL_END_RANGE
+      return fetchSnacksByLocation(
+        location,
+        startRange,
+        endRange,
+        timeRange,
+        searchString,
+        state,
+        city
       );
-    } else if (location === Location.Uploaded) {
-      snacksData = await fetchUploadedSnacks(
-        INITIAL_START_RANGE,
-        INITIAL_END_RANGE
-      );
-    } else if (location === Location.Trending) {
-      snacksData = await fetchTrendingSnacks(
-        INITIAL_START_RANGE,
-        INITIAL_END_RANGE,
-        timeRange ?? "all"
-      );
-    } else if (location === Location.Search) {
-      const query = searchString?.trim() ?? "";
-      snacksData = !query
-        ? await fetchSnacks(INITIAL_START_RANGE, INITIAL_END_RANGE)
-        : await fetchSearchSnacks(
-            INITIAL_START_RANGE,
-            INITIAL_END_RANGE,
-            query
-          );
-    } else if (location === Location.Location) {
-      if (!state) {
-        snacksData = [];
-      } else {
-        snacksData = await fetchSnackByLocation(
-          INITIAL_START_RANGE,
-          INITIAL_END_RANGE,
-          city ?? "",
-          state
-        );
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      // If the last page has fewer items than SNACK_PER_LOAD, we've reached the end
+      if (lastPage.length < SNACK_PER_LOAD) {
+        return undefined;
       }
-    } else {
-      snacksData = [];
-    }
-
-    if (!snacksData || snacksData.length === 0) {
-      setHasNone(true);
-    } else if (snacksData.length < SNACK_PER_LOAD) {
-      setHasMore(false);
-    }
-
-    setSnacks(snacksData);
-    if (snacksData) {
-      prefetchSnackDetails(snacksData);
-    }
-  }
-
-  async function fetchMoreSnacks() {
-    if (loading || !hasMore) {
-      return;
-    }
-    setLoading(true);
-    await delay(2000);
-    const nextStartRange = startRange + SNACK_PER_LOAD;
-    const nextEndRange = endRange + SNACK_PER_LOAD;
-
-    let newSnacks: SnackDisplay[] | null;
-
-    if (location === Location.Home) {
-      newSnacks = (await fetchSnacks(nextStartRange, nextEndRange)) ?? [];
-    } else if (location === Location.Liked) {
-      newSnacks = (await fetchLikedSnacks(nextStartRange, nextEndRange)) ?? [];
-    } else if (location === Location.Uploaded) {
-      newSnacks =
-        (await fetchUploadedSnacks(nextStartRange, nextEndRange)) ?? [];
-    } else if (location === Location.Trending) {
-      newSnacks =
-        (await fetchTrendingSnacks(
-          nextStartRange,
-          nextEndRange,
-          timeRange ?? "all"
-        )) ?? [];
-    } else if (location === Location.Search) {
-      const query = searchString?.trim() ?? "";
-      newSnacks =
-        (!query
-          ? await fetchSnacks(nextStartRange, nextEndRange)
-          : await fetchSearchSnacks(nextStartRange, nextEndRange, query)) ?? [];
-    } else {
-      if (!city || !state) {
-        newSnacks = [];
-      } else {
-        newSnacks =
-          (await fetchSnackByLocation(
-            nextStartRange,
-            nextEndRange,
-            city,
-            state
-          )) ?? [];
-      }
-    }
-
-    // newSnack can be null here
-    if (newSnacks.length === 0 || newSnacks.length < SNACK_PER_LOAD) {
-      setHasMore(false);
-    }
-    setSnacks((prevSnacks: SnackDisplay[] | null | undefined) =>
-      prevSnacks ? [...prevSnacks, ...newSnacks] : [...newSnacks]
-    );
-    setStartRange(nextStartRange);
-    setEndRange(nextEndRange);
-    setLoading(false);
-
-    prefetchSnackDetails(newSnacks);
-  }
+      return allPages.length;
+    },
+    initialPageParam: 0,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+  });
 
   //#endregion
 
-  //#region { Event handler }
+  //#region { Computed Values }
+
+  // Flatten all pages into a single array
+  const snacks = data?.pages.flat() ?? [];
+
+  // Check if we have no data at all
+  const hasNone = status === "success" && snacks.length === 0;
+
+  // Loading state for initial fetch
+  const loading = status === "pending";
+
+  //#endregion
+
+  //#region { Effects }
+
+  // Fetch more data when scrolling into view
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // Prefetch snack details when new data comes in
+  useEffect(() => {
+    if (data?.pages) {
+      // Only prefetch the latest page (newly fetched data)
+      const latestPage = data.pages[data.pages.length - 1];
+      if (latestPage && latestPage.length > 0) {
+        prefetchSnackDetails(latestPage);
+      }
+    }
+  }, [data?.pages.length]);
+
+  //#endregion
+
+  //#region { Event Handlers }
 
   function onSnackClick(snackId: number) {
     router.push(`?snackId=${snackId}`, { scroll: false });
@@ -209,21 +200,29 @@ export function useSnackReels(
   }
 
   function prefetchSnackDetails(snacks: SnackDisplay[]) {
-    for (const snack of snacks) {
-      queryClient.prefetchQuery({
-        queryKey: ["snackDetail", encodeId(snack.snack_id)],
-        queryFn: async () => {
-          return await fetchSnackDetail(snack.snack_id);
-        },
-        staleTime: 5 * 60 * 1000,
-      });
-    }
+    if (snacks.length === 0) return;
+
+    const snackIds = snacks.map((snack) => snack.snack_id);
+
+    // Bulk fetch and populate individual cache entries
+    queryClient.prefetchQuery({
+      queryKey: ["snackDetailsBulk", snackIds.sort().join(",")],
+      queryFn: async () => {
+        const bulkData = await fetchSnackDetailByIds(snackIds);
+
+        // Populate individual cache entries from bulk data
+        if (Array.isArray(bulkData)) {
+          bulkData.forEach((snackDetail) => {
+            const encodedId = encodeId(snackDetail.snack_id);
+            queryClient.setQueryData(["snackDetail", encodedId], snackDetail);
+          });
+        }
+        console.log(bulkData);
+        return bulkData;
+      },
+      staleTime: 5 * 60 * 1000,
+    });
   }
-
-  //#endregion
-
-  //#region { Helper functions }
-
   //#endregion
 
   return {
@@ -231,7 +230,9 @@ export function useSnackReels(
     onSnackClick,
     selectedSnack,
     ref,
-    hasMore,
+    hasMore: loading || hasNextPage,
     hasNone,
+    loading: loading || isFetching,
+    error,
   };
 }
