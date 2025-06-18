@@ -26,6 +26,7 @@ export default async function NavTopBar() {
             <Link
               href="/snacks/new"
               className="flex items-center gap-1 sm:gap-2"
+              scroll={false}
             >
               <Upload className="w-4 h-4" />
               <span className="hidden sm:inline">Add Snack</span>
