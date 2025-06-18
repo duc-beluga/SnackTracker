@@ -26,13 +26,15 @@ export function SnackLocationSearch<
   TName extends Path<TFieldValue>,
 >({ field }: SnackLocationSearchProps<TFieldValue, TName>) {
   const [predictions, setPredictions] = useState<PlaceAutocompleteResult[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const debouncedAddress = useDebounce(field.value.address, 300);
 
   useEffect(() => {
     const fetchPredictions = async () => {
+      setIsLoading(true);
       const googleMapspredictions = await autocomplete(debouncedAddress);
       setPredictions(googleMapspredictions ?? []);
+      setIsLoading(false);
     };
     fetchPredictions();
   }, [debouncedAddress]);
@@ -42,11 +44,10 @@ export function SnackLocationSearch<
       address: prediction.description,
       place_id: prediction.place_id,
     });
-    setIsTyping(false);
   };
 
   return (
-    <Command>
+    <Command shouldFilter={false}>
       <CommandInput
         placeholder="Type a location or search..."
         value={field.value.address}
@@ -55,12 +56,13 @@ export function SnackLocationSearch<
             address: value,
             place_id: "",
           });
-          setIsTyping(true);
         }}
       />
       <CommandList>
         <CommandGroup>
-          {isTyping &&
+          {isLoading ? (
+            <CommandItem>Loading...</CommandItem>
+          ) : (
             predictions.map((prediction) => (
               <CommandItem
                 key={prediction.place_id}
@@ -68,7 +70,8 @@ export function SnackLocationSearch<
               >
                 {prediction.description}
               </CommandItem>
-            ))}
+            ))
+          )}
         </CommandGroup>
       </CommandList>
     </Command>
