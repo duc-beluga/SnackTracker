@@ -1,23 +1,27 @@
 import React from "react";
 import { FormControl, FormField, FormItem, FormLabel, Input } from "./ui";
-import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
-import { Control } from "react-hook-form";
-import z from "zod";
+import { Control, Path } from "react-hook-form";
 
-type AisleFormFieldProps = {
-  control: Control<z.infer<typeof SnackNameLocationSchemaType>>;
+type AisleFormFieldProps<T extends { aisle?: string }> = {
+  control: Control<T>;
 };
 
-export function AisleFormField({ control }: AisleFormFieldProps) {
+export function AisleFormField<T extends { aisle?: string }>({
+  control,
+}: AisleFormFieldProps<T>) {
   return (
     <FormField
       control={control}
-      name="aisle"
+      name={"aisle" as Path<T>}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Aisle</FormLabel>
+          <FormLabel>Aisle (optional)</FormLabel>
           <FormControl>
-            <Input type="text" {...field} placeholder="Optional" />
+            <Input
+              type="text"
+              {...field}
+              placeholder="e.g. Aisle 5B or Top Shelf"
+            />
           </FormControl>
         </FormItem>
       )}

@@ -28,6 +28,7 @@ export const addSnackLocation = async (
       address: formatedAddress.address,
       city: formatedAddress.city,
       state: formatedAddress.state,
+      aisle: values.aisle,
     },
     image_data: {
       image_url: snackImageUrl,

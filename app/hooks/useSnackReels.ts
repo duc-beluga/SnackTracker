@@ -220,7 +220,6 @@ export function useSnackReels(
             queryClient.setQueryData(["snackDetail", encodedId], snackDetail);
           });
         }
-        console.log(bulkData);
         return bulkData;
       },
       staleTime: 5 * 60 * 1000,
