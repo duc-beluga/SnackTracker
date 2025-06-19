@@ -17,6 +17,7 @@ import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocati
 import { addSnackLocation } from "@/app/server-actions/snacks/actions";
 import { toast } from "sonner";
 import { catchError, handleValidationError } from "@/utils/exceptionHandler";
+import { AisleFormField } from "./aisle-form-field";
 
 interface LocationImageFormProps {
   snackId: number;
@@ -67,6 +68,7 @@ export function SnackLocationForm({
             </FormItem>
           )}
         />
+        {/* <AisleFormField control={control} /> */}
         <FormField
           control={control}
           name="snackImage"
