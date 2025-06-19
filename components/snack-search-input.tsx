@@ -1,6 +1,12 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useCallback } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import {
@@ -33,6 +39,7 @@ export function SnackSearchInput<
   isNewSnack,
   setIsNewSnack,
 }: SnackSearchInputProps<TFieldValue, TName>) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const snacks = useSnackNames();
   const debouncedQuery = useDebounce(field.value, 300);
 
@@ -62,6 +69,14 @@ export function SnackSearchInput<
     [field]
   );
 
+  useEffect(() => {
+    setIsLoading(true);
+  }, [field.value]);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [debouncedQuery]);
+
   const hasResults = predictions.length > 0;
   const isAddNewSnackShown = predictions[0]?.snack_id === 0;
   const groupHeading = isAddNewSnackShown
@@ -78,18 +93,20 @@ export function SnackSearchInput<
       />
 
       <CommandList>
-        {hasResults && (
-          <CommandGroup heading={groupHeading}>
-            {predictions.map((prediction) => (
+        <CommandGroup heading={groupHeading}>
+          {isLoading ? (
+            <CommandItem>Searching...</CommandItem>
+          ) : (
+            predictions.map((prediction) => (
               <CommandItem
                 key={prediction.snack_id}
                 onSelect={() => handleSnackSelect(prediction)}
               >
                 {prediction.name}
               </CommandItem>
-            ))}
-          </CommandGroup>
-        )}
+            ))
+          )}
+        </CommandGroup>
       </CommandList>
     </Command>
   );
