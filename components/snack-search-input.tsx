@@ -79,9 +79,11 @@ export function SnackSearchInput<
 
   const hasResults = predictions.length > 0;
   const isAddNewSnackShown = predictions[0]?.snack_id === 0;
-  const groupHeading = isAddNewSnackShown
-    ? "Snack Not Found"
-    : "Existing snacks...";
+  const groupHeading = !hasResults
+    ? ""
+    : isAddNewSnackShown
+      ? "Snack Not Found"
+      : "Existing snacks...";
 
   return (
     <Command shouldFilter={false}>

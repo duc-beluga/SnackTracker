@@ -4,6 +4,8 @@ import React from "react";
 import { z } from "zod";
 
 import {
+  Button,
+  DialogFooter,
   Form,
   FormControl,
   FormField,
@@ -17,6 +19,8 @@ import { getSnackLocationFormWithDefaultId } from "@/utils/zod/forms/SnackLocati
 import { addSnackLocation } from "@/app/server-actions/snacks/actions";
 import { toast } from "sonner";
 import { catchError, handleValidationError } from "@/utils/exceptionHandler";
+import { AisleFormField } from "./aisle-form-field";
+import { MapPinCheck } from "lucide-react";
 
 interface LocationImageFormProps {
   snackId: number;
@@ -28,7 +32,11 @@ export function SnackLocationForm({
   closeDialog,
 }: LocationImageFormProps) {
   const reactHookSnackLocationForm = getSnackLocationFormWithDefaultId(snackId);
-  const { handleSubmit, control } = reactHookSnackLocationForm;
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = reactHookSnackLocationForm;
 
   const onNewLocationSubmit = async (
     values: z.infer<typeof SnackLocationSchemaType>
@@ -44,49 +52,64 @@ export function SnackLocationForm({
   };
 
   return (
-    <Form {...reactHookSnackLocationForm}>
-      <form
-        onSubmit={handleSubmit(onNewLocationSubmit, handleValidationError)}
-        className="space-y-6"
-        id="addSnackLocationForm"
-      >
-        <FormField
-          control={control}
-          name="snackLocation"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Search location</FormLabel>
-              <FormControl>
-                <SnackLocationSearch<
-                  z.infer<typeof SnackLocationSchemaType>,
-                  "snackLocation"
-                >
-                  field={field}
-                />
-              </FormControl>
-            </FormItem>
+    <>
+      <Form {...reactHookSnackLocationForm}>
+        <form
+          onSubmit={handleSubmit(onNewLocationSubmit, handleValidationError)}
+          className="space-y-6"
+          id="addSnackLocationForm"
+        >
+          <FormField
+            control={control}
+            name="snackLocation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Search location</FormLabel>
+                <FormControl>
+                  <SnackLocationSearch<
+                    z.infer<typeof SnackLocationSchemaType>,
+                    "snackLocation"
+                  >
+                    field={field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <AisleFormField control={control} />
+
+          <FormField
+            control={control}
+            name="snackImage"
+            render={({ field: { onChange, value, ...fieldProps } }) => (
+              <FormItem>
+                <FormLabel>Upload image</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      onChange(file);
+                    }}
+                    {...fieldProps}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+      <DialogFooter>
+        <Button form="addSnackLocationForm" type="submit">
+          {isSubmitting ? (
+            "Submitting..."
+          ) : (
+            <>
+              Put me on the Map <MapPinCheck />
+            </>
           )}
-        />
-        <FormField
-          control={control}
-          name="snackImage"
-          render={({ field: { onChange, value, ...fieldProps } }) => (
-            <FormItem>
-              <FormLabel>Upload image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    onChange(file);
-                  }}
-                  {...fieldProps}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-      </form>
-    </Form>
+        </Button>
+      </DialogFooter>
+    </>
   );
 }

@@ -21,6 +21,7 @@ import { useState } from "react";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { z } from "zod";
 import { handleValidationError } from "@/utils/exceptionHandler";
+import { AisleFormField } from "./aisle-form-field";
 
 export function DialogNewSnack() {
   const router = useRouter();
@@ -74,6 +75,8 @@ export function DialogNewSnack() {
             {isNewSnack && (
               <>
                 <SnackLocationFormField control={control} />
+
+                <AisleFormField control={control} />
 
                 <SnackImageFormField control={control} />
 

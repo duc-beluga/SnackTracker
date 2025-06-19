@@ -28,6 +28,7 @@ export const addSnackLocation = async (
       address: formatedAddress.address,
       city: formatedAddress.city,
       state: formatedAddress.state,
+      aisle: values.aisle,
     },
     image_data: {
       image_url: snackImageUrl,
@@ -97,6 +98,7 @@ export const createSnack = async (
       address: formattedAddress.address,
       city: formattedAddress.city,
       state: formattedAddress.state,
+      aisle: values.aisle,
     },
     image_data: {
       image_url: snackImageUrl,

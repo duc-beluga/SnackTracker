@@ -13,7 +13,11 @@ import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { encodeId } from "@/utils/hashids";
-import { SNACK_PER_LOAD } from "../constants/snacks";
+import {
+  REACT_QUERY_GC_TIME,
+  REACT_QUERY_STALE_TIME,
+  SNACK_PER_LOAD,
+} from "../constants/snacks";
 
 // Helper function to create query key
 function createSnackQueryKey(
@@ -145,8 +149,8 @@ export function useSnackReels(
       return allPages.length;
     },
     initialPageParam: 0,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+    staleTime: REACT_QUERY_STALE_TIME,
+    gcTime: REACT_QUERY_GC_TIME,
   });
 
   //#endregion
@@ -216,7 +220,6 @@ export function useSnackReels(
             queryClient.setQueryData(["snackDetail", encodedId], snackDetail);
           });
         }
-        console.log(bulkData);
         return bulkData;
       },
       staleTime: 5 * 60 * 1000,
