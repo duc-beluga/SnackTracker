@@ -4,7 +4,7 @@ import { Location, SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import React from "react";
 import Snacks from "./snacks";
 import { Alert, AlertDescription, AlertTitle, Spinner } from "@/components/ui";
-import { Frown } from "lucide-react";
+import { Wind } from "lucide-react";
 
 interface MoreSnackProps {
   location: Location;
@@ -27,10 +27,11 @@ export function MoreSnack({ snacks, hasMore, ref }: MoreSnackProps) {
       ) : (
         <div className="p-4 col-span-2 sm:col-span-3 md:col-span-3 lg:col-span-4 xl:col-span-6 2xl:col-span-7">
           <Alert>
-            <Frown className="h-4 w-4" />
-            <AlertTitle>Uh oh!</AlertTitle>
+            <Wind className="h-4 w-4" />
+            <AlertTitle>Pantry’s Empty</AlertTitle>
             <AlertDescription>
-              You have reached the end of the feed.
+              You've reached the bottom of the bag. That's all the snacks we
+              have... for now.
             </AlertDescription>
           </Alert>
         </div>

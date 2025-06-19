@@ -27,6 +27,7 @@ export function SnackLocationSearch<
 >({ field }: SnackLocationSearchProps<TFieldValue, TName>) {
   const [predictions, setPredictions] = useState<PlaceAutocompleteResult[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
   const debouncedAddress = useDebounce(field.value.address, 300);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export function SnackLocationSearch<
       address: prediction.description,
       place_id: prediction.place_id,
     });
+    setIsTyping(false);
   };
 
   return (
@@ -56,11 +58,14 @@ export function SnackLocationSearch<
             address: value,
             place_id: "",
           });
+          setIsTyping(true);
         }}
       />
       <CommandList>
         <CommandGroup>
-          {isLoading ? (
+          {!isTyping ? (
+            <></>
+          ) : isLoading ? (
             <CommandItem>Loading...</CommandItem>
           ) : (
             predictions.map((prediction) => (
