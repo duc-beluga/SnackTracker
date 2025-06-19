@@ -12,6 +12,7 @@ export const autocomplete = async (input: string) => {
       params: {
         input,
         key: process.env.GOOGLE_PLACE_AUTOCOMPLETE_API_KEY!,
+        components: ["country:us"],
       },
     });
 
