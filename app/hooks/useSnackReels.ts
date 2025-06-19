@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Location, SnackDisplay } from "../interfaces/SnackInterfaces";
 import {
-  fetchSnacks,
+  getSnacks,
   fetchLikedSnacks,
   fetchUploadedSnacks,
   fetchTrendingSnacks,
@@ -13,12 +13,7 @@ import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { encodeId } from "@/utils/hashids";
-
-//#region { Constants }
-
-const SNACK_PER_LOAD = 12;
-
-//#endregion
+import { SNACK_PER_LOAD } from "../constants/snacks";
 
 // Helper function to create query key
 function createSnackQueryKey(
@@ -51,7 +46,9 @@ async function fetchSnacksByLocation(
   let snacksData: SnackDisplay[] | null;
 
   if (location === Location.Home) {
-    snacksData = await fetchSnacks(startRange, endRange);
+    snacksData = await fetch(
+      `/api/snacks?startRange=${startRange}&endRange=${endRange}`
+    ).then((res) => res.json());
   } else if (location === Location.Liked) {
     snacksData = await fetchLikedSnacks(startRange, endRange);
   } else if (location === Location.Uploaded) {
@@ -65,7 +62,9 @@ async function fetchSnacksByLocation(
   } else if (location === Location.Search) {
     const query = searchString?.trim() ?? "";
     snacksData = !query
-      ? await fetchSnacks(startRange, endRange)
+      ? await fetch(
+          `/api/snacks?startRange=${startRange}&endRange=${endRange}`
+        ).then((res) => res.json())
       : await fetchSearchSnacks(startRange, endRange, query);
   } else if (location === Location.Location) {
     if (!state) {

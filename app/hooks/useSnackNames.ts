@@ -7,13 +7,13 @@ export function useSnackNames() {
   const [names, setNames] = useState<SnackName[] | null>(null);
 
   useEffect(() => {
-    async function fetchSnacks() {
+    async function fetchSnackNames() {
       const supabase = createClient();
       const { data } = await supabase.from("snacks").select("name, snack_id");
       if (data) setNames(data);
     }
 
-    fetchSnacks();
+    fetchSnackNames();
   }, []);
 
   return names;

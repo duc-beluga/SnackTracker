@@ -2,13 +2,11 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
-import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { uploadSnackImage } from "@/lib/image";
-
-const EMPTY_GUID = "00000000-0000-0000-0000-000000000000";
+import { fetchSnacks } from "@/utils/data/snacks/snacks";
 
 //#region { Snack Detail Operations }
 
@@ -160,22 +158,20 @@ export async function fetchUploadedSnacks(
   return uploadedSnacks as SnackDisplay[] | null;
 }
 
-export async function fetchSnacks(startRange: number, endRange: number) {
-  const supabase = await createClient();
-
-  const { data: recentSnacks, error } = await supabase.rpc(
-    "get_snacks_in_range",
-    {
-      start_range: startRange,
-      end_range: endRange,
-    }
-  );
-
-  if (error) {
-    console.error(error);
-    return null;
+export async function getSnacks(startRange: number, endRange: number) {
+  if (startRange < 0 || endRange < 0) {
+    throw new Error("Range values must be non-negative");
   }
-  return recentSnacks as SnackDisplay[] | null;
+
+  if (startRange > endRange) {
+    throw new Error("Start range cannot be greater than end range");
+  }
+
+  if (endRange - startRange > 50) {
+    throw new Error("Range too large, maximum 50 items");
+  }
+
+  return fetchSnacks(startRange, endRange);
 }
 
 export async function fetchTrendingSnacks(
