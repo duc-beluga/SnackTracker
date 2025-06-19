@@ -1,7 +1,7 @@
 // app/api/snacks/route.ts
 import {
   addSnackLocation,
-  fetchSnacks,
+  getSnacks,
 } from "@/app/server-actions/snacks/actions";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const endRange = parseInt(searchParams.get("endRange") ?? "11");
 
   try {
-    const snacks = await fetchSnacks(startRange, endRange); // Call to server action / DAL
+    const snacks = await getSnacks(startRange, endRange); // Call to server action / DAL
     return NextResponse.json(snacks);
   } catch (error) {
     return NextResponse.json(

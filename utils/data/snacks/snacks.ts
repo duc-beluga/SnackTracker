@@ -3,7 +3,7 @@
 import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import { createClient } from "@/utils/supabase/server";
 
-export async function getSnacks(
+export async function fetchSnacks(
   startRange: number,
   endRange: number
 ): Promise<SnackDisplay[] | null> {

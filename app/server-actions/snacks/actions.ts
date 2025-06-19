@@ -6,7 +6,7 @@ import { z } from "zod";
 import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { uploadSnackImage } from "@/lib/image";
-import { getSnacks } from "@/utils/data/snacks/snacks";
+import { fetchSnacks } from "@/utils/data/snacks/snacks";
 
 //#region { Snack Detail Operations }
 
@@ -158,7 +158,7 @@ export async function fetchUploadedSnacks(
   return uploadedSnacks as SnackDisplay[] | null;
 }
 
-export async function fetchSnacks(startRange: number, endRange: number) {
+export async function getSnacks(startRange: number, endRange: number) {
   if (startRange < 0 || endRange < 0) {
     throw new Error("Range values must be non-negative");
   }
@@ -171,7 +171,7 @@ export async function fetchSnacks(startRange: number, endRange: number) {
     throw new Error("Range too large, maximum 50 items");
   }
 
-  return getSnacks(startRange, endRange);
+  return fetchSnacks(startRange, endRange);
 }
 
 export async function fetchTrendingSnacks(

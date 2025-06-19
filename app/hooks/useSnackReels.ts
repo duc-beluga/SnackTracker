@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Location, SnackDisplay } from "../interfaces/SnackInterfaces";
 import {
-  fetchSnacks,
+  getSnacks,
   fetchLikedSnacks,
   fetchUploadedSnacks,
   fetchTrendingSnacks,
@@ -62,7 +62,9 @@ async function fetchSnacksByLocation(
   } else if (location === Location.Search) {
     const query = searchString?.trim() ?? "";
     snacksData = !query
-      ? await fetchSnacks(startRange, endRange)
+      ? await fetch(
+          `/api/snacks?startRange=${startRange}&endRange=${endRange}`
+        ).then((res) => res.json())
       : await fetchSearchSnacks(startRange, endRange, query);
   } else if (location === Location.Location) {
     if (!state) {
