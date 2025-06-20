@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { catchError, handleValidationError } from "@/utils/exceptionHandler";
 import { AisleFormField } from "./aisle-form-field";
 import { MapPinCheck } from "lucide-react";
+import { SnackImageFormField } from "./snack-image-form-field";
 
 interface LocationImageFormProps {
   snackId: number;
@@ -78,25 +79,7 @@ export function SnackLocationForm({
           />
           <AisleFormField control={control} />
 
-          <FormField
-            control={control}
-            name="snackImage"
-            render={({ field: { onChange, value, ...fieldProps } }) => (
-              <FormItem>
-                <FormLabel>Upload image</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      onChange(file);
-                    }}
-                    {...fieldProps}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+          <SnackImageFormField control={control} />
         </form>
       </Form>
       <DialogFooter>
