@@ -33,7 +33,7 @@ export default function DialogSnackDetail({ snackId }: DialogSnackDetailProps) {
   function handleModalClose() {
     router.back();
     setOpen(false);
-    setTimeout(() => setIsNewLocationSelected(false), 200);
+    setTimeout(() => setIsNewLocationSelected(false), 300);
   }
 
   function renderDialogContent() {
