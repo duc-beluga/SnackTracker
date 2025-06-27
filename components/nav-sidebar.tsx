@@ -30,6 +30,7 @@ import {
   Dessert,
   Aperture,
   BookMarked,
+  LucideIcon,
 } from "lucide-react";
 import {
   redirectToSignIn,
@@ -44,15 +45,23 @@ interface NavbarGroupInterface {
   groupItems: string[];
 }
 
-const iconMap: Record<string, ReactNode> = {
-  Trending: <Flame />,
-  Profile: <UserRound />,
-  Settings: <Settings />,
-  Locations: <MapPinPlusInside />,
-  Leaderboard: <Drumstick />,
-  Snack: <Dessert />,
-  "Popular Tags": <Tags />,
-  About: <BookMarked />,
+const createIcon = (IconComponent: LucideIcon) => (isActive: boolean) => (
+  <IconComponent
+    className={
+      isActive ? "text-blue-600 stroke-[2.5]" : "text-current stroke-2"
+    }
+  />
+);
+
+const iconMap: Record<string, (isActive: boolean) => ReactNode> = {
+  Trending: createIcon(Flame),
+  Profile: createIcon(UserRound),
+  Settings: createIcon(Settings),
+  Locations: createIcon(MapPinPlusInside),
+  Leaderboard: createIcon(Drumstick),
+  Snack: createIcon(Dessert),
+  "Popular Tags": createIcon(Tags),
+  About: createIcon(BookMarked),
 };
 
 const contentGroup: NavbarGroupInterface = {
@@ -78,7 +87,7 @@ const linkMap: Record<string, string> = {
   Locations: "/locations",
   Leaderboard: "/leaderboard",
   "Popular Tags": "#",
-  About: "about",
+  About: "/about",
 };
 
 const authenticatedLinks = ["Profile"];
@@ -121,19 +130,21 @@ export function NavSideBar() {
             <SidebarGroupLabel>{navbarGroup.groupLabel}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {navbarGroup.groupItems.map((item: string) => (
-                  <SidebarMenuItem key={item}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isLinkActive(linkMap[item])}
-                    >
-                      <Link href={linkMap[item]}>
-                        {iconMap[item]}
-                        <span>{item}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {navbarGroup.groupItems.map((item: string) => {
+                  const isActive = isLinkActive(linkMap[item]);
+                  return (
+                    <SidebarMenuItem key={item}>
+                      <SidebarMenuButton asChild isActive={isActive}>
+                        <Link href={linkMap[item]}>
+                          {typeof iconMap[item] === "function"
+                            ? iconMap[item](isActive)
+                            : iconMap[item]}
+                          <span>{item}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
