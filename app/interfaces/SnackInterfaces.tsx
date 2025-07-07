@@ -43,3 +43,8 @@ export type SnackName = {
   name: string;
   snack_id: number;
 };
+
+export type SnackBrand = {
+  brand_id: number;
+  name: string;
+};

@@ -1,33 +1,25 @@
 import { useMemo } from "react";
-import { SnackName } from "../interfaces/SnackInterfaces";
 
 const MAX_PREDICTIONS = 5;
-const ADD_NEW_SNACK_ITEM = { name: "Add new snack?", snack_id: 0 } as const;
 
-export function useFilteredSnackNames(
-  snackNames: SnackName[] | null,
+export function useFilteredByName<T extends { name: string }>(
+  items: T[] | null,
   query: string,
-  isAddSnack: boolean
-): SnackName[] {
+  defaultItem?: T
+): T[] {
   return useMemo(() => {
-    if (!query || !snackNames || isAddSnack) return [];
+    if (!query || !items) return [];
 
-    const trimmedQuery = normalizeString(query);
+    const trimmedQuery = query.trim().toLowerCase();
 
-    const matches = filterSnacks(snackNames, trimmedQuery);
+    const matches = items
+      .filter((item) => item.name.trim().toLowerCase().includes(trimmedQuery))
+      .slice(0, MAX_PREDICTIONS);
 
-    return matches.length === 0 ? [ADD_NEW_SNACK_ITEM] : matches;
-  }, [snackNames, query, isAddSnack]);
+    if (matches.length > 0) {
+      return matches;
+    }
+
+    return defaultItem ? [defaultItem] : [];
+  }, [items, query, defaultItem]);
 }
-
-const filterSnacks = (snacks: SnackName[], searchTerm: string): SnackName[] => {
-  if (!searchTerm) return [];
-
-  const normalizedTerm = normalizeString(searchTerm);
-
-  return snacks
-    .filter((snack) => normalizeString(snack.name).includes(normalizedTerm))
-    .slice(0, MAX_PREDICTIONS);
-};
-
-const normalizeString = (str: string): string => str.trim().toLowerCase();

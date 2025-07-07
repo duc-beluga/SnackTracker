@@ -26,7 +26,7 @@ export function BrandSearchInput<
   TName extends Path<TFieldValue>,
 >({ field }: BrandSearchInputProps<TFieldValue, TName>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(true);
 
   const brands = useSnackBrands();
   const debouncedQuery = useDebounce(field.value, 300);
@@ -46,7 +46,9 @@ export function BrandSearchInput<
   );
 
   useEffect(() => {
-    setIsLoading(true);
+    if (!isSelected) {
+      setIsLoading(true);
+    }
   }, [field.value]);
 
   useEffect(() => {
@@ -59,7 +61,7 @@ export function BrandSearchInput<
   return (
     <Command shouldFilter={false}>
       <CommandInput
-        placeholder="Search brand name..."
+        placeholder="Search existing brands..."
         value={field.value || ""}
         onValueChange={handleInputChange}
       />

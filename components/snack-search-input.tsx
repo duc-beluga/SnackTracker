@@ -19,7 +19,7 @@ import {
 import { encodeId } from "@/utils/hashids";
 import { useSnackNames } from "@/app/hooks/useSnackNames";
 import { SnackName } from "@/app/interfaces/SnackInterfaces";
-import { useFilteredSnackNames } from "@/app/hooks/useFilteredSnackNames";
+import { useFilteredByName } from "@/app/hooks/useFilteredSnackNames";
 import { useDebounce } from "@/app/hooks/useDebounce";
 
 interface SnackSearchInputProps<
@@ -31,6 +31,8 @@ interface SnackSearchInputProps<
   isNewSnack: boolean;
 }
 
+const ADD_NEW_SNACK_ITEM = { name: "Add new snack?", snack_id: 0 } as const;
+
 export function SnackSearchInput<
   TFieldValue extends FieldValues,
   TName extends Path<TFieldValue>,
@@ -40,18 +42,22 @@ export function SnackSearchInput<
   setIsNewSnack,
 }: SnackSearchInputProps<TFieldValue, TName>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(true);
+
   const snacks = useSnackNames();
   const debouncedQuery = useDebounce(field.value, 300);
 
-  const predictions = useFilteredSnackNames(
+  const predictions = useFilteredByName<SnackName>(
     snacks,
     debouncedQuery ?? "",
-    isNewSnack
+    ADD_NEW_SNACK_ITEM
   );
   const router = useRouter();
 
   const handleSnackSelect = useCallback(
     (selectedSnack: SnackName) => {
+      setIsSelected(true);
+
       if (selectedSnack.snack_id === 0) {
         setIsNewSnack(true);
         return;
@@ -65,12 +71,15 @@ export function SnackSearchInput<
   const handleInputChange = useCallback(
     (value: string) => {
       field.onChange(value);
+      setIsSelected(false);
     },
     [field]
   );
 
   useEffect(() => {
-    setIsLoading(true);
+    if (!isSelected) {
+      setIsLoading(true);
+    }
   }, [field.value]);
 
   useEffect(() => {
@@ -79,26 +88,26 @@ export function SnackSearchInput<
 
   const hasResults = predictions.length > 0;
   const isAddNewSnackShown = predictions[0]?.snack_id === 0;
-  const groupHeading = !hasResults
-    ? ""
-    : isAddNewSnackShown
-      ? "Snack Not Found"
-      : "Existing snacks...";
+  const groupHeading =
+    !hasResults || isNewSnack
+      ? ""
+      : isAddNewSnackShown
+        ? "Snack Not Found"
+        : "Existing snacks...";
 
   return (
     <Command shouldFilter={false}>
       <CommandInput
-        placeholder="Type snack name..."
+        placeholder="Search existing snack..."
         value={field.value || ""}
         onValueChange={handleInputChange}
-        disabled={isNewSnack}
       />
 
       <CommandList>
         <CommandGroup heading={groupHeading}>
           {isLoading ? (
             <CommandItem>Searching...</CommandItem>
-          ) : (
+          ) : !isSelected ? (
             predictions.map((prediction) => (
               <CommandItem
                 key={prediction.snack_id}
@@ -107,6 +116,8 @@ export function SnackSearchInput<
                 {prediction.name}
               </CommandItem>
             ))
+          ) : (
+            <></>
           )}
         </CommandGroup>
       </CommandList>

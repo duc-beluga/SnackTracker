@@ -51,7 +51,7 @@ export function SnackLocationSearch<
   return (
     <Command shouldFilter={false}>
       <CommandInput
-        placeholder="Type a location or search..."
+        placeholder="Search address..."
         value={field.value.address}
         onValueChange={(value) => {
           field.onChange({
