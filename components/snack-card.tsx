@@ -42,6 +42,9 @@ export function SnackCard({ snack }: CardProps) {
 
           {/* Footer Overlay */}
           <div className="absolute bottom-0 left-0 w-full p-3 text-white space-y-1.5 z-20">
+            <p className="text-xs font-medium opacity-80 uppercase tracking-wide">
+              {snack.brand}
+            </p>
             <p className="text-base font-semibold leading-tight line-clamp-2 min-h-[2.5rem] drop-shadow-lg">
               {snack.name}
             </p>

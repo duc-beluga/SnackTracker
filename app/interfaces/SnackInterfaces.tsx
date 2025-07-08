@@ -1,6 +1,7 @@
 export interface SnackDisplay {
   snack_id: number;
   name: string;
+  brand: string;
   primary_image_url: string;
   image_count: number;
   like_count: number;
