@@ -1,14 +1,7 @@
 "use client";
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import {
   Command,
   CommandGroup,
@@ -16,56 +9,32 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui";
-import { encodeId } from "@/utils/hashids";
-import { useSnackNames } from "@/app/hooks/useSnackNames";
-import { SnackName } from "@/app/interfaces/SnackInterfaces";
+import { SnackBrand } from "@/app/interfaces/SnackInterfaces";
 import { useFilteredByName } from "@/app/hooks/useFilteredSnackNames";
 import { useDebounce } from "@/app/hooks/useDebounce";
+import { useSnackBrands } from "@/app/hooks/useSnackBrands";
 
-interface SnackSearchInputProps<
+interface BrandSearchInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends Path<TFieldValues> = Path<TFieldValues>,
 > {
   field: ControllerRenderProps<TFieldValues, TName>;
-  setIsNewSnack: Dispatch<SetStateAction<boolean>>;
-  isNewSnack: boolean;
 }
 
-const ADD_NEW_SNACK_ITEM = { name: "Add new snack?", snack_id: 0 } as const;
-
-export function SnackSearchInput<
+export function BrandSearchInput<
   TFieldValue extends FieldValues,
   TName extends Path<TFieldValue>,
->({
-  field,
-  isNewSnack,
-  setIsNewSnack,
-}: SnackSearchInputProps<TFieldValue, TName>) {
+>({ field }: BrandSearchInputProps<TFieldValue, TName>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<boolean>(true);
 
-  const snacks = useSnackNames();
+  const brands = useSnackBrands();
   const debouncedQuery = useDebounce(field.value, 300);
 
-  const predictions = useFilteredByName<SnackName>(
-    snacks,
+  const predictions = useFilteredByName<SnackBrand>(
+    brands,
     debouncedQuery ?? "",
-    ADD_NEW_SNACK_ITEM
-  );
-  const router = useRouter();
-
-  const handleSnackSelect = useCallback(
-    (selectedSnack: SnackName) => {
-      setIsSelected(true);
-
-      if (selectedSnack.snack_id === 0) {
-        setIsNewSnack(true);
-        return;
-      }
-
-      router.push(`/snacks/${encodeId(selectedSnack.snack_id)}`);
-    },
-    [setIsNewSnack, router]
+    undefined
   );
 
   const handleInputChange = useCallback(
@@ -87,18 +56,12 @@ export function SnackSearchInput<
   }, [debouncedQuery]);
 
   const hasResults = predictions.length > 0;
-  const isAddNewSnackShown = predictions[0]?.snack_id === 0;
-  const groupHeading =
-    !hasResults || isNewSnack
-      ? ""
-      : isAddNewSnackShown
-        ? "Snack Not Found"
-        : "Existing snacks...";
+  const groupHeading = !hasResults || isSelected ? "" : "Existing brands...";
 
   return (
     <Command shouldFilter={false}>
       <CommandInput
-        placeholder="Search existing snack..."
+        placeholder="Search existing brands..."
         value={field.value || ""}
         onValueChange={handleInputChange}
       />
@@ -110,8 +73,11 @@ export function SnackSearchInput<
           ) : !isSelected ? (
             predictions.map((prediction) => (
               <CommandItem
-                key={prediction.snack_id}
-                onSelect={() => handleSnackSelect(prediction)}
+                key={prediction.brand_id}
+                onSelect={(val: string) => {
+                  field.onChange(val);
+                  setIsSelected(true);
+                }}
               >
                 {prediction.name}
               </CommandItem>
