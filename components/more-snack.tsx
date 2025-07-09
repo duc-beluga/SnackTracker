@@ -2,7 +2,7 @@
 
 import { Location, SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import React from "react";
-import Snacks from "./snacks";
+import { Snacks } from "./snacks";
 import { Alert, AlertDescription, AlertTitle, Spinner } from "@/components/ui";
 import { Wind } from "lucide-react";
 
