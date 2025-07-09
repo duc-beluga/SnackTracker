@@ -3,7 +3,7 @@ export interface SnackDisplay {
   name: string;
   brand: string;
   primary_image_url: string;
-  image_count: number;
+  location_count: number;
   like_count: number;
 }
 

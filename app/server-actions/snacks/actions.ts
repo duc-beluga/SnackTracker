@@ -259,19 +259,15 @@ export async function fetchSearchSnacks(
   const supabase = await createClient();
 
   const { data: snacks, error } = await supabase
-    .from("snacks")
+    .from("v_snack_summary")
     .select(
       `
       snack_id,
       name,
+      brand,
       primary_image_url,
-      snack_images(
-        image_id,
-        images_locations(
-          image_location_id,
-          likes(count)
-        )
-      )
+      location_count,
+      like_count
     `
     )
     .textSearch("name", searchQuery, { type: "websearch", config: "english" })
@@ -282,27 +278,7 @@ export async function fetchSearchSnacks(
     return null;
   }
 
-  const formattedSnacks = snacks?.map((snack) => {
-    let totalLikes = 0;
-    const imageCount = snack.snack_images?.length ?? 0;
-
-    snack.snack_images?.forEach((image) => {
-      image.images_locations?.forEach((location) => {
-        const likesCount = location.likes?.[0]?.count ?? 0;
-        totalLikes += likesCount;
-      });
-    });
-
-    return {
-      snack_id: snack.snack_id,
-      name: snack.name,
-      primary_image_url: snack.primary_image_url,
-      image_count: imageCount,
-      like_count: totalLikes,
-    };
-  });
-
-  return formattedSnacks as SnackDisplay[] | null;
+  return snacks as SnackDisplay[] | null;
 }
 
 export async function fetchRandomSnackId() {
@@ -378,7 +354,7 @@ export async function fetchSnackByLocation(
       snack_id: snack.snack_id,
       name: snack.name,
       primary_image_url: snack.primary_image_url,
-      image_count: imageCount,
+      location_count: imageCount,
       like_count: totalLikes,
     };
   });

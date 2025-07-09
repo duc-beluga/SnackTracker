@@ -52,9 +52,9 @@ export function SnackCard({ snack }: CardProps) {
             <div className="flex justify-between items-center text-sm pt-1">
               <div className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" />
-                <span>{snack.image_count}</span>
+                <span>{snack.location_count}</span>
                 <span className="hidden sm:inline">
-                  {snack.image_count === 1 ? "location" : "locations"}
+                  {snack.location_count === 1 ? "location" : "locations"}
                 </span>
               </div>
               <div className="flex items-center gap-1">
