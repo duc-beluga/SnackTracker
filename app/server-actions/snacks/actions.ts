@@ -270,7 +270,7 @@ export async function fetchSearchSnacks(
       like_count
     `
     )
-    .textSearch("name", searchQuery, { type: "websearch", config: "english" })
+    .or(`name.wfts.${searchQuery},brand.wfts.${searchQuery}`)
     .range(startRange, endRange);
 
   if (error) {
