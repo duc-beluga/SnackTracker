@@ -3,7 +3,7 @@
 import { useSnackReels } from "@/app/hooks/useSnackReels";
 import { Location } from "@/app/interfaces/SnackInterfaces";
 import React from "react";
-import Snacks from "./snacks";
+import { Snacks } from "./snacks";
 import { MoreSnack } from "./more-snack";
 import Image from "next/image";
 
