@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(snacks);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch snacks" },
+      { error: "Failed to fetch uploaded snacks" },
       { status: 500 }
     );
   }
