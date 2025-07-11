@@ -21,7 +21,8 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const snacks = await getUploadedSnacks(startRange, endRange); // Call to server action / DAL
+    const snacks = await getUploadedSnacks(startRange, endRange, user); // Call to server action / DAL
+
     return NextResponse.json(snacks);
   } catch (error) {
     return NextResponse.json(
