@@ -2,6 +2,7 @@
 
 import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
 import { createClient } from "@/utils/supabase/server";
+import { User } from "@supabase/supabase-js";
 
 export async function fetchSnacks(
   startRange: number,
@@ -14,6 +15,47 @@ export async function fetchSnacks(
     end_range: endRange,
   });
 
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  return data as SnackDisplay[] | null;
+}
+
+export async function fetchUploadedSnacks(
+  startRange: number,
+  endRange: number,
+  user: User | null
+): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.rpc(
+    "get_user_uploaded_snacks_in_range",
+    {
+      p_user_id: user?.id,
+      start_range: startRange,
+      end_range: endRange,
+    }
+  );
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  return data as SnackDisplay[] | null;
+}
+
+export async function fetchLikedSnacks(
+  startRange: number,
+  endRange: number,
+  user: User | null
+): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_user_liked_snacks_in_range", {
+    p_user_id: user?.id,
+    start_range: startRange,
+    end_range: endRange,
+  });
   if (error) {
     console.error(error);
     return null;

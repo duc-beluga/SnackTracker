@@ -10,7 +10,6 @@ export function useSnackBrands() {
       const supabase = createClient();
       const { data } = await supabase.from("brands").select("brand_id, name");
       if (data) setBrands(data);
-      console.log(data);
     }
 
     fetchSnackBrands();

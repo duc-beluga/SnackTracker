@@ -6,7 +6,12 @@ import { z } from "zod";
 import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { uploadSnackImage } from "@/lib/image";
-import { fetchSnacks } from "@/utils/data/snacks/snacks";
+import {
+  fetchLikedSnacks,
+  fetchSnacks,
+  fetchUploadedSnacks,
+} from "@/utils/data/snacks/snacks";
+import { User } from "@supabase/supabase-js";
 
 //#region { Snack Detail Operations }
 
@@ -112,51 +117,57 @@ export const createSnack = async (
   }
 };
 
-export async function fetchLikedSnacks(
+export async function getLikedSnacks(
   startRange: number,
-  endRange: number
+  endRange: number,
+  user?: User | null
 ): Promise<SnackDisplay[] | null> {
-  const supabase = await createClient();
+  let currentUser = user;
 
-  const {
-    data: { user: currentUser },
-  } = await supabase.auth.getUser();
+  if (!currentUser) {
+    const supabase = await createClient();
+    const {
+      data: { user: fetched },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-  const { data: likedSnacks, error: fetchLikedSnacksError } =
-    await supabase.rpc("get_user_liked_snacks_in_range", {
-      p_user_id: currentUser?.id,
-      start_range: startRange,
-      end_range: endRange,
-    });
-
-  if (fetchLikedSnacksError) {
-    console.error(fetchLikedSnacksError);
-    return null;
+    if (authError || !fetched) {
+      // no session → bail out
+      return null;
+    }
+    currentUser = fetched;
   }
+  const likedSnacks = await fetchLikedSnacks(startRange, endRange, currentUser);
 
   return likedSnacks as SnackDisplay[] | null;
 }
 
-export async function fetchUploadedSnacks(
+export async function getUploadedSnacks(
   startRange: number,
-  endRange: number
+  endRange: number,
+  user?: User | null
 ): Promise<SnackDisplay[] | null> {
-  const supabase = await createClient();
+  let currentUser = user;
 
-  const {
-    data: { user: currentUser },
-  } = await supabase.auth.getUser();
+  if (!currentUser) {
+    const supabase = await createClient();
+    const {
+      data: { user: fetched },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-  const { data: uploadedSnacks, error: fetchUploadedSnacksError } =
-    await supabase.rpc("get_user_uploaded_snacks_in_range", {
-      p_user_id: currentUser?.id,
-      start_range: startRange,
-      end_range: endRange,
-    });
-  if (fetchUploadedSnacksError) {
-    console.error(fetchUploadedSnacksError);
-    return null;
+    if (authError || !fetched) {
+      // no session → bail out
+      return null;
+    }
+    currentUser = fetched;
   }
+
+  const uploadedSnacks = await fetchUploadedSnacks(
+    startRange,
+    endRange,
+    currentUser
+  );
 
   return uploadedSnacks as SnackDisplay[] | null;
 }
