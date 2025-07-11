@@ -42,6 +42,8 @@ export async function fetchUploadedSnacks(
     console.error(error);
     return null;
   }
+
+  console.log("Fetched data", data);
   return data as SnackDisplay[] | null;
 }
 
