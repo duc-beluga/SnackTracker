@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const snacks = await getLikedSnacks(startRange, endRange);
+    const snacks = await getLikedSnacks(startRange, endRange, user);
     return NextResponse.json(snacks);
   } catch (error) {
     return NextResponse.json(
