@@ -162,7 +162,6 @@ export async function getUploadedSnacks(
     }
     currentUser = fetched;
   }
-  console.log("2", currentUser);
   const uploadedSnacks = await fetchUploadedSnacks(
     startRange,
     endRange,
