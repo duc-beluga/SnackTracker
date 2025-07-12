@@ -1,6 +1,6 @@
 "server only";
 
-import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
+import { SnackDisplay, TrendingType } from "@/app/interfaces/SnackInterfaces";
 import { createClient } from "@/utils/supabase/server";
 import { User } from "@supabase/supabase-js";
 
@@ -58,6 +58,27 @@ export async function fetchLikedSnacks(
     start_range: startRange,
     end_range: endRange,
   });
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  return data as SnackDisplay[] | null;
+}
+
+export async function fetchTrendingSnacks(
+  startRange: number,
+  endRange: number,
+  trendingType: TrendingType
+): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc(
+    "get_trending_snacks_by_time_range",
+    {
+      start_range: startRange,
+      end_range: endRange,
+      days_back: trendingType,
+    }
+  );
   if (error) {
     console.error(error);
     return null;
