@@ -1,7 +1,7 @@
 "use client";
 
 import { useSnackReels } from "@/app/hooks/useSnackReels";
-import { Location } from "@/app/interfaces/SnackInterfaces";
+import { Location, TrendingType } from "@/app/interfaces/SnackInterfaces";
 import React from "react";
 import { Snacks } from "./snacks";
 import { MoreSnack } from "./more-snack";
@@ -9,7 +9,7 @@ import Image from "next/image";
 
 interface SnackReelsProps {
   location: Location;
-  timeRange?: "7days" | "1month" | "all";
+  trendingType?: TrendingType;
   searchQuery?: string;
   state?: string;
   city?: string;
@@ -17,14 +17,14 @@ interface SnackReelsProps {
 
 const SnackReels = ({
   location,
-  timeRange,
+  trendingType,
   searchQuery,
   state,
   city,
 }: SnackReelsProps) => {
   const { snacks, ref, hasMore, hasNone } = useSnackReels(
     location,
-    timeRange,
+    trendingType,
     searchQuery,
     state,
     city

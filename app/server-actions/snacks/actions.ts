@@ -3,12 +3,17 @@
 import { createClient } from "@/utils/supabase/server";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 import { z } from "zod";
-import { SnackDetail, SnackDisplay } from "../../interfaces/SnackInterfaces";
+import {
+  SnackDetail,
+  SnackDisplay,
+  TrendingType,
+} from "../../interfaces/SnackInterfaces";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { uploadSnackImage } from "@/lib/image";
 import {
   fetchLikedSnacks,
   fetchSnacks,
+  fetchTrendingSnacks,
   fetchUploadedSnacks,
 } from "@/utils/data/snacks/snacks";
 import { User } from "@supabase/supabase-js";
@@ -187,33 +192,16 @@ export async function getSnacks(startRange: number, endRange: number) {
   return fetchSnacks(startRange, endRange);
 }
 
-export async function fetchTrendingSnacks(
+export async function getTrendingSnacks(
   startRange: number,
   endRange: number,
-  days_back: "7days" | "1month" | "all"
+  trendingType: TrendingType
 ): Promise<SnackDisplay[] | null> {
-  const supabase = await createClient();
-
-  // Convert days_back string to integer
-  const daysBackMap: Record<typeof days_back, number> = {
-    "7days": 7,
-    "1month": 30, // Approximate 1 month as 30 days
-    all: 9999, // Or another large number to indicate 'all'
-  };
-
-  const daysBackInt = daysBackMap[days_back];
-
-  const { data: uploadedSnacks, error: fetchTrendingSnacksError } =
-    await supabase.rpc("get_trending_snacks_by_time_range", {
-      start_range: startRange,
-      end_range: endRange,
-      days_back: daysBackInt,
-    });
-
-  if (fetchTrendingSnacksError) {
-    console.error(fetchTrendingSnacksError);
-    return null;
-  }
+  const uploadedSnacks = await fetchTrendingSnacks(
+    startRange,
+    endRange,
+    trendingType
+  );
 
   return uploadedSnacks as SnackDisplay[] | null;
 }

@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { Location, SnackDisplay } from "../interfaces/SnackInterfaces";
+import {
+  Location,
+  SnackDisplay,
+  TrendingType,
+} from "../interfaces/SnackInterfaces";
 import {
   getSnacks,
   getLikedSnacks,
   getUploadedSnacks,
-  fetchTrendingSnacks,
+  getTrendingSnacks,
   fetchSearchSnacks,
   fetchSnackByLocation,
   fetchSnackDetailByIds,
@@ -22,7 +26,7 @@ import {
 // Helper function to create query key
 function createSnackQueryKey(
   location: Location,
-  timeRange?: "7days" | "1month" | "all",
+  timeRange?: TrendingType,
   searchString?: string,
   state?: string,
   city?: string
@@ -42,7 +46,7 @@ async function fetchSnacksByLocation(
   location: Location,
   startRange: number,
   endRange: number,
-  timeRange?: "7days" | "1month" | "all",
+  timeRange?: TrendingType,
   searchString?: string,
   state?: string,
   city?: string
@@ -58,10 +62,10 @@ async function fetchSnacksByLocation(
   } else if (location === Location.Uploaded) {
     snacksData = await getUploadedSnacks(startRange, endRange);
   } else if (location === Location.Trending) {
-    snacksData = await fetchTrendingSnacks(
+    snacksData = await getTrendingSnacks(
       startRange,
       endRange,
-      timeRange ?? "all"
+      timeRange ?? TrendingType.AllTime
     );
   } else if (location === Location.Search) {
     const query = searchString?.trim() ?? "";
@@ -90,7 +94,7 @@ async function fetchSnacksByLocation(
 
 export function useSnackReels(
   location: Location,
-  timeRange?: "7days" | "1month" | "all",
+  timeRange?: TrendingType,
   searchString?: string,
   state?: string,
   city?: string

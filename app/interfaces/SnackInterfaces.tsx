@@ -49,3 +49,10 @@ export type SnackBrand = {
   brand_id: number;
   name: string;
 };
+
+export enum TrendingType {
+  Today = 1,
+  ThisWeek = 7,
+  ThisMonth = 30,
+  AllTime = 9999,
+}
