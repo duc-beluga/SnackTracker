@@ -63,7 +63,7 @@ export function SnackSearchInput<
         return;
       }
 
-      router.push(`/snacks/${encodeId(selectedSnack.snack_id)}`);
+      router.replace(`/snacks/${encodeId(selectedSnack.snack_id)}`);
     },
     [setIsNewSnack, router]
   );
