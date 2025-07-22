@@ -49,7 +49,7 @@ export default function AboutUs() {
         Built for snack lovers, by snack lovers. From street bites to viral
         munchies—explore it all on WutsDis.
       </p>
-      <p className="text-xs text-gray-400 mt-2 text-center">
+      {/* <p className="text-xs text-gray-400 mt-2 text-center">
         Designed & built by{" "}
         <a
           href="https://github.com/duc-beluga"
@@ -59,7 +59,7 @@ export default function AboutUs() {
         >
           Duc Nguyen
         </a>
-      </p>
+      </p> */}
     </div>
   );
 }
