@@ -31,6 +31,7 @@ import {
   Aperture,
   BookMarked,
   LucideIcon,
+  CupSoda,
 } from "lucide-react";
 import {
   redirectToSignIn,
@@ -60,13 +61,14 @@ const iconMap: Record<string, (isActive: boolean) => ReactNode> = {
   Locations: createIcon(MapPinPlusInside),
   Leaderboard: createIcon(Drumstick),
   Snack: createIcon(Dessert),
+  Drink: createIcon(CupSoda),
   "Popular Tags": createIcon(Tags),
   About: createIcon(BookMarked),
 };
 
 const contentGroup: NavbarGroupInterface = {
   groupLabel: "Content",
-  groupItems: ["Snack", "Trending", "Locations"],
+  groupItems: ["Snack", "Drink", "Trending", "Locations"],
 };
 
 const settingGroup: NavbarGroupInterface = {
@@ -81,6 +83,7 @@ const communityGroup: NavbarGroupInterface = {
 
 const linkMap: Record<string, string> = {
   Snack: "/",
+  Drink: "#",
   Trending: "/trending",
   Profile: "/profile",
   Settings: "/settings",
