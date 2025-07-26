@@ -58,8 +58,18 @@ export const updateSession = async (request: NextRequest) => {
       "/sitemap.xml",
       "/robots.txt",
       "/about",
+      "/under-construction",
     ];
 
+    const unfinishedRoutes = ["/drink", "/popular-tags"];
+
+    if (
+      unfinishedRoutes.some((route) =>
+        request.nextUrl.pathname.startsWith(route)
+      )
+    ) {
+      return NextResponse.rewrite(new URL("/under-construction", request.url));
+    }
     // Check if the current path is a public route
     const isPublicRoute =
       publicRoutes.some((route) =>
