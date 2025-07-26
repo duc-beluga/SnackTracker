@@ -15,7 +15,7 @@ import {
   Skeleton,
 } from "@/components/ui";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import Link from "next/link";
 
 import {
@@ -37,7 +37,6 @@ import {
   redirectToSignIn,
   signOutAction,
 } from "@/app/server-actions/auth/actions";
-import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 
@@ -83,13 +82,13 @@ const communityGroup: NavbarGroupInterface = {
 
 const linkMap: Record<string, string> = {
   Snack: "/",
-  Drink: "#",
+  Drink: "/under-construction",
   Trending: "/trending",
   Profile: "/profile",
   Settings: "/settings",
   Locations: "/locations",
   Leaderboard: "/leaderboard",
-  "Popular Tags": "#",
+  "Popular Tags": "/under-construction",
   About: "/about",
 };
 
@@ -102,9 +101,8 @@ const navbarGroups: NavbarGroupInterface[] = [
 ];
 
 export function NavSideBar() {
+  const [activeItem, setActiveItem] = useState<string | null>(null);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
-
-  const pathName = usePathname();
 
   const displayedGroups = navbarGroups.map((group) => ({
     ...group,
@@ -112,10 +110,6 @@ export function NavSideBar() {
       (item) => !authenticatedLinks.includes(item) || Boolean(currentUser)
     ),
   }));
-
-  const isLinkActive = (path: string) => {
-    return pathName === path || pathName.startsWith(path + "/");
-  };
 
   return (
     <Sidebar collapsible="icon">
@@ -134,14 +128,16 @@ export function NavSideBar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {navbarGroup.groupItems.map((item: string) => {
-                  const isActive = isLinkActive(linkMap[item]);
+                  const isActive = activeItem === item;
                   return (
                     <SidebarMenuItem key={item}>
-                      <SidebarMenuButton asChild isActive={isActive}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={isActive}
+                        onClick={() => setActiveItem(item)}
+                      >
                         <Link href={linkMap[item]}>
-                          {typeof iconMap[item] === "function"
-                            ? iconMap[item](isActive)
-                            : iconMap[item]}
+                          {iconMap[item]?.(isActive)}
                           <span>{item}</span>
                         </Link>
                       </SidebarMenuButton>
