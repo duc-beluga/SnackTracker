@@ -50,7 +50,7 @@ export const snackImageSchema = z
     message: `The image dimensions are invalid. Please upload an image between ${MIN_DIMENSIONS.width}x${MIN_DIMENSIONS.height} and ${MAX_DIMENSIONS.width}x${MAX_DIMENSIONS.height} pixels.`,
   });
 
-export const snackLocationSchema = z.object({
+export const locationSchema = z.object({
   address: z.string().min(1, "Address is required"),
   place_id: z.string().min(1, "Place_id is required"),
 });

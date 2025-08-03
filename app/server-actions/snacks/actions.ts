@@ -25,18 +25,18 @@ import { User } from "@supabase/supabase-js";
 export const addSnackLocation = async (
   values: z.infer<typeof SnackLocationSchemaType>
 ) => {
-  const snackImageUrl = await uploadSnackImage(values.snackImage);
+  const snackImageUrl = await uploadSnackImage(values.image);
 
   const supabase = await createClient();
 
-  const formatedAddress = formatAddress(values.snackLocation.address);
+  const formatedAddress = formatAddress(values.location.address);
 
   const { error } = await supabase.rpc("add_snack_image_location", {
     snack_data: {
       snack_id: values.snackId,
     },
     location_data: {
-      google_place_id: values.snackLocation.place_id,
+      google_place_id: values.location.place_id,
       address: formatedAddress.address,
       city: formatedAddress.city,
       state: formatedAddress.state,
@@ -95,19 +95,19 @@ export async function removeSnackLikeTest(imageLocationId: number) {
 export const createSnack = async (
   values: z.infer<typeof SnackNameLocationSchemaType>
 ) => {
-  const snackImageUrl = await uploadSnackImage(values.snackImage);
+  const snackImageUrl = await uploadSnackImage(values.image);
 
-  const formattedAddress = formatAddress(values.snackLocation.address);
+  const formattedAddress = formatAddress(values.location.address);
 
   const supabase = await createClient();
 
   const { error: snackAddError } = await supabase.rpc("add_snack", {
     new_snack_data: {
-      name: values.snackName,
+      name: values.name,
       brand: values.brand.trim(),
     },
     location_data: {
-      google_place_id: values.snackLocation.place_id,
+      google_place_id: values.location.place_id,
       address: formattedAddress.address,
       city: formattedAddress.city,
       state: formattedAddress.state,

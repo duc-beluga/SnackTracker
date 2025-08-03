@@ -15,7 +15,7 @@ export function SnackLocationFormField({
   return (
     <FormField
       control={control}
-      name="snackLocation"
+      name="location"
       render={({ field }) => (
         <FormItem>
           <FormLabel>Address</FormLabel>

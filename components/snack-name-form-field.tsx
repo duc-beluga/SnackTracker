@@ -21,12 +21,12 @@ export function SnackNameFormField({
   return (
     <FormField
       control={control}
-      name="snackName"
+      name="name"
       render={({ field }) => (
         <FormItem>
           <FormLabel>
             <div className="flex justify-between">
-              <span>Snack name</span>
+              <span>Name</span>
               {isNewSnack && (
                 <PackagePlus
                   className="mr-2 h-4 w-4 shrink-0 opacity-50"
@@ -38,7 +38,7 @@ export function SnackNameFormField({
           <FormControl>
             <SnackSearchInput<
               z.infer<typeof SnackNameLocationSchemaType>,
-              "snackName"
+              "name"
             >
               field={field}
               isNewSnack={isNewSnack}

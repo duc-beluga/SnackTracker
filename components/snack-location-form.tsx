@@ -62,14 +62,14 @@ export function SnackLocationForm({
         >
           <FormField
             control={control}
-            name="snackLocation"
+            name="location"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Search location</FormLabel>
                 <FormControl>
                   <SnackLocationSearch<
                     z.infer<typeof SnackLocationSchemaType>,
-                    "snackLocation"
+                    "location"
                   >
                     field={field}
                   />

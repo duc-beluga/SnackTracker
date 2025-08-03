@@ -16,6 +16,11 @@ import {
   DialogHeader,
   DialogTitle,
   Form,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -29,6 +34,7 @@ export function DialogNewSnack() {
   const router = useRouter();
   const [open, setOpen] = useState(true);
   const [step, setStep] = useState<number>(1);
+  const [selectedCategory, setSelectedCategory] = useState<string>("snacks");
 
   function onDialogOpenChange(isOpen: boolean) {
     if (!isOpen) {
@@ -58,7 +64,9 @@ export function DialogNewSnack() {
   const handleValidSubmit = async (
     values: z.infer<typeof SnackNameLocationSchemaType>
   ) => {
-    await onNameLocationImageSubmit(values);
+    // Include the selected category in the submission
+    const submitValues = { ...values, category: selectedCategory };
+    await onNameLocationImageSubmit(submitValues);
     handleModalClose();
   };
 
@@ -66,9 +74,24 @@ export function DialogNewSnack() {
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent className="w-11/12 md:w-1/2">
         <DialogHeader>
-          <DialogTitle>Adding new snack</DialogTitle>
+          <DialogTitle>
+            Add new{" "}
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
+              <SelectTrigger className="inline-flex w-auto h-auto p-0 border-0 bg-transparent shadow-none focus:ring-0 focus:ring-offset-0 font-bold text-blue-400 hover:text-blue-600 text-base px-1">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="start" sideOffset={4}>
+                <SelectItem value="snacks">snack</SelectItem>
+                <SelectItem value="drinks">drink</SelectItem>
+              </SelectContent>
+            </Select>
+          </DialogTitle>
           <DialogDescription />
         </DialogHeader>
+
         <Form {...nameLocationImageForm}>
           <form
             onSubmit={handleSubmit(handleValidSubmit, handleValidationError)}
@@ -84,9 +107,7 @@ export function DialogNewSnack() {
             {step === 2 && (
               <>
                 <SnackLocationFormField control={control} />
-
                 <AisleFormField control={control} />
-
                 <SnackImageFormField control={control} />
               </>
             )}
