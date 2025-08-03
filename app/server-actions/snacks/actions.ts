@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { SnackLocationSchemaType } from "@/utils/zod/schemas/SnackLocationSchema";
 import { z } from "zod";
 import {
+  ItemCategory,
   SnackDetail,
   SnackDisplay,
   TrendingType,
@@ -274,17 +275,17 @@ export async function fetchSearchSnacks(
 
   // Map the incoming category to Supabase enum values
   if (category && category !== "all") {
-    let supabaseCategory: string;
+    let supabaseCategory: ItemCategory;
 
     switch (category.toLowerCase()) {
       case "snacks":
-        supabaseCategory = "Snack";
+        supabaseCategory = ItemCategory.Snack;
         break;
       case "drinks":
-        supabaseCategory = "Drink";
+        supabaseCategory = ItemCategory.Drink;
         break;
       default:
-        supabaseCategory = "Other";
+        supabaseCategory = ItemCategory.Other;
         break;
     }
 
