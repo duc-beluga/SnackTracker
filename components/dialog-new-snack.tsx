@@ -29,12 +29,15 @@ import { z } from "zod";
 import { handleValidationError } from "@/utils/exceptionHandler";
 import { AisleFormField } from "./aisle-form-field";
 import { SnackBrandFormField } from "./snack-brand-form-field";
+import { ItemCategory } from "@/app/interfaces/SnackInterfaces";
 
 export function DialogNewSnack() {
   const router = useRouter();
   const [open, setOpen] = useState(true);
   const [step, setStep] = useState<number>(1);
-  const [selectedCategory, setSelectedCategory] = useState<string>("snacks");
+  const [selectedCategory, setSelectedCategory] = useState<ItemCategory>(
+    ItemCategory.Snack
+  );
 
   function onDialogOpenChange(isOpen: boolean) {
     if (!isOpen) {
@@ -78,14 +81,16 @@ export function DialogNewSnack() {
             Add new{" "}
             <Select
               value={selectedCategory}
-              onValueChange={setSelectedCategory}
+              onValueChange={(value) =>
+                setSelectedCategory(value as ItemCategory)
+              }
             >
               <SelectTrigger className="inline-flex w-auto h-auto p-0 border-0 bg-transparent shadow-none focus:ring-0 focus:ring-offset-0 font-bold text-blue-400 hover:text-blue-600 text-base px-1">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent align="start" sideOffset={4}>
-                <SelectItem value="snacks">snack</SelectItem>
-                <SelectItem value="drinks">drink</SelectItem>
+                <SelectItem value={ItemCategory.Snack}>snack</SelectItem>
+                <SelectItem value={ItemCategory.Drink}>drink</SelectItem>
               </SelectContent>
             </Select>
           </DialogTitle>
