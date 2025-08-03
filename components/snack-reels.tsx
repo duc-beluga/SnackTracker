@@ -6,11 +6,12 @@ import React from "react";
 import { Snacks } from "./snacks";
 import { MoreSnack } from "./more-snack";
 import Image from "next/image";
+import { SearchParams } from "@/app/interfaces/PropsInterface";
 
 interface SnackReelsProps {
   location: Location;
   trendingType?: TrendingType;
-  searchQuery?: string;
+  searchQuery?: SearchParams;
   state?: string;
   city?: string;
 }

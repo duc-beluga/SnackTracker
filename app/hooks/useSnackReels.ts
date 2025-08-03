@@ -22,20 +22,23 @@ import {
   REACT_QUERY_STALE_TIME,
   SNACK_PER_LOAD,
 } from "../constants/snacks";
+import { SearchParams } from "../interfaces/PropsInterface";
 
 // Helper function to create query key
 function createSnackQueryKey(
   location: Location,
   timeRange?: TrendingType,
-  searchString?: string,
+  searchString?: SearchParams,
   state?: string,
   city?: string
 ) {
   return [
-    "snacks",
     location,
     timeRange,
-    searchString?.trim(),
+    {
+      query: searchString?.query ?? "",
+      category: searchString?.category ?? "",
+    },
     state,
     city,
   ].filter(Boolean);
@@ -47,7 +50,7 @@ async function fetchSnacksByLocation(
   startRange: number,
   endRange: number,
   timeRange?: TrendingType,
-  searchString?: string,
+  searchString?: SearchParams,
   state?: string,
   city?: string
 ): Promise<SnackDisplay[]> {
@@ -68,12 +71,14 @@ async function fetchSnacksByLocation(
       timeRange ?? TrendingType.AllTime
     );
   } else if (location === Location.Search) {
-    const query = searchString?.trim() ?? "";
+    const query = searchString?.query.trim() ?? "";
+    const category = searchString?.category.trim() ?? "";
+
     snacksData = !query
       ? await fetch(
           `/api/snacks?startRange=${startRange}&endRange=${endRange}`
         ).then((res) => res.json())
-      : await fetchSearchSnacks(startRange, endRange, query);
+      : await fetchSearchSnacks(startRange, endRange, query, category);
   } else if (location === Location.Location) {
     if (!state) {
       snacksData = [];
@@ -95,7 +100,7 @@ async function fetchSnacksByLocation(
 export function useSnackReels(
   location: Location,
   timeRange?: TrendingType,
-  searchString?: string,
+  searchString?: SearchParams,
   state?: string,
   city?: string
 ) {

@@ -252,11 +252,12 @@ export async function fetchSnackDetailByIds(
 export async function fetchSearchSnacks(
   startRange: number,
   endRange: number,
-  searchQuery: string
+  searchQuery: string,
+  category?: string
 ): Promise<SnackDisplay[] | null> {
   const supabase = await createClient();
 
-  const { data: snacks, error } = await supabase
+  let query = supabase
     .from("v_snack_summary")
     .select(
       `
@@ -270,6 +271,27 @@ export async function fetchSearchSnacks(
     )
     .or(`name.wfts.${searchQuery},brand.wfts.${searchQuery}`)
     .range(startRange, endRange);
+
+  // Map the incoming category to Supabase enum values
+  if (category && category !== "all") {
+    let supabaseCategory: string;
+
+    switch (category.toLowerCase()) {
+      case "snacks":
+        supabaseCategory = "Snack";
+        break;
+      case "drinks":
+        supabaseCategory = "Drink";
+        break;
+      default:
+        supabaseCategory = "Other";
+        break;
+    }
+
+    query = query.eq("category", supabaseCategory);
+  }
+
+  const { data: snacks, error } = await query;
 
   if (error) {
     console.error("Error fetching search snacks:", error);
