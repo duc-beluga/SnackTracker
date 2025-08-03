@@ -64,7 +64,7 @@ export default function InputSnack() {
         ref={inputRef}
         onKeyDown={handleSearch}
         // type="search"
-        placeholder="Search snacks..."
+        placeholder="Search snacks, drinks, brands..."
         className="pl-24 pr-10 py-2 sm:py-2.5 w-full bg-white/80 dark:bg-slate-800/80 border-slate-200/80 dark:border-slate-700/80 focus:bg-white dark:focus:bg-slate-800 transition-colors duration-200 rounded-lg sm:rounded-xl shadow-sm text-base"
       />
     </div>

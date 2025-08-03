@@ -7,8 +7,8 @@ export const getSnackNameLocationForm = () =>
   useForm<z.infer<typeof SnackNameLocationSchemaType>>({
     resolver: zodResolver(SnackNameLocationSchemaType),
     defaultValues: {
-      snackName: "",
-      snackLocation: { address: "", place_id: "0o0000000" },
+      name: "",
+      location: { address: "", place_id: "0o0000000" },
       aisle: "",
     },
   });

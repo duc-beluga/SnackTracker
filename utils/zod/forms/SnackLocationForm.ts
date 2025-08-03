@@ -8,7 +8,7 @@ export const getSnackLocationFormWithDefaultId = (snackId: number) =>
     resolver: zodResolver(SnackLocationSchemaType),
     defaultValues: {
       snackId: snackId,
-      snackLocation: { address: "", place_id: "0o0000000" },
+      location: { address: "", place_id: "0o0000000" },
       aisle: "",
     },
   });

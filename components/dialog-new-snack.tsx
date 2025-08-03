@@ -24,6 +24,8 @@ import { z } from "zod";
 import { handleValidationError } from "@/utils/exceptionHandler";
 import { AisleFormField } from "./aisle-form-field";
 import { SnackBrandFormField } from "./snack-brand-form-field";
+import { FormProvider } from "react-hook-form";
+import { CategorySelect } from "./select-category";
 
 export function DialogNewSnack() {
   const router = useRouter();
@@ -45,7 +47,6 @@ export function DialogNewSnack() {
 
   const createSnackFormState = useNewSnackForm();
   const {
-    snack: { isNewSnack },
     form: {
       control,
       nameLocationImageForm,
@@ -63,66 +64,73 @@ export function DialogNewSnack() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onDialogOpenChange}>
-      <DialogContent className="w-11/12 md:w-1/2">
-        <DialogHeader>
-          <DialogTitle>Adding new snack</DialogTitle>
-          <DialogDescription />
-        </DialogHeader>
-        <Form {...nameLocationImageForm}>
-          <form
-            onSubmit={handleSubmit(handleValidSubmit, handleValidationError)}
-            className="grid gap-y-4"
-            id="new-snack-form"
-          >
-            {step === 1 && (
-              <>
-                <SnackNameFormField newSnackFormState={createSnackFormState} />
-                <SnackBrandFormField newSnackFormState={createSnackFormState} />
-              </>
-            )}
-            {step === 2 && (
-              <>
-                <SnackLocationFormField control={control} />
+    <FormProvider {...nameLocationImageForm}>
+      <Dialog open={open} onOpenChange={onDialogOpenChange}>
+        <DialogContent className="w-11/12 md:w-1/2">
+          <DialogHeader>
+            <DialogTitle>
+              Add new <CategorySelect />
+            </DialogTitle>
+            <DialogDescription />
+          </DialogHeader>
 
-                <AisleFormField control={control} />
-
-                <SnackImageFormField control={control} />
-              </>
-            )}
-          </form>
-        </Form>
-        <DialogFooter>
-          <div className="flex justify-between w-full">
-            <Button
-              type="button"
-              onClick={() => setStep((s) => s - 1)}
-              disabled={step === 1}
+          <Form {...nameLocationImageForm}>
+            <form
+              onSubmit={handleSubmit(handleValidSubmit, handleValidationError)}
+              className="grid gap-y-4"
+              id="new-snack-form"
             >
-              Previous
-            </Button>
-
-            {step < 2 ? (
+              {step === 1 && (
+                <>
+                  <SnackNameFormField
+                    newSnackFormState={createSnackFormState}
+                  />
+                  <SnackBrandFormField
+                    newSnackFormState={createSnackFormState}
+                  />
+                </>
+              )}
+              {step === 2 && (
+                <>
+                  <SnackLocationFormField control={control} />
+                  <AisleFormField control={control} />
+                  <SnackImageFormField control={control} />
+                </>
+              )}
+            </form>
+          </Form>
+          <DialogFooter>
+            <div className="flex justify-between w-full">
               <Button
-                key="next-button"
                 type="button"
-                onClick={() => setStep((s) => s + 1)}
+                onClick={() => setStep((s) => s - 1)}
+                disabled={step === 1}
               >
-                Next
+                Previous
               </Button>
-            ) : (
-              <Button
-                key="submit-button"
-                type="submit"
-                form="new-snack-form"
-                disabled={isLoading}
-              >
-                {isLoading ? "Submitting…" : "Submit"}
-              </Button>
-            )}
-          </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+
+              {step < 2 ? (
+                <Button
+                  key="next-button"
+                  type="button"
+                  onClick={() => setStep((s) => s + 1)}
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  key="submit-button"
+                  type="submit"
+                  form="new-snack-form"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Submitting…" : "Submit"}
+                </Button>
+              )}
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </FormProvider>
   );
 }

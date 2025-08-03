@@ -41,7 +41,9 @@ const SnackReels = ({
           height={240}
           className="opacity-80"
         />
-        <h2 className="text-lg font-semibold text-gray-700">No snacks found</h2>
+        <h2 className="text-lg font-semibold text-foreground">
+          No snacks found
+        </h2>
         <p className="text-sm text-gray-500 max-w-xs">
           Try adjusting your filters or uploading the first snack!
         </p>
