@@ -43,7 +43,6 @@ export async function fetchUploadedSnacks(
     return null;
   }
 
-  console.log("Fetched data", data);
   return data as SnackDisplay[] | null;
 }
 
