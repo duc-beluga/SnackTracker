@@ -12,6 +12,7 @@ import {
   fetchSearchSnacks,
   fetchSnackByLocation,
   fetchSnackDetailByIds,
+  getDrinks,
 } from "../server-actions/snacks/actions";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
@@ -60,6 +61,8 @@ async function fetchSnacksByLocation(
     snacksData = await fetch(
       `/api/snacks?startRange=${startRange}&endRange=${endRange}`
     ).then((res) => res.json());
+  } else if (location === Location.Drink) {
+    snacksData = await getDrinks(startRange, endRange);
   } else if (location === Location.Liked) {
     snacksData = await getLikedSnacks(startRange, endRange);
   } else if (location === Location.Uploaded) {

@@ -12,6 +12,7 @@ import {
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { uploadSnackImage } from "@/lib/image";
 import {
+  fetchDrinks,
   fetchLikedSnacks,
   fetchSnacks,
   fetchTrendingSnacks,
@@ -191,6 +192,22 @@ export async function getSnacks(startRange: number, endRange: number) {
   }
 
   return fetchSnacks(startRange, endRange);
+}
+
+export async function getDrinks(startRange: number, endRange: number) {
+  if (startRange < 0 || endRange < 0) {
+    throw new Error("Range values must be non-negative");
+  }
+
+  if (startRange > endRange) {
+    throw new Error("Start range cannot be greater than end range");
+  }
+
+  if (endRange - startRange > 50) {
+    throw new Error("Range too large, maximum 50 items");
+  }
+
+  return fetchDrinks(startRange, endRange);
 }
 
 export async function getTrendingSnacks(
