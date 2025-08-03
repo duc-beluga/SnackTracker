@@ -56,3 +56,9 @@ export enum TrendingType {
   ThisMonth = 30,
   AllTime = 9999,
 }
+
+export enum ItemCategory {
+  Snack = "Snack",
+  Drink = "Drink",
+  Other = "Other",
+}
