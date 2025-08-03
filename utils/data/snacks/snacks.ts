@@ -22,6 +22,24 @@ export async function fetchSnacks(
   return data as SnackDisplay[] | null;
 }
 
+export async function fetchDrinks(
+  startRange: number,
+  endRange: number
+): Promise<SnackDisplay[] | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.rpc("get_drinks_in_range", {
+    start_range: startRange,
+    end_range: endRange,
+  });
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  return data as SnackDisplay[] | null;
+}
+
 export async function fetchUploadedSnacks(
   startRange: number,
   endRange: number,

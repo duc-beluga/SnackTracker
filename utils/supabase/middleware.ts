@@ -44,6 +44,7 @@ export const updateSession = async (request: NextRequest) => {
     // Define public routes that don't require authentication
     const publicRoutes = [
       "/snacks",
+      "/drinks",
       "/sign-in",
       "/sign-up",
       "/forgot-password",
@@ -61,7 +62,7 @@ export const updateSession = async (request: NextRequest) => {
       "/under-construction",
     ];
 
-    const unfinishedRoutes = ["/drink", "/popular-tags"];
+    const unfinishedRoutes = ["/popular-tags"];
 
     if (
       unfinishedRoutes.some((route) =>
