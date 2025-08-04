@@ -12,9 +12,10 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
 
     const checkUser = async () => {
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      store.dispatch(setCurrentUser(user));
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      store.dispatch(setCurrentUser(session?.user || null));
     };
 
     checkUser();

@@ -77,7 +77,7 @@ export default function LocationsPage() {
     );
   return (
     <div className="min-h-screen">
-      <div className="shadow-sm border-b border-gray-100">
+      <div className="shadow-sm border-b border-gray-100 dark:border-gray-600">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-6 py-4">
           {typeof window !== "undefined" && isMobile ? (
             <div className="space-y-4">
@@ -224,7 +224,7 @@ export default function LocationsPage() {
                       variant="outline"
                       role="combobox"
                       aria-expanded={stateOpen}
-                      className="w-[200px] justify-between border-2 hover:border-blue-300 focus:border-blue-500"
+                      className="w-[200px] justify-between hover:border-blue-300 focus:border-blue-500"
                     >
                       {STATE_NAMES[selectedStateCode] || "Select state..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -269,7 +269,7 @@ export default function LocationsPage() {
                       role="combobox"
                       aria-expanded={cityOpen}
                       disabled={!selectedStateCode}
-                      className="w-[250px] justify-between border-2 hover:border-blue-300 focus:border-blue-500"
+                      className="w-[250px] justify-between hover:border-blue-300 focus:border-blue-500"
                     >
                       {selectedCity || "Select city..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
