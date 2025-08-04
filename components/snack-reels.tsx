@@ -16,13 +16,13 @@ interface SnackReelsProps {
   city?: string;
 }
 
-const SnackReels = ({
+export default function SnackReels({
   location,
   trendingType,
   searchQuery,
   state,
   city,
-}: SnackReelsProps) => {
+}: SnackReelsProps) {
   const { snacks, ref, hasMore, hasNone } = useSnackReels(
     location,
     trendingType,
@@ -62,6 +62,4 @@ const SnackReels = ({
       />
     </div>
   );
-};
-
-export default SnackReels;
+}
