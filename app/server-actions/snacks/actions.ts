@@ -240,16 +240,16 @@ export async function fetchSnackDetail(
 ): Promise<SnackDetail | null> {
   const supabase = await createClient();
 
-  const { data: fetchSnackDetailsData, error: fetchSnackDetailsError } =
-    await supabase.rpc("get_snack_details_by_id", {
-      p_snack_id: snackId,
-    });
-  if (fetchSnackDetailsError) {
-    console.error(fetchSnackDetailsError);
+  const { data, error } = await supabase.rpc("get_snack_details_by_ids", {
+    p_snack_ids: [snackId],
+  });
+
+  if (error) {
+    console.error(error);
     return null;
   }
 
-  return fetchSnackDetailsData as SnackDetail | null;
+  return data[0] as SnackDetail | null;
 }
 
 export async function fetchSnackDetailByIds(
@@ -260,6 +260,7 @@ export async function fetchSnackDetailByIds(
   const { data, error } = await supabase.rpc("get_snack_details_by_ids", {
     p_snack_ids: snackIds,
   });
+
   if (error) {
     console.error(error);
     return null;

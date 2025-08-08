@@ -38,6 +38,7 @@ export interface ImageLocation {
 export interface SnackDetail {
   snack_id: number;
   name: string;
+  brand: string;
   images_locations: ImageLocation[];
 }
 

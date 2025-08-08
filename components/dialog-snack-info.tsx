@@ -36,7 +36,7 @@ export function DialogSnackInfo({
     <>
       <DialogHeader>
         <DialogTitle>{snack.name}</DialogTitle>
-        <DialogDescription />
+        <DialogDescription>{snack.brand}</DialogDescription>
       </DialogHeader>
       <div className="flex justify-center">
         <SnackCarousel images_locations={snack.images_locations} />
