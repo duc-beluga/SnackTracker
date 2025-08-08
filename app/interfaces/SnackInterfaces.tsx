@@ -45,6 +45,7 @@ export interface SnackDetail {
 export type SnackName = {
   name: string;
   snack_id: number;
+  brand: string;
 };
 
 export type SnackBrand = {

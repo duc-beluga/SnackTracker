@@ -9,7 +9,9 @@ export function useSnackNames() {
   useEffect(() => {
     async function fetchSnackNames() {
       const supabase = createClient();
-      const { data } = await supabase.from("snacks").select("name, snack_id");
+      const { data } = await supabase
+        .from("v_snack_summary")
+        .select("name, snack_id, brand");
       if (data) setNames(data);
     }
 

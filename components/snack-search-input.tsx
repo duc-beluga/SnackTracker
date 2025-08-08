@@ -31,7 +31,11 @@ interface SnackSearchInputProps<
   isNewSnack: boolean;
 }
 
-const ADD_NEW_SNACK_ITEM = { name: "Add new snack?", snack_id: 0 } as const;
+const ADD_NEW_SNACK_ITEM = {
+  name: "Add new snack?",
+  snack_id: 0,
+  brand: "",
+} as const;
 
 export function SnackSearchInput<
   TFieldValue extends FieldValues,
@@ -113,7 +117,16 @@ export function SnackSearchInput<
                 key={prediction.snack_id}
                 onSelect={() => handleSnackSelect(prediction)}
               >
-                {prediction.name}
+                <div className="w-full">
+                  <div className="flex items-center justify-between">
+                    <span className="font-normal text-foreground">
+                      {prediction.name}
+                    </span>
+                    <span className="text-sm text-foreground font-semibold">
+                      {prediction.brand}
+                    </span>
+                  </div>
+                </div>
               </CommandItem>
             ))
           ) : (

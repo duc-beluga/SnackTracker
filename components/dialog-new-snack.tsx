@@ -47,6 +47,7 @@ export function DialogNewSnack() {
 
   const createSnackFormState = useNewSnackForm();
   const {
+    snack: { isNewSnack },
     form: {
       control,
       nameLocationImageForm,
@@ -109,7 +110,7 @@ export function DialogNewSnack() {
                 Previous
               </Button>
 
-              {step < 2 ? (
+              {step < 2 && isNewSnack ? (
                 <Button
                   key="next-button"
                   type="button"
@@ -117,7 +118,7 @@ export function DialogNewSnack() {
                 >
                   Next
                 </Button>
-              ) : (
+              ) : step == 2 ? (
                 <Button
                   key="submit-button"
                   type="submit"
@@ -126,6 +127,8 @@ export function DialogNewSnack() {
                 >
                   {isLoading ? "Submitting…" : "Submit"}
                 </Button>
+              ) : (
+                <></>
               )}
             </div>
           </DialogFooter>
