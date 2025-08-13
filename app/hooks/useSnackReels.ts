@@ -234,7 +234,7 @@ export function useSnackReels(
         }
         return bulkData;
       },
-      staleTime: 5 * 60 * 1000,
+      staleTime: REACT_QUERY_STALE_TIME,
     });
   }
   //#endregion
