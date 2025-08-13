@@ -1,126 +1,118 @@
 "use client";
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import {
-  Command,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui";
-import { encodeId } from "@/utils/hashids";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Package } from "lucide-react";
 import { useSnackNames } from "@/app/hooks/useSnackNames";
-import { SnackName } from "@/app/interfaces/SnackInterfaces";
-import { useFilteredByName } from "@/app/hooks/useFilteredSnackNames";
-import { useDebounce } from "@/app/hooks/useDebounce";
+import { SnackDisplay } from "@/app/interfaces/SnackInterfaces";
+import { ItemCategory } from "@/app/interfaces/SnackInterfaces";
 
 interface SnackSearchInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends Path<TFieldValues> = Path<TFieldValues>,
 > {
   field: ControllerRenderProps<TFieldValues, TName>;
-  setIsNewSnack: Dispatch<SetStateAction<boolean>>;
-  isNewSnack: boolean;
+  category: ItemCategory;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  suggestions: SnackDisplay[];
+  showSuggestions: boolean;
+  onSnackSelect: (snack: SnackDisplay) => void;
+  onCreateNew: () => void;
 }
-
-const ADD_NEW_SNACK_ITEM = { name: "Add new snack?", snack_id: 0 } as const;
 
 export function SnackSearchInput<
   TFieldValue extends FieldValues,
   TName extends Path<TFieldValue>,
 >({
   field,
-  isNewSnack,
-  setIsNewSnack,
+  category,
+  searchQuery,
+  setSearchQuery,
+  suggestions,
+  showSuggestions,
+  onSnackSelect,
+  onCreateNew,
 }: SnackSearchInputProps<TFieldValue, TName>) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSelected, setIsSelected] = useState<boolean>(true);
-
-  const snacks = useSnackNames();
-  const debouncedQuery = useDebounce(field.value, 300);
-
-  const predictions = useFilteredByName<SnackName>(
-    snacks,
-    debouncedQuery ?? "",
-    ADD_NEW_SNACK_ITEM
-  );
-  const router = useRouter();
-
-  const handleSnackSelect = useCallback(
-    (selectedSnack: SnackName) => {
-      setIsSelected(true);
-
-      if (selectedSnack.snack_id === 0) {
-        setIsNewSnack(true);
-        return;
-      }
-
-      router.replace(`/snacks/${encodeId(selectedSnack.snack_id)}`);
-    },
-    [setIsNewSnack, router]
-  );
-
   const handleInputChange = useCallback(
     (value: string) => {
       field.onChange(value);
-      setIsSelected(false);
+      setSearchQuery(value);
     },
-    [field]
+    [field, setSearchQuery]
   );
 
-  useEffect(() => {
-    if (!isSelected) {
-      setIsLoading(true);
-    }
-  }, [field.value]);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [debouncedQuery]);
-
-  const hasResults = predictions.length > 0;
-  const isAddNewSnackShown = predictions[0]?.snack_id === 0;
-  const groupHeading =
-    !hasResults || isNewSnack
-      ? ""
-      : isAddNewSnackShown
-        ? "Snack Not Found"
-        : "Existing snacks...";
+  const categoryLabel = category.toLowerCase();
 
   return (
-    <Command shouldFilter={false}>
-      <CommandInput
-        placeholder="Search existing snack..."
-        value={field.value || ""}
-        onValueChange={handleInputChange}
-      />
+    <div className="space-y-2">
+      <div className="relative">
+        <Input
+          value={searchQuery}
+          onChange={(e) => handleInputChange(e.target.value)}
+          placeholder={`Type ${categoryLabel} name...`}
+          autoComplete="off"
+        />
 
-      <CommandList>
-        <CommandGroup heading={groupHeading}>
-          {isLoading ? (
-            <CommandItem>Searching...</CommandItem>
-          ) : !isSelected ? (
-            predictions.map((prediction) => (
-              <CommandItem
-                key={prediction.snack_id}
-                onSelect={() => handleSnackSelect(prediction)}
-              >
-                {prediction.name}
-              </CommandItem>
-            ))
-          ) : (
-            <></>
-          )}
-        </CommandGroup>
-      </CommandList>
-    </Command>
+        {showSuggestions && searchQuery && (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-background border border-border rounded-md shadow-lg z-50 max-h-48 overflow-y-auto">
+            {suggestions.length > 0 && (
+              <div className="p-2 space-y-1">
+                {suggestions.map((item) => (
+                  <button
+                    key={item.snack_id}
+                    onClick={() => onSnackSelect(item)}
+                    className="w-full p-3 text-left hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {item.brand}
+                        </div>
+                      </div>
+                      <Badge variant="secondary">
+                        {item.location_count || 0} locations
+                      </Badge>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {suggestions.length === 0 && searchQuery.length >= 2 && (
+              <div className="border-t border-border p-2">
+                <button
+                  onClick={onCreateNew}
+                  className="w-full p-3 text-left hover:bg-muted rounded-md transition-colors border border-border hover:border-primary"
+                >
+                  <div className="flex items-center gap-2 text-primary font-medium">
+                    <Package className="w-4 h-4" />
+                    Create "{searchQuery}"
+                  </div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    Add this as a new {categoryLabel}
+                  </div>
+                </button>
+              </div>
+            )}
+
+            {suggestions.some(
+              (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
+            ) &&
+              suggestions.length > 0 && (
+                <div className="p-3 border-t border-border bg-muted/50">
+                  <div className="text-sm">
+                    This {categoryLabel} already exists. Select it above to add
+                    a location.
+                  </div>
+                </div>
+              )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

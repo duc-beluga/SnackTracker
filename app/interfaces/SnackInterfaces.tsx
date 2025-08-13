@@ -5,6 +5,7 @@ export interface SnackDisplay {
   primary_image_url: string;
   location_count: number;
   like_count: number;
+  category: ItemCategory;
 }
 
 export enum Location {
@@ -38,12 +39,14 @@ export interface ImageLocation {
 export interface SnackDetail {
   snack_id: number;
   name: string;
+  brand: string;
   images_locations: ImageLocation[];
 }
 
 export type SnackName = {
   name: string;
   snack_id: number;
+  brand: string;
 };
 
 export type SnackBrand = {
