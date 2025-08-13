@@ -17,6 +17,7 @@ export const handleValidationError = (errors: FieldErrors) => {
   const firstError = Object.values(errors).find(
     (err): err is FieldError => typeof err?.message === "string"
   );
+
   if (firstError?.message) {
     toast.error(firstError.message);
     return;

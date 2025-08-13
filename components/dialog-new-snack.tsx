@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
   Form,
+  FormLabel,
 } from "@/components/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -26,11 +27,11 @@ import { AisleFormField } from "./aisle-form-field";
 import { SnackBrandFormField } from "./snack-brand-form-field";
 import { FormProvider } from "react-hook-form";
 import { CategorySelect } from "./select-category";
+import { Check, Package, MapPin, Upload, ArrowLeft } from "lucide-react";
 
 export function DialogNewSnack() {
   const router = useRouter();
   const [open, setOpen] = useState(true);
-  const [step, setStep] = useState<number>(1);
 
   function onDialogOpenChange(isOpen: boolean) {
     if (!isOpen) {
@@ -47,21 +48,47 @@ export function DialogNewSnack() {
 
   const createSnackFormState = useNewSnackForm();
   const {
-    snack: { isNewSnack },
+    snack: { isNewSnack, selectedSnack },
+    search: { resetSearchState },
+    step: { step, setStep },
     form: {
       control,
       nameLocationImageForm,
       handleSubmit,
       isLoading,
       onNameLocationImageSubmit,
+      watch,
     },
   } = createSnackFormState;
+
+  const selectedCategory = watch("category");
 
   const handleValidSubmit = async (
     values: z.infer<typeof SnackNameLocationSchemaType>
   ) => {
     await onNameLocationImageSubmit(values);
+    resetSearchState();
     handleModalClose();
+  };
+
+  const handleBack = () => {
+    setStep(1);
+    resetSearchState();
+  };
+
+  const getStepTitle = () => {
+    if (step === 1) return "What are you looking for?";
+    return selectedSnack
+      ? "Add location"
+      : `Add new ${selectedCategory?.toLowerCase() || "item"}`;
+  };
+
+  const getStepDescription = () => {
+    if (step === 1)
+      return "Select a category and search for existing items or create new ones";
+    return selectedSnack
+      ? "Add a new location for this existing item"
+      : "Fill in the details for your new item";
   };
 
   return (
@@ -69,10 +96,14 @@ export function DialogNewSnack() {
       <Dialog open={open} onOpenChange={onDialogOpenChange}>
         <DialogContent className="w-11/12 md:w-1/2">
           <DialogHeader>
-            <DialogTitle>
-              Add new <CategorySelect />
+            <DialogTitle className="text-center">
+              <div className="w-full flex items-center justify-center">
+                {getStepTitle()}
+              </div>
             </DialogTitle>
-            <DialogDescription />
+            <DialogDescription className="text-center">
+              {getStepDescription()}
+            </DialogDescription>
           </DialogHeader>
 
           <Form {...nameLocationImageForm}>
@@ -82,53 +113,113 @@ export function DialogNewSnack() {
               id="new-snack-form"
             >
               {step === 1 && (
-                <>
-                  <SnackNameFormField
-                    newSnackFormState={createSnackFormState}
-                  />
-                  <SnackBrandFormField
-                    newSnackFormState={createSnackFormState}
-                  />
-                </>
+                <div className="space-y-4">
+                  <CategorySelect setStep={setStep} />
+                  {selectedCategory && (
+                    <SnackNameFormField
+                      newSnackFormState={createSnackFormState}
+                    />
+                  )}
+                </div>
               )}
+
               {step === 2 && (
-                <>
-                  <SnackLocationFormField control={control} />
-                  <AisleFormField control={control} />
-                  <SnackImageFormField control={control} />
-                </>
+                <div className="space-y-4">
+                  {selectedSnack && (
+                    <div className="p-4 bg-muted rounded-lg border border-border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Check className="w-4 h-4 text-primary" />
+                        <span className="font-medium">
+                          Selected {selectedCategory?.toLowerCase()}
+                        </span>
+                      </div>
+                      <div className="text-lg font-semibold">
+                        {selectedSnack.name}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {selectedSnack.brand}
+                      </div>
+                    </div>
+                  )}
+
+                  {isNewSnack && (
+                    <div className="space-y-3">
+                      <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Package className="w-4 h-4 text-primary" />
+                          <span className="font-medium">
+                            Creating new {selectedCategory?.toLowerCase()}
+                          </span>
+                        </div>
+                        <div className="text-lg font-semibold">
+                          {watch("name")}
+                        </div>
+                      </div>
+
+                      <SnackBrandFormField
+                        newSnackFormState={createSnackFormState}
+                      />
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <FormLabel className="font-medium flex items-center gap-2">
+                      <MapPin className="w-4 h-4" />
+                      Store address *
+                    </FormLabel>
+                    <SnackLocationFormField control={control} />
+                  </div>
+
+                  <div className="space-y-2">
+                    <FormLabel className="font-medium">
+                      Aisle/Section (optional)
+                    </FormLabel>
+                    <AisleFormField control={control} />
+                  </div>
+
+                  <div className="space-y-2">
+                    <FormLabel className="font-medium flex items-center gap-2">
+                      <Upload className="w-4 h-4" />
+                      Photo (optional)
+                    </FormLabel>
+                    <SnackImageFormField control={control} />
+                  </div>
+                </div>
               )}
             </form>
           </Form>
-          <DialogFooter>
-            <div className="flex justify-between w-full">
-              <Button
-                type="button"
-                onClick={() => setStep((s) => s - 1)}
-                disabled={step === 1}
-              >
-                Previous
-              </Button>
 
-              {step < 2 && isNewSnack ? (
+          <DialogFooter>
+            <div className="flex gap-3 w-full">
+              {step === 2 && (
                 <Button
-                  key="next-button"
                   type="button"
-                  onClick={() => setStep((s) => s + 1)}
+                  variant="outline"
+                  onClick={handleBack}
+                  className="flex-1"
                 >
-                  Next
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
                 </Button>
-              ) : step == 2 ? (
+              )}
+
+              {step === 2 && (
                 <Button
-                  key="submit-button"
                   type="submit"
                   form="new-snack-form"
-                  disabled={isLoading}
+                  disabled={
+                    isLoading ||
+                    !watch("name") ||
+                    (isNewSnack && !watch("brand"))
+                  }
+                  className="flex-1"
                 >
-                  {isLoading ? "Submitting…" : "Submit"}
+                  {isLoading
+                    ? "Submitting…"
+                    : selectedSnack
+                      ? "Add Location"
+                      : `Create ${selectedCategory?.toLowerCase() || "Item"}`}
                 </Button>
-              ) : (
-                <></>
               )}
             </div>
           </DialogFooter>

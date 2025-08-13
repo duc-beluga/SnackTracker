@@ -5,6 +5,7 @@ export interface SnackDisplay {
   primary_image_url: string;
   location_count: number;
   like_count: number;
+  category: ItemCategory;
 }
 
 export enum Location {

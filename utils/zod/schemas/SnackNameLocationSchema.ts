@@ -7,7 +7,8 @@ export const SnackNameLocationSchemaType = z.object({
   category: z.nativeEnum(ItemCategory, {
     errorMap: () => ({ message: "Category is required" }),
   }),
-  brand: z.string().min(1, "Snack brand is required"),
+  brand: z.string().optional(), // Optional - will be validated in submission logic
+  selectedSnackId: z.number().optional(), // Track if an existing snack is selected
   location: locationSchema,
   image: snackImageSchema,
   aisle: z.string().optional(),

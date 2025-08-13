@@ -1,7 +1,5 @@
 import React from "react";
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui";
-import { PackagePlus } from "lucide-react";
-import { SnackSearchInput } from "./snack-search-input";
 import { z } from "zod";
 import { SnackNameLocationSchemaType } from "@/utils/zod/schemas/SnackNameLocationSchema";
 import { useNewSnackForm } from "@/app/hooks/useMultistepSnackForm";

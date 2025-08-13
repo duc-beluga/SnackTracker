@@ -104,7 +104,7 @@ export const createSnack = async (
   const { error: snackAddError } = await supabase.rpc("add_snack", {
     new_snack_data: {
       name: values.name.trim(),
-      brand: values.brand.trim(),
+      brand: values.brand?.trim() || "",
       category: values.category,
     },
     location_data: {
