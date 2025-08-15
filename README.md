@@ -1,7 +1,7 @@
 # Wutsdis 🍫🥟🍪
 
 Wutsdis is a snack discovery platform that helps users find, share, and explore snacks from around the world.  
-Built with **Next.js**, **Supabase**, and **Shadcn** for the web, plus **Expo React Native** for mobile, it combines real-time data, location-based snack search, and gamified contributions.
+Built with **Next.js**, **Supabase**, and **Shadcn** for the web, plus **Expo React Native** (in progress) for mobile, it combines real-time data, location-based snack search, and gamified contributions.
 
 ## 🚀 Features
 - **Snack Search & Discovery** – Find snacks by name, type, or location.
@@ -20,19 +20,11 @@ Built with **Next.js**, **Supabase**, and **Shadcn** for the web, plus **Expo Re
 - [Shadcn/UI](https://ui.shadcn.com/) – Component library
 - [React Query](https://tanstack.com/query/latest) – Data fetching & caching
 
-**Mobile App**
-- [Expo](https://expo.dev/) & [React Native](https://reactnative.dev/)
-- Shared Supabase backend for sync with web app
+**Mobile App**  
+_Work in progress – built with Expo React Native, sharing the same Supabase backend as the web app._
 
 **Cloud & Security**
 - **AWS Rekognition** – Image moderation
 - **Aikido Security** – Vulnerability scanning
 - **Sentry** – Error monitoring
 - **CI/CD** – Automated deployments
-
-## 📦 Installation
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/yourusername/wutsdis.git
-cd wutsdis
