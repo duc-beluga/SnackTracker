@@ -1,21 +1,38 @@
-An app that is used to track snacks.
+# Wutsdis 🍫🥟🍪
 
-Currently using an overlay pattern for snack feed.
+Wutsdis is a snack discovery platform that helps users find, share, and explore snacks from around the world.  
+Built with **Next.js**, **Supabase**, and **Shadcn** for the web, plus **Expo React Native** for mobile, it combines real-time data, location-based snack search, and gamified contributions.
 
-1. Users stay on the main feed page
-2. The URL updates with a query parameter (?snackId=123)
-3. A modal appears with the details without navigating away from the feed
+## 🚀 Features
+- **Snack Search & Discovery** – Find snacks by name, type, or location.
+- **Snack Upload Form** – Add new snacks with descriptions, images, and location tags.
+- **Duplicate Prevention** – Prevents adding the same snack multiple times by allowing location additions to existing snacks.
+- **Ranking System** – Earn points and rewards for contributions.
+- **Token Rewards** – Gamified experience for active users.
+- **Image Moderation** – AWS Rekognition integration for safe content uploads.
+- **Real-Time Updates** – Powered by Supabase subscriptions.
+- **Responsive UI** – Built with Shadcn UI components for a modern, accessible design.
 
-This is a common pattern in modern web apps (like Twitter, Instagram, etc.) that allows users to:
+## 🛠 Tech Stack
+**Web App**
+- [Next.js](https://nextjs.org/) – Frontend framework
+- [Supabase](https://supabase.com/) – Backend (database, auth, storage)
+- [Shadcn/UI](https://ui.shadcn.com/) – Component library
+- [React Query](https://tanstack.com/query/latest) – Data fetching & caching
 
-1. View details without losing context of the feed
-2. Share direct links to specific items
-3. Close the modal and return to their exact position in the feed
+**Mobile App**
+- [Expo](https://expo.dev/) & [React Native](https://reactnative.dev/)
+- Shared Supabase backend for sync with web app
 
-If you switch to a separate route (/snacks/[snackId]), you'd lose these benefits and would need to implement:
+**Cloud & Security**
+- **AWS Rekognition** – Image moderation
+- **Aikido Security** – Vulnerability scanning
+- **Sentry** – Error monitoring
+- **CI/CD** – Automated deployments
 
-1. A complete separate page
-2. Back navigation
-3. Potentially scroll position restoration when returning to the feed
+## 📦 Installation
 
-Allow users to filter snacks based on location.
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/wutsdis.git
+cd wutsdis
