@@ -18,7 +18,6 @@ export function SnackLocationFormField({
       name="location"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Address</FormLabel>
           <FormControl>
             <SnackLocationSearch field={field} />
           </FormControl>

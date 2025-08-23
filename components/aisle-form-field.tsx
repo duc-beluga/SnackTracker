@@ -15,7 +15,6 @@ export function AisleFormField<T extends { aisle?: string }>({
       name={"aisle" as Path<T>}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Aisle (optional)</FormLabel>
           <FormControl>
             <Input
               type="text"

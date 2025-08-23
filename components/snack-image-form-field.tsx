@@ -41,7 +41,6 @@ export function SnackImageFormField<T extends { image: File | Blob }>({
       name={"image" as Path<T>}
       render={({ field: { onChange, value, ...fieldProps } }) => (
         <FormItem>
-          <FormLabel>Upload image</FormLabel>
           <FormControl>
             <Input
               type="file"
