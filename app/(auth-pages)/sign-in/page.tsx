@@ -37,8 +37,6 @@ export default function Login() {
 
   async function onGoogleSignIn() {
     try {
-      // Note: `googleSignInAction` calls `redirect()` which triggers a page reload.
-      // This causes Next.js to remount components (including `StoreProvider`).
       await googleSignInAction();
     } catch (err) {
       toast.error("Google sign-up failed.");
@@ -54,8 +52,6 @@ export default function Login() {
         toast.error(result.error);
         setIsLoading(false);
       } else {
-        // Note: `passwordSignInAction` does not trigger a page reload.
-        // Therefore, we need to set the global user manually with Redux.
         dispatch(setCurrentUser(result.user));
         toast.success("Signed in succesfully!");
         router.push("/");
@@ -113,13 +109,31 @@ export default function Login() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          >
             {isLoading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
       </Form>
-      <Button onClick={onGoogleSignIn} className="mt-2 flex items-center gap-2">
+
+      <div className="relative my-4">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-background px-2 text-muted-foreground">or</span>
+        </div>
+      </div>
+
+      <Button
+        onClick={onGoogleSignIn}
+        variant="outline"
+        className="flex items-center justify-center gap-2 hover:bg-accent"
+      >
         <GoogleIcon />
+        Continue with Google
       </Button>
     </div>
   );
