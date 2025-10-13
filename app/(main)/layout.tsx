@@ -7,9 +7,11 @@ import NavTopBar from "@/components/nav-topbar";
 export const MainLayout = ({
   children,
   snackModal,
+  signInModal,
 }: Readonly<{
   children: React.ReactNode;
   snackModal: React.ReactNode;
+  signInModal: React.ReactNode;
 }>) => {
   return (
     <SidebarProvider>
@@ -19,6 +21,7 @@ export const MainLayout = ({
         <NavTopBar />
         <div>{children}</div>
         {snackModal}
+        {signInModal}
       </div>
     </SidebarProvider>
   );
