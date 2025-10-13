@@ -54,7 +54,7 @@ export default function Login() {
       } else {
         dispatch(setCurrentUser(result.user));
         toast.success("Signed in succesfully!");
-        router.push("/");
+        router.back();
       }
     } catch {
       setIsLoading(false);

@@ -134,7 +134,9 @@ export const resetPasswordAction = async (formData: FormData) => {
 export const signOutAction = async () => {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  return redirect("/sign-in");
+  return {
+    redirectUrl: "/sign-in",
+  };
 };
 
 export const googleSignInAction = async () => {

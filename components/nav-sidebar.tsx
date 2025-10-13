@@ -39,6 +39,7 @@ import {
 } from "@/app/server-actions/auth/actions";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
+import { useRouter } from "next/navigation";
 
 interface NavbarGroupInterface {
   groupLabel: string;
@@ -111,6 +112,15 @@ export function NavSideBar() {
     ),
   }));
 
+  const handleSignOut = async () => {
+    const result = await signOutAction();
+    if (result?.redirectUrl) {
+      window.location.href = result.redirectUrl; // full reload, no modal intercept
+    }
+  };
+
+  const router = useRouter();
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -157,14 +167,14 @@ export function NavSideBar() {
             ) : currentUser !== null ? (
               <SidebarMenuButton
                 className="bg-red-400 hover:bg-red-500 hover:text-white text-white flex-row justify-center"
-                onClick={signOutAction}
+                onClick={handleSignOut}
               >
                 <LogOut /> <span>Sign Out</span>
               </SidebarMenuButton>
             ) : (
               <SidebarMenuButton
-                className="bg-blue-400 hover:bg-blue-500 hover:text-white text-white flex-row justify-center"
-                onClick={redirectToSignIn}
+                className="bg-blue-600 hover:bg-blue-700 hover:text-white text-white flex-row justify-center"
+                onClick={() => router.push("/sign-in", { scroll: false })}
               >
                 <LogIn /> <span>Sign In</span>
               </SidebarMenuButton>
