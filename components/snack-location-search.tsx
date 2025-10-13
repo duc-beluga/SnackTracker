@@ -32,11 +32,31 @@ export function SnackLocationSearch<
 
   useEffect(() => {
     const fetchPredictions = async () => {
+      if (!debouncedAddress) return;
+
       setIsLoading(true);
-      const googleMapspredictions = await autocomplete(debouncedAddress);
-      setPredictions(googleMapspredictions ?? []);
-      setIsLoading(false);
+
+      try {
+        const res = await fetch("/api/autocomplete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ input: debouncedAddress }),
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch predictions");
+
+        const data = await res.json();
+        setPredictions(data ?? []);
+      } catch (err) {
+        console.error("Autocomplete error:", err);
+        setPredictions([]);
+      } finally {
+        setIsLoading(false);
+      }
     };
+
     fetchPredictions();
   }, [debouncedAddress]);
 
